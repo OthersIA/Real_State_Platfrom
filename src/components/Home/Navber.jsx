@@ -2,9 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import { NavLink } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
 import { MdLogout } from "react-icons/md";
+import { FaUserCircle } from "react-icons/fa";
+import WebLogo from "../WebLogo";
 
 const Navber = () => {
     const { logOut, user } = useContext(AuthContext);
+    console.log(user);
 
 
     const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
@@ -81,11 +84,7 @@ const Navber = () => {
                         </ul>
                     </div>
                     <div>
-                        <NavLink to="/">
-                            <div className="flex items-center justify-start">
-                                <p className="text-4xl lg:flex hidden items-center font-[1000] text-primary ">PropFinder</p>
-                            </div>
-                        </NavLink>
+                        <WebLogo></WebLogo>
                     </div>
                 </div>
                 <div className="navbar-center hidden lg:flex">
@@ -114,6 +113,30 @@ const Navber = () => {
                         <li>
                             {SunMun}
                         </li>
+                        <div className="relative group">
+                            {/* Avatar and trigger */}
+                            <div className="flex items-center gap-2 cursor-pointer">
+                                <div className="w-8 h-8 overflow-hidden rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                                    {user?.photoURL ? (
+                                        <img
+                                            className="object-cover w-full h-full"
+                                            src={user?.photoURL}
+                                            alt="Profile"
+                                        />
+                                    ) : (
+                                        <FaUserCircle className="w-full h-full " />
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Hover menu */}
+                            <div className="absolute right-0 z-50 invisible w-56 p-4 mt-2 transition duration-200 rounded-md shadow-lg opacity-0 bg-base-100 group-hover:opacity-100 group-hover:visible"
+                                onMouseEnter={(e) => e.stopPropagation()}
+                                onMouseLeave={(e) => e.stopPropagation()}>
+                                <p className="font-semibold">{user?.displayName || "No Name"}</p>
+                                <p className="text-xs opacity-70">{user?.email || "No Email"}</p>
+                            </div>
+                        </div>
                         {user ? (
                             <>
                                 <li className="-ml-2">
