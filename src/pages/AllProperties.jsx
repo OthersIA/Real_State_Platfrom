@@ -66,7 +66,7 @@ const AllProperties = () => {
               </p>
 
               <Link
-                to={`/properties/${prop._id}`}
+                to={`/property/${prop._id}`}
                 className="btn btn-sm btn-primary"
               >
                 Details
