@@ -18,40 +18,42 @@ const AuthProvider = ({ children }) => {
 
   const googleProvider = new GoogleAuthProvider();
 
-  const signInWithGoogle = () => {
+  // ✅ Google sign-in returns the full result
+   const signInWithGoogle = () => {
     return signInWithPopup(auth, googleProvider)
-      .then((result) => {
-        // console.log("Google signed-in user:", result.user);
+      .then(async (result) => {
+        // Reload to get fresh profile info
+        await auth.currentUser.reload();
+        setUser(auth.currentUser);
+        return result;
       });
   };
 
-
+  // ✅ Email/password sign up returns userCredential
   const signUp = (email, password, name) => {
-    // Register user with email/password
     return createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        // After signing up, update the profile with name
-        // console.log("Signed up user:", user);
-        return updateProfile(user, { displayName: name });
-      })
-      .then(() => {
-        setUser({ ...auth.currentUser });
+        return updateProfile(user, { displayName: name }).then(() => {
+          setUser({ ...auth.currentUser });
+          return userCredential; // Return so caller gets userCredential
+        });
       });
   };
 
+  // ✅ Email/password sign in
   const signIn = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password)
-    // .then((userCredential) => {
-    //   console.log("Signed in user:", userCredential.user);
-    // });
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
+  // ✅ Profile update
   const updateUserProfile = async (displayName, photoURL) => {
+    if (!auth.currentUser) return;
     await updateProfile(auth.currentUser, { displayName, photoURL });
     setUser({ ...auth.currentUser });
   };
 
+  // ✅ SweetAlert logout with confirmation
   const logOut = () => {
     return Swal.fire({
       title: "Are you sure?",
@@ -71,7 +73,7 @@ const AuthProvider = ({ children }) => {
               title: "Logged out!",
               text: "You have been successfully logged out.",
               showConfirmButton: false,
-              timer: 1500
+              timer: 1500,
             });
           })
           .catch((error) => {
@@ -82,19 +84,18 @@ const AuthProvider = ({ children }) => {
     });
   };
 
+  // ✅ Simple sign out (without SweetAlert)
   const signOutUser = () => {
-        setIsLoading(true);
-        return signOut(auth)
-    }
+    setIsLoading(true);
+    return signOut(auth);
+  };
 
-
+  // ✅ Listen for auth state change
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setIsLoading(false);
-      // console.log("User in the auth state change", currentUser)
     });
-
     return () => unSubscribe();
   }, []);
 
