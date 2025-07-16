@@ -17,17 +17,25 @@ import RequestedProperties from "../pages/DashboardPages/AgentDashboard/Requeste
 import ManageProperties from "../pages/DashboardPages/AdminDashboard/ManageProperties";
 import ManageUsers from "../pages/DashboardPages/AdminDashboard/ManageUsers";
 import ManageReviews from "../pages/DashboardPages/AdminDashboard/ManageReviews";
+import ErrorPage from "../pages/ErrorPage";
+import Forbidden from "../pages/Forbidden/Forbidden";
+import PrivateRoute from "../PrivateRoutes/PrivateRoute";
 
 
 const Router = createBrowserRouter([
     {
         path: "/",
         element: <MainLayout />,
+        errorElement: <ErrorPage></ErrorPage>,
         children: [
             {
                 index: true,
                 path: '/',
                 Component: Home
+            },
+            {
+                path: '/forbidden',
+                Component: Forbidden,
             },
             {
                 path: '/all-properties',
@@ -46,7 +54,8 @@ const Router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element: <DashboardLayout />,
+        element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+        errorElement: <ErrorPage></ErrorPage>,
         children: [
             // Common dashboard home
             {
