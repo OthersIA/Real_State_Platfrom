@@ -22,6 +22,7 @@ import Forbidden from "../pages/Forbidden/Forbidden";
 import PrivateRoute from "../PrivateRoutes/PrivateRoute";
 import UpdateProperty from "../pages/DashboardPages/AgentDashboard/UpdateProperty";
 import PropertyDetails from "../pages/PropertyDetails";
+import MakeOffer from "../pages/DashboardPages/UserDashboard/MakeOffer";
 
 
 const Router = createBrowserRouter([
@@ -77,6 +78,10 @@ const Router = createBrowserRouter([
             {
                 path: 'wishlist',
                 Component: Wishlist,
+            },
+            {
+                path: "make-offer/:id",
+                Component: MakeOffer,
             },
             {
                 path: 'property-bought',
