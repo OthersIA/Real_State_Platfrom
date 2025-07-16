@@ -70,6 +70,8 @@ const PropertyDetails = () => {
                 propertyId: id,
                 userEmail: user.email,
                 userName: user.displayName,
+                userImage:user.photoURL,
+                agentName: property.agentName,
                 comment: reviewText,
                 rating,
                 createdAt: new Date(),

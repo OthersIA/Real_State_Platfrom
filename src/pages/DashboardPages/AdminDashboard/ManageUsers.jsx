@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import Swal from "sweetalert2";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
+import { FaUserCircle } from "react-icons/fa";
 
 const ManageUsers = () => {
     const queryClient = useQueryClient();
@@ -70,8 +71,8 @@ const ManageUsers = () => {
                                     {u.photo ? (
                                         <img src={u.photo} alt="user" className="w-10 h-10 rounded-full" />
                                     ) : (
-                                        <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
-                                            ?
+                                        <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-400">
+                                            <FaUserCircle className="w-10 h-10" />
                                         </div>
                                     )}
                                 </td>

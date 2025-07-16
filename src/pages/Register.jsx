@@ -80,7 +80,7 @@ const Register = () => {
     try {
       const res = await axios.post(imgUploadUrl, formData);
       setForm({ ...form, imageUrl: res.data.data.url });
-      Swal.fire({ icon: "success", title: "Image uploaded!", timer: 1200, showConfirmButton: false });
+      // Swal.fire({ icon: "success", title: "Image uploaded!", timer: 1200, showConfirmButton: false });
     } catch (err) {
       console.error("Image Upload Error:", err);
       Swal.fire({ icon: "error", title: "Image upload failed!" });
