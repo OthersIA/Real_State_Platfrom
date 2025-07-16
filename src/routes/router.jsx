@@ -20,6 +20,7 @@ import ManageReviews from "../pages/DashboardPages/AdminDashboard/ManageReviews"
 import ErrorPage from "../pages/ErrorPage";
 import Forbidden from "../pages/Forbidden/Forbidden";
 import PrivateRoute from "../PrivateRoutes/PrivateRoute";
+import UpdateProperty from "../pages/DashboardPages/AgentDashboard/UpdateProperty";
 
 
 const Router = createBrowserRouter([
@@ -89,6 +90,10 @@ const Router = createBrowserRouter([
             {
                 path: 'my-added-properties',
                 Component: MyAddedProperties,
+            },
+            {
+                path: "update-properties/:id",
+                element: <UpdateProperty />,
             },
             {
                 path: 'my-sold-properties',
