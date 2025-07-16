@@ -65,6 +65,7 @@ const UpdateProperty = () => {
         image: imageUrl,
         minPrice: parseFloat(formData.minPrice),
         maxPrice: parseFloat(formData.maxPrice),
+        agentPhoto: user.photoURL,
       };
 
       // Call backend PUT to update property by ID

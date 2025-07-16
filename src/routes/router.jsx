@@ -21,6 +21,7 @@ import ErrorPage from "../pages/ErrorPage";
 import Forbidden from "../pages/Forbidden/Forbidden";
 import PrivateRoute from "../PrivateRoutes/PrivateRoute";
 import UpdateProperty from "../pages/DashboardPages/AgentDashboard/UpdateProperty";
+import PropertyDetails from "../pages/PropertyDetails";
 
 
 const Router = createBrowserRouter([
@@ -41,6 +42,10 @@ const Router = createBrowserRouter([
             {
                 path: '/all-properties',
                 Component: AllProperties,
+            },
+            {
+                path:"/property/:id",
+                Component: PropertyDetails,
             },
             {
                 path: '/login',

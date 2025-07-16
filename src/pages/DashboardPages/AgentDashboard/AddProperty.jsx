@@ -54,6 +54,7 @@ const AddProperty = () => {
                 maxPrice: parseFloat(data.maxPrice),
                 agentName: user.displayName,
                 agentEmail: user.email,
+                agentPhoto: user.photoURL,
                 image: imageUrl,
             };
 
