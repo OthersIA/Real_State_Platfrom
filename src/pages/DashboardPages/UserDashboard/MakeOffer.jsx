@@ -29,9 +29,11 @@ const MakeOffer = () => {
   const makeOffer = useMutation({
     mutationFn: async () => {
       return axios.post(`${import.meta.env.VITE_API_URL}/offers`, {
-        propertyId: id,
+        wishListId: id,
+        propertyId: property?.propertyId,
         propertyTitle: property?.title,
         propertyLocation: property?.location,
+        propertyImage: property?.image,
         agentName: property?.agentName,
         agentEmail: property?.agentEmail,
         buyerEmail: user?.email,
