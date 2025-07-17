@@ -6,11 +6,13 @@ import Swal from "sweetalert2";
 import Lottie from "lottie-react";
 import LottieAnimation from "../assets/lotties/register.json";
 import axios from "axios";
+import { FaUserCircle } from "react-icons/fa";
 
 const Register = () => {
   const { signUp, signInWithGoogle, updateUserProfile } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: "", email: "", password: "", imageUrl: "" });
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [imageFile, setImageFile] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [uploading, setUploading] = useState(false);
 
@@ -20,9 +22,8 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, email, password, imageUrl } = form;
+    const { name, email, password } = form;
 
-    // Password validation
     const upperCase = /[A-Z]/.test(password);
     const lowerCase = /[a-z]/.test(password);
     const validLength = password.length >= 6;
@@ -37,17 +38,33 @@ const Register = () => {
       return Swal.fire({ icon: "warning", title: "Password must be at least 6 characters long!" });
     }
 
+    let imageUrl = "";
+
+    if (imageFile) {
+      try {
+        setUploading(true);
+        const formData = new FormData();
+        formData.append("image", imageFile);
+
+        const imgUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_UPLOAD_KEY}`;
+        const res = await axios.post(imgUploadUrl, formData);
+
+        imageUrl = res.data.data.url;
+      } catch (err) {
+        console.error("Image Upload Error:", err);
+        Swal.fire({ icon: "error", title: "Image upload failed!" });
+        setUploading(false);
+        return;
+      } finally {
+        setUploading(false);
+      }
+    }
+
     try {
-      // 1. Create user in Firebase
       const userCredential = await signUp(email, password);
 
-      // 2. Update Firebase profile with reload
-      await updateUserProfile(name, imageUrl || "");
+      await updateUserProfile(name, imageUrl);
 
-      // 3. Get fresh user from Firebase
-      const freshUser = userCredential.user;
-
-      // 4. Send user data to your backend
       const userInfo = {
         name,
         email,
@@ -56,6 +73,7 @@ const Register = () => {
         created_at: new Date().toISOString(),
         last_log_in: new Date().toISOString(),
       };
+
       await axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo);
 
       Swal.fire({ icon: "success", title: "Sign up successful!", timer: 1500, showConfirmButton: false });
@@ -63,29 +81,6 @@ const Register = () => {
     } catch (err) {
       console.error(err);
       Swal.fire({ icon: "error", title: err.message, timer: 2000, showConfirmButton: false });
-    }
-  };
-
-  const handleImageUpload = async (e) => {
-    const image = e.target.files[0];
-    if (!image) return;
-
-    setUploading(true);
-
-    const formData = new FormData();
-    formData.append("image", image);
-
-    const imgUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_UPLOAD_KEY}`;
-
-    try {
-      const res = await axios.post(imgUploadUrl, formData);
-      setForm({ ...form, imageUrl: res.data.data.url });
-      // Swal.fire({ icon: "success", title: "Image uploaded!", timer: 1200, showConfirmButton: false });
-    } catch (err) {
-      console.error("Image Upload Error:", err);
-      Swal.fire({ icon: "error", title: "Image upload failed!" });
-    } finally {
-      setUploading(false);
     }
   };
 
@@ -133,6 +128,18 @@ const Register = () => {
 
                   <div className="divider">OR</div>
 
+                  <div className="w-16 h-16 rounded-full overflow-hidden border border-gray-300 flex items-center mx-auto justify-center bg-gray-100">
+                    {imageFile ? (
+                      <img
+                        src={URL.createObjectURL(imageFile)}
+                        alt="Selected preview"
+                        className="object-cover w-full h-full"
+                      />
+                    ) : (
+                      <FaUserCircle className="w-14 h-14 text-gray-400" />
+                    )}
+                  </div>
+
                   <form onSubmit={handleSubmit}>
                     <label className="label">Name</label>
                     <input
@@ -175,10 +182,14 @@ const Register = () => {
                     <label className="mt-2 label">Image (Optional)</label>
                     <input
                       type="file"
-                      onChange={handleImageUpload}
+                      accept="image/*"
+                      onChange={(e) => {
+                        if (e.target.files[0]) {
+                          setImageFile(e.target.files[0]);
+                        }
+                      }}
                       className="file-input file-input-bordered w-full"
                     />
-                    {uploading && <p className="text-green-600 text-sm mt-1">Uploading...</p>}
 
                     <button type="submit" className="w-full mt-4 btn btn-neutral rounded-full">
                       Sign Up

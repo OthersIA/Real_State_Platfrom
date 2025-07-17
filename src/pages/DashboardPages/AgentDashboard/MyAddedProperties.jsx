@@ -70,10 +70,10 @@ const MyAddedProperties = () => {
                             <strong>Verification:</strong>{" "}
                             <span
                                 className={`badge ${prop.verificationStatus === "verified"
-                                        ? "badge-success"
-                                        : prop.verificationStatus === "rejected"
-                                            ? "badge-error"
-                                            : "badge-warning"
+                                    ? "badge-success"
+                                    : prop.verificationStatus === "rejected"
+                                        ? "badge-error"
+                                        : "badge-warning"
                                     }`}
                             >
                                 {prop.verificationStatus || "pending"}
@@ -84,6 +84,11 @@ const MyAddedProperties = () => {
                         </p>
 
                         <div className="flex gap-2 mt-2">
+                            <Link to={`/property/${prop._id}`}
+                                className="btn btn-xs btn-primary"
+                            >
+                                Details
+                            </Link>
                             {prop.verificationStatus !== "rejected" && (
                                 <Link
                                     to={`/dashboard/update-properties/${prop._id}`}

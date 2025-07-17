@@ -17,6 +17,7 @@ import WebLogo from "../components/WebLogo";
 import { AuthContext } from "../context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import LoadingFallback from "../components/shared/LoadingFallback";
 
 const DashboardLayout = () => {
     const { user } = useContext(AuthContext);
@@ -33,9 +34,7 @@ const DashboardLayout = () => {
 
     if (isLoading) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
-                <span className="loading loading-spinner loading-lg"></span>
-            </div>
+            <LoadingFallback />
         );
     }
 
@@ -43,7 +42,7 @@ const DashboardLayout = () => {
     const role = foundUser?.role;
 
     return (
-        <section>
+        <section className="">
             <div className="drawer lg:drawer-open">
                 <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content flex flex-col">
@@ -160,7 +159,6 @@ const DashboardLayout = () => {
                         {/* ✅ Admin-only links */}
                         {role === "admin" && (
                             <>
-                                
                                 <li>
                                     <NavLink to="/dashboard/manage-properties">
                                         <FaTasks className="inline-block mr-2" />

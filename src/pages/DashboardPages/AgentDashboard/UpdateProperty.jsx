@@ -17,6 +17,7 @@ const UpdateProperty = () => {
     image: "", // will store URL or File object
     minPrice: "",
     maxPrice: "",
+    description: "",
   });
 
   // Fetch property by ID
@@ -37,6 +38,7 @@ const UpdateProperty = () => {
         image: data.image || "",
         minPrice: data.minPrice ?? "",
         maxPrice: data.maxPrice ?? "",
+        description: data.description ?? "",
       });
     }
   }, [data]);
@@ -66,6 +68,7 @@ const UpdateProperty = () => {
         minPrice: parseFloat(formData.minPrice),
         maxPrice: parseFloat(formData.maxPrice),
         agentPhoto: user.photoURL,
+        description: formData.description,
       };
 
       // Call backend PUT to update property by ID
@@ -141,22 +144,34 @@ const UpdateProperty = () => {
 
         <div>
           <label className="block mb-1">Current Property Image</label>
-          {typeof form.image === "string" && (
+
+          {form.image && (
             <img
-              src={form.image}
+              src={
+                typeof form.image === "string"
+                  ? form.image
+                  : URL.createObjectURL(form.image)
+              }
               alt="Current property"
               className="w-full max-h-64 object-cover rounded mb-2"
             />
           )}
+
           <label className="block mb-1">Change Property Image (optional)</label>
           <input
             type="file"
             name="image"
             accept="image/*"
-            onChange={handleChange}
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                setForm((prev) => ({ ...prev, image: file }));
+              }
+            }}
             className="file-input file-input-bordered w-full"
           />
         </div>
+
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -184,6 +199,18 @@ const UpdateProperty = () => {
               className="w-full input input-bordered"
             />
           </div>
+        </div>
+
+        <div>
+          <label className="block mb-1">Property Description</label>
+          <textarea
+            className="textarea textarea-bordered w-full"
+            rows="3"
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+            required
+          />
         </div>
 
         <div>

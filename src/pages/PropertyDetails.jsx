@@ -117,6 +117,7 @@ const PropertyDetails = () => {
                 <img src={property.image} alt="Property" className="w-full rounded mb-4" />
             </div>
 
+            <p><strong>Description:</strong> {property.description || "N/A"}</p>
             <p><strong>Location:</strong> {property.location}</p>
             <p><strong>Agent:</strong> {property.agentName}</p>
             <p><strong>Verification:</strong> {property.verificationStatus}</p>

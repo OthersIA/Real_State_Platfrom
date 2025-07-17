@@ -52,6 +52,7 @@ const AddProperty = () => {
                 location: data.location,
                 minPrice: parseFloat(data.minPrice),
                 maxPrice: parseFloat(data.maxPrice),
+                description: data.description,
                 agentName: user.displayName,
                 agentEmail: user.email,
                 agentPhoto: user.photoURL,
@@ -156,6 +157,19 @@ const AddProperty = () => {
                             className="w-full input input-bordered"
                         />
                     </div>
+                </div>
+
+                <div>
+                    <label className="block mb-1">Property Description</label>
+                    <textarea
+                        className="textarea textarea-bordered w-full"
+                        rows="3"
+                        placeholder="Your review..."
+                        name="description"
+                        value={form.description}
+                        onChange={handleChange}
+                        required
+                    />
                 </div>
 
                 <div>

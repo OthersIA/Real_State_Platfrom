@@ -1,14 +1,18 @@
 import React from 'react';
 import useAuth from '../hooks/useAuth';
 import { Navigate, useLocation } from 'react-router';
+import LoadingFallback from '../components/shared/LoadingFallback';
 
 const PrivateRoute = ({ children }) => {
-    const { user, loading } = useAuth();
+    const { user, isLoading } = useAuth();
     const location = useLocation();
 
+    // console.log(user);
+    // console.log(isLoading);
 
-    if (loading) {
-        return <span className="loading loading-spinner loading-xl"></span>
+
+    if (isLoading) {
+        return <LoadingFallback />
     }
 
     if (!user) {
