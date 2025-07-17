@@ -26,6 +26,7 @@ import MakeOffer from "../pages/DashboardPages/UserDashboard/MakeOffer";
 import AdminRoute from "../PrivateRoutes/AdminRoute";
 import AgentRoute from "../PrivateRoutes/AgentRoute";
 import UserRoute from "../PrivateRoutes/UserRoute";
+import Payment from "../pages/DashboardPages/UserDashboard/Payment";
 
 
 const Router = createBrowserRouter([
@@ -89,6 +90,10 @@ const Router = createBrowserRouter([
             {
                 path: 'property-bought',
                 element: <UserRoute><PropertyBought></PropertyBought></UserRoute>,
+            },
+            {
+                path: 'payment/:id',
+                element: <UserRoute><Payment></Payment></UserRoute>,
             },
             {
                 path: 'my-reviews',

@@ -64,7 +64,7 @@ const PropertyBought = () => {
 
               {offer.status === "accepted" && !offer.transactionId && (
                 <Link
-                  to={`/payment/${offer._id}`}
+                  to={`/dashboard/payment/${offer._id}`}
                   className="btn btn-primary btn-sm mt-2"
                 >
                   Pay Now
