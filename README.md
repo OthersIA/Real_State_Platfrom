@@ -1,12 +1,82 @@
-# React + Vite
+# <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" alt="React Logo" width="32" /> Batch 11 Assignment 12 - Client Side
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + Vite project for property management, featuring authentication, role-based dashboards, and modern UI.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🗂️ Project Structure
 
-## Expanding the ESLint configuration
+```
+src/
+│
+├── assets/
+│   └── lotties/
+├── components/
+│   ├── WebLogo.jsx
+│   └── Home/
+│       └── shared/
+├── context/
+│   ├── AuthContext.jsx
+│   └── AuthProvider.jsx
+├── hooks/
+│   ├── useAuth.jsx
+│   ├── useAxios.jsx
+│   ├── useAxiosSecure.jsx
+│   └── useUserRole.jsx
+├── Layout/
+│   ├── DashboardLayout.jsx
+│   └── MainLayout.jsx
+├── pages/
+│   ├── AllProperties.jsx
+│   ├── ErrorPage.jsx
+│   ├── Home.jsx
+│   ├── Login.jsx
+│   ├── PropertyDetails.jsx
+│   ├── Register.jsx
+│   └── DashboardPages/
+│       └── Forbidden/
+├── PrivateRoutes/
+│   ├── AdminRoute.jsx
+│   ├── AgentRoute.jsx
+│   ├── PrivateRoute.jsx
+│   └── UserRoute.jsx
+├── routes/
+│   └── router.jsx
+├── firebase.config.js
+├── index.css
+└── main.jsx
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🚀 Features
+
+- **Authentication:** Context-based user management.
+- **Role-based Routing:** Admin, Agent, and User routes.
+- **Dashboard Layouts:** Separate layouts for dashboard and main pages.
+- **Axios Integration:** Secure API requests with custom hooks.
+- **Error Handling:** Custom error pages for forbidden and general errors.
+- **Modern UI:** Uses React and Vite for fast development.
+
+---
+
+## 🛠️ Getting Started
+
+1. Install dependencies:
+   ```sh
+   npm install
+   ```
+2. Start the development server:
+   ```sh
+   npm run dev
+   ```
+
+---
+
+## 📄 License
+
+MIT
+
+---
+
+## 🙏
