@@ -25,6 +25,19 @@ const PropertyDetails = () => {
         },
     });
 
+    // ✅ Load user role
+    const { data: users = [] } = useQuery({
+        queryKey: ["users"],
+        enabled: !!user?.email,
+        queryFn: async () => {
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/users`);
+            return res.data;
+        },
+    });
+
+    const currentUser = users.find((u) => u.email === user?.email);
+    const role = currentUser?.role;
+
     // ✅ Load reviews for this property
     const { data: reviews = [] } = useQuery({
         queryKey: ["reviews", id],
@@ -42,7 +55,7 @@ const PropertyDetails = () => {
             const res = await axios.get(
                 `${import.meta.env.VITE_API_URL}/wishlist/check?propertyId=${id}&userEmail=${user.email}`
             );
-            return res.data.exists; // backend returns { exists: true/false }
+            return res.data.exists;
         },
     });
 
@@ -70,7 +83,7 @@ const PropertyDetails = () => {
                 propertyId: id,
                 userEmail: user.email,
                 userName: user.displayName,
-                userImage:user.photoURL,
+                userImage: user.photoURL,
                 agentName: property.agentName,
                 comment: reviewText,
                 rating,
@@ -91,7 +104,6 @@ const PropertyDetails = () => {
 
     if (isLoading) return <LoadingFallback />;
 
-    // ✅ Calculate average rating
     const avgRating =
         reviews.length > 0
             ? (reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length).toFixed(1)
@@ -102,11 +114,7 @@ const PropertyDetails = () => {
             <h2 className="text-3xl font-bold mb-2">{property.title}</h2>
 
             <div className="w-full md:w-96">
-                <img
-                    src={property.image}
-                    alt="Property"
-                    className="w-full rounded mb-4"
-                />
+                <img src={property.image} alt="Property" className="w-full rounded mb-4" />
             </div>
 
             <p><strong>Location:</strong> {property.location}</p>
@@ -115,8 +123,7 @@ const PropertyDetails = () => {
             <p><strong>Price:</strong> ${property.minPrice} - ${property.maxPrice}</p>
             {avgRating && (
                 <p className="mt-2">
-                    <strong>Average Rating:</strong>{" "}
-                    {avgRating} ⭐️
+                    <strong>Average Rating:</strong> {avgRating} ⭐️
                 </p>
             )}
             <p className="mt-4">{property.description || "No description provided."}</p>
@@ -124,7 +131,12 @@ const PropertyDetails = () => {
             <button
                 className="btn btn-primary mt-4"
                 onClick={() => addToWishlist.mutate()}
-                disabled={isWishlistLoading || addToWishlist.isLoading || isWishlisted}
+                disabled={
+                    isWishlistLoading ||
+                    addToWishlist.isLoading ||
+                    isWishlisted ||
+                    role !== "user"
+                }
             >
                 {isWishlistLoading
                     ? "Checking..."
@@ -157,6 +169,7 @@ const PropertyDetails = () => {
                 <button
                     className="btn btn-success mt-4"
                     onClick={() => setShowModal(true)}
+                    disabled={role !== "user"}
                 >
                     Add a Review
                 </button>
@@ -172,7 +185,7 @@ const PropertyDetails = () => {
                                 <FaStar
                                     key={star}
                                     onClick={() => setRating(star)}
-                                    className={`cursor-pointer text-xl ${rating >= star ? 'text-yellow-500' : 'text-gray-300'
+                                    className={`cursor-pointer text-xl ${rating >= star ? "text-yellow-500" : "text-gray-300"
                                         }`}
                                 />
                             ))}
@@ -212,7 +225,6 @@ const PropertyDetails = () => {
                     </div>
                 </div>
             )}
-
         </section>
     );
 };

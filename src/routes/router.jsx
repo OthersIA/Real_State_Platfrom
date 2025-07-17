@@ -23,6 +23,9 @@ import PrivateRoute from "../PrivateRoutes/PrivateRoute";
 import UpdateProperty from "../pages/DashboardPages/AgentDashboard/UpdateProperty";
 import PropertyDetails from "../pages/PropertyDetails";
 import MakeOffer from "../pages/DashboardPages/UserDashboard/MakeOffer";
+import AdminRoute from "../PrivateRoutes/AdminRoute";
+import AgentRoute from "../PrivateRoutes/AgentRoute";
+import UserRoute from "../PrivateRoutes/UserRoute";
 
 
 const Router = createBrowserRouter([
@@ -77,7 +80,7 @@ const Router = createBrowserRouter([
             // ✅ User only
             {
                 path: 'wishlist',
-                Component: Wishlist,
+                element: <UserRoute><Wishlist></Wishlist></UserRoute>,
             },
             {
                 path: "make-offer/:id",
@@ -85,47 +88,47 @@ const Router = createBrowserRouter([
             },
             {
                 path: 'property-bought',
-                Component: PropertyBought,
+                element: <UserRoute><PropertyBought></PropertyBought></UserRoute>,
             },
             {
                 path: 'my-reviews',
-                Component: MyReviews,
+                element: <UserRoute><MyReviews></MyReviews></UserRoute>,
             },
 
             // ✅ Agent only
             {
                 path: 'add-property',
-                Component: AddProperty,
+                element: <AgentRoute><AddProperty></AddProperty></AgentRoute>,
             },
             {
                 path: 'my-added-properties',
-                Component: MyAddedProperties,
+                element: <AgentRoute><MyAddedProperties></MyAddedProperties></AgentRoute>
             },
             {
                 path: "update-properties/:id",
-                element: <UpdateProperty />,
+                element: <AgentRoute><UpdateProperty /></AgentRoute>,
             },
             {
                 path: 'my-sold-properties',
-                Component: MySoldProperties,
+                element: <AgentRoute><MySoldProperties></MySoldProperties></AgentRoute>
             },
             {
                 path: 'requested-properties',
-                Component: RequestedProperties,
+                element: <AgentRoute><RequestedProperties></RequestedProperties></AgentRoute>,
             },
 
             // ✅ Admin only
             {
                 path: 'manage-properties',
-                Component: ManageProperties,
+                element: <AdminRoute><ManageProperties></ManageProperties></AdminRoute>,
             },
             {
                 path: 'manage-users',
-                Component: ManageUsers,
+                element: <AdminRoute><ManageUsers></ManageUsers></AdminRoute>,
             },
             {
                 path: 'manage-reviews',
-                Component: ManageReviews,
+                element: <AdminRoute><ManageReviews></ManageReviews></AdminRoute>,
             },
         ],
     }

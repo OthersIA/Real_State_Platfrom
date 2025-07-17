@@ -4,7 +4,7 @@ import { Navigate, useLocation } from "react-router";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
 
-const AdminRoute = ({ children }) => {
+const UserRoute = ({ children }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
 
@@ -31,7 +31,7 @@ const AdminRoute = ({ children }) => {
   const foundUser = users.find((u) => u.email === user?.email);
   const role = foundUser?.role;
 
-  if (!user || role !== "admin") {
+  if (!user || role !== "user") {
     return (
       <Navigate to="/forbidden" state={{ from: location }} replace />
     );
@@ -40,4 +40,4 @@ const AdminRoute = ({ children }) => {
   return children;
 };
 
-export default AdminRoute;
+export default UserRoute;
