@@ -1,13 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Link } from "react-router";
-import { useContext } from "react";
+import { Link } from "react-router"; // ✅ Should be react-router-dom
+import { useContext, useState } from "react";
 import LoadingFallback from "../components/shared/LoadingFallback";
 import { AuthContext } from "../context/AuthContext";
 
 const AllProperties = () => {
+  const { user } = useContext(AuthContext);
 
-     const { user } = useContext(AuthContext);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc"); // asc or desc
 
   // ✅ Load all verified properties
   const { data: properties = [], isLoading } = useQuery({
@@ -20,16 +22,47 @@ const AllProperties = () => {
 
   if (isLoading) return <LoadingFallback />;
 
+  // ✅ Filter by location
+  const filteredProperties = properties.filter((prop) =>
+    prop.location.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // ✅ Sort by minPrice
+  const sortedProperties = [...filteredProperties].sort((a, b) => {
+    const priceA = parseFloat(a.minPrice);
+    const priceB = parseFloat(b.minPrice);
+    return sortOrder === "asc" ? priceA - priceB : priceB - priceA;
+  });
+
   return (
-    <div className=" container mx-auto p-6">
+    <div className="container mx-auto p-6">
       <h2 className="text-3xl font-bold mb-6">All Verified Properties</h2>
 
-      {properties.length === 0 && (
-        <p className="text-gray-500">No verified properties found yet.</p>
+      <div className="mb-4 flex flex-col md:flex-row gap-4 items-center">
+        <input
+          type="text"
+          placeholder="Search by location..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="input input-bordered w-full md:w-1/3"
+        />
+
+        <select
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value)}
+          className="select select-bordered w-full md:w-40"
+        >
+          <option value="asc">Price: Low to High</option>
+          <option value="desc">Price: High to Low</option>
+        </select>
+      </div>
+
+      {sortedProperties.length === 0 && (
+        <p className="text-gray-500">No matching properties found.</p>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {properties.map((prop) => (
+        {sortedProperties.map((prop) => (
           <div key={prop._id} className="card bg-base-100 shadow border">
             <figure>
               <img
