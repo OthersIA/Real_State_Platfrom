@@ -90,7 +90,7 @@ const DashboardLayout = () => {
                             </>
                         )}
                         <li className="mt-4">
-                            <NavLink to="/dashboard">
+                            <NavLink className={({ isActive }) => (isActive ? "text-cyan-300" : "")} to="/dashboard">
                                 <FaHome className="inline-block mr-2" />
                                 Dashboard Home
                             </NavLink>
@@ -100,25 +100,25 @@ const DashboardLayout = () => {
                         {role === "user" && (
                             <>
                                 <li>
-                                    <NavLink to="/dashboard/profile">
+                                    <NavLink className={({ isActive }) => (isActive ? "text-indigo-500" : "")} to="/dashboard/profile">
                                         <FaUserEdit className="inline-block mr-2" />
                                         Update Profile
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to="/dashboard/wishlist">
+                                    <NavLink className={({ isActive }) => (isActive ? "text-indigo-500" : "")} to="/dashboard/wishlist">
                                         <FaHeart className="inline-block mr-2" />
                                         Wishlist
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to="/dashboard/property-bought">
+                                    <NavLink className={({ isActive }) => (isActive ? "text-indigo-500" : "")} to="/dashboard/property-bought">
                                         <FaShoppingCart className="inline-block mr-2" />
                                         Property Bought
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to="/dashboard/my-reviews">
+                                    <NavLink className={({ isActive }) => (isActive ? "text-indigo-500" : "")} to="/dashboard/my-reviews">
                                         <FaStar className="inline-block mr-2" />
                                         My Reviews
                                     </NavLink>
@@ -127,28 +127,28 @@ const DashboardLayout = () => {
                         )}
 
                         {/* ✅ Agent-only links */}
-                        {role === "agent" && (
+                        {(role === "agent" || role == "fraud") && (
                             <>
                                 <li>
-                                    <NavLink to="/dashboard/add-property">
+                                    <NavLink className={({ isActive }) => (isActive ? "text-indigo-500" : "")} to="/dashboard/add-property" >
                                         <FaPlus className="inline-block mr-2" />
                                         Add Property
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to="/dashboard/my-added-properties">
+                                    <NavLink className={({ isActive }) => (isActive ? "text-indigo-500" : "")} to="/dashboard/my-added-properties">
                                         <FaList className="inline-block mr-2" />
                                         My Added Properties
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to="/dashboard/my-sold-properties">
+                                    <NavLink className={({ isActive }) => (isActive ? "text-indigo-500" : "")} to="/dashboard/my-sold-properties">
                                         <FaCheckCircle className="inline-block mr-2" />
                                         My Sold Properties
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to="/dashboard/requested-properties">
+                                    <NavLink className={({ isActive }) => (isActive ? "text-indigo-500" : "")} to="/dashboard/requested-properties">
                                         <FaClipboardList className="inline-block mr-2" />
                                         Requested Properties
                                     </NavLink>
@@ -160,19 +160,19 @@ const DashboardLayout = () => {
                         {role === "admin" && (
                             <>
                                 <li>
-                                    <NavLink to="/dashboard/manage-properties">
+                                    <NavLink className={({ isActive }) => (isActive ? "text-indigo-500" : "")} to="/dashboard/manage-properties">
                                         <FaTasks className="inline-block mr-2" />
                                         Manage Properties
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to="/dashboard/manage-users">
+                                    <NavLink className={({ isActive }) => (isActive ? "text-indigo-500" : "")} to="/dashboard/manage-users">
                                         <FaUsersCog className="inline-block mr-2" />
                                         Manage Users
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to="/dashboard/manage-reviews">
+                                    <NavLink className={({ isActive }) => (isActive ? "text-indigo-500" : "")} to="/dashboard/manage-reviews">
                                         <FaStar className="inline-block mr-2" />
                                         Manage Reviews
                                     </NavLink>

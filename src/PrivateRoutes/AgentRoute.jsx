@@ -31,7 +31,7 @@ const AgentRoute = ({ children }) => {
   const foundUser = users.find((u) => u.email === user?.email);
   const role = foundUser?.role;
 
-  if (!user || role !== "agent") {
+  if (role == "admin" && role == "user") {
     return (
       <Navigate to="/forbidden" state={{ from: location }} replace />
     );
