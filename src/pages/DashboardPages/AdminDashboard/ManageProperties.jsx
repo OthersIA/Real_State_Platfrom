@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
+import LoadingFallback from "../../../components/shared/LoadingFallback";
 
 const ManageProperties = () => {
     const queryClient = useQueryClient();
@@ -53,7 +54,7 @@ const ManageProperties = () => {
         },
     });
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return <LoadingFallback />;
 
     return (
         <div className="p-4 overflow-x-auto">
