@@ -3,7 +3,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
 import { Link } from "react-router";
-import { FaUserCircle } from "react-icons/fa";
+import { FaStar, FaUserCircle } from "react-icons/fa";
 
 const ManageReviews = () => {
     const queryClient = useQueryClient();
@@ -66,6 +66,19 @@ const ManageReviews = () => {
 
 
                             <p className="text-sm text-gray-700">{review.comment}</p>
+                            <div className="flex items-center gap-1">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                    <span
+                                        key={star}
+                                        className={star <= (review.rating || 0) ? "text-yellow-500" : "text-gray-300"}
+                                    >
+                                        <FaStar />
+                                    </span>
+                                ))}
+                            </div>
+                            <p className="text-sm font-semibold">
+                                Property: <span className=" text-primary">{review.propertyTitle || "N/A"}</span>
+                            </p>
 
                             <div className="flex gap-2 mt-2">
                                 <Link

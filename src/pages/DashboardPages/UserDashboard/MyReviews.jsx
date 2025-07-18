@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { Link } from "react-router";
 import { AuthContext } from "../../../context/AuthContext";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
+import { FaStar } from "react-icons/fa";
 
 const MyReviews = () => {
     const { user } = useContext(AuthContext);
@@ -49,18 +50,43 @@ const MyReviews = () => {
                     {reviews.map((review) => (
                         <div
                             key={review._id}
-                            className="border p-4 rounded shadow-sm bg-white"
+                            className=" p-4 rounded shadow-sm bg-base-300"
                         >
-                            <h3 className="text-lg font-semibold">
-                                {review.propertyTitle || "Property"}
-                            </h3>
-                            <p className="text-sm text-gray-600">
+                            <div className="flex items-center gap-4 mb-3">
+                                <img
+                                    src={review.agentImage}
+                                    alt={review.agentName}
+                                    className="w-12 h-12 rounded-full object-cover"
+                                />
+                                <div>
+                                    <p className="font-bold">{review.agentName} (Agent)</p>
+                                    <p className="text-sm">
+                                        {new Date(review.createdAt).toLocaleString()}
+                                    </p>
+                                </div>
+                            </div>
+
+
+                            {/* <p className="text-sm text-gray-600">
                                 Agent: {review?.agentName || "N/A"}
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs">
                                 {new Date(review.createdAt).toLocaleString()}
+                            </p> */}
+                            <p className="my-2">{review.comment}</p>
+                            <div className="flex items-center gap-1">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                    <span
+                                        key={star}
+                                        className={star <= (review.rating || 0) ? "text-yellow-500" : "text-gray-300"}
+                                    >
+                                        <FaStar />
+                                    </span>
+                                ))}
+                            </div>
+                            <p className="text-sm font-semibold mb-3">
+                                Property: <span className=" text-primary">{review.propertyTitle || "N/A"}</span>
                             </p>
-                            <p className="mt-2">{review.comment}</p>
 
                             <div className="flex gap-2 mt-3">
                                 <Link

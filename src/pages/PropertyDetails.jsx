@@ -8,9 +8,11 @@ import LoadingFallback from "../components/shared/LoadingFallback";
 import { FaStar } from "react-icons/fa";
 
 const PropertyDetails = () => {
-    const { id } = useParams();
+    const { id, title } = useParams();
     const { user } = useContext(AuthContext);
     const queryClient = useQueryClient();
+
+    console.log("Property Title:", title);
 
     const [reviewText, setReviewText] = useState("");
     const [rating, setRating] = useState(0);
@@ -81,10 +83,12 @@ const PropertyDetails = () => {
         mutationFn: async () => {
             await axios.post(`${import.meta.env.VITE_API_URL}/reviews`, {
                 propertyId: id,
+                propertyTitle: property.title,
                 userEmail: user.email,
                 userName: user.displayName,
                 userImage: user.photoURL,
                 agentName: property.agentName,
+                agentImage: property.agentPhoto,
                 comment: reviewText,
                 rating,
                 createdAt: new Date(),
@@ -154,14 +158,36 @@ const PropertyDetails = () => {
                     <div className="gap-4 grid grid-cols-1 md:grid-cols-2">
                         {reviews.map((r) => (
                             <div key={r._id} className="p-2 border rounded">
-                                <p className="font-bold">{r.userName}</p>
-                                <p className="text-sm text-gray-600">
-                                    {new Date(r.createdAt).toLocaleString()}
-                                </p>
-                                <p className="text-yellow-500">
-                                    {"⭐️".repeat(r.rating || 0)}
-                                </p>
-                                <p>{r.comment}</p>
+                                <div className="flex items-center gap-3">
+                                    {r.userImage ? (
+                                        <img
+                                            src={r.userImage}
+                                            alt="rer"
+                                            className="w-10 h-10 rounded-full object-cover"
+                                        />
+                                    ) : (
+                                        <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-400">
+                                            <FaUserCircle className="w-10 h-10" />
+                                        </div>
+                                    )}
+                                    <div>
+                                        <p className="font-bold">{r.userName}</p>
+                                        <p className="text-sm text-gray-600">
+                                            {new Date(r.createdAt).toLocaleString()}
+                                        </p>
+                                    </div>
+                                </div>
+                                <p className="my-2">{r.comment}</p>
+                                <div className="flex items-center gap-1">
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                        <span
+                                            key={star}
+                                            className={star <= (r.rating || 0) ? "text-yellow-500" : "text-gray-300"}
+                                        >
+                                            <FaStar />
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
                         ))}
                     </div>
