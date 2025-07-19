@@ -5,7 +5,6 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import AllProperties from "../pages/AllProperties";
 import DashboardHome from "../pages/DashboardPages/DashboardHome";
-import UpdateProfile from "../pages/DashboardPages/UpdateProfile";
 import DashboardLayout from "../Layout/DashboardLayout";
 import AddProperty from "../pages/DashboardPages/AgentDashboard/AddProperty";
 import Wishlist from "../pages/DashboardPages/UserDashboard/Wishlist";
@@ -27,6 +26,9 @@ import AdminRoute from "../PrivateRoutes/AdminRoute";
 import AgentRoute from "../PrivateRoutes/AgentRoute";
 import UserRoute from "../PrivateRoutes/UserRoute";
 import Payment from "../pages/DashboardPages/UserDashboard/Payment";
+import UserProfile from "../pages/DashboardPages/UserDashboard/UserProfile";
+import AdminProfile from "../pages/DashboardPages/AdminDashboard/AdminProfile";
+import AgentProfile from "../pages/DashboardPages/AgentDashboard/AgentProfile";
 
 
 const Router = createBrowserRouter([
@@ -74,8 +76,8 @@ const Router = createBrowserRouter([
                 Component: DashboardHome,
             },
             {
-                path: 'profile',
-                Component: UpdateProfile,
+                path: 'user-profile',
+                element: <UserRoute><UserProfile></UserProfile></UserRoute>,
             },
 
             // ✅ User only
@@ -92,7 +94,7 @@ const Router = createBrowserRouter([
                 element: <UserRoute><PropertyBought></PropertyBought></UserRoute>,
             },
             {
-                path: 'payment/:id',
+                path: 'payment/:wishlistId',
                 element: <UserRoute><Payment></Payment></UserRoute>,
             },
             {
@@ -101,6 +103,10 @@ const Router = createBrowserRouter([
             },
 
             // ✅ Agent only
+            {
+                path: 'agent-profile',
+                element: <AgentRoute><AgentProfile></AgentProfile></AgentRoute>,
+            },
             {
                 path: 'add-property',
                 element: <AgentRoute><AddProperty></AddProperty></AgentRoute>,
@@ -126,6 +132,10 @@ const Router = createBrowserRouter([
             {
                 path: 'manage-properties',
                 element: <AdminRoute><ManageProperties></ManageProperties></AdminRoute>,
+            },
+            {
+                path: 'admin-profile',
+                element: <AdminRoute><AdminProfile></AdminProfile></AdminRoute>,
             },
             {
                 path: 'manage-users',

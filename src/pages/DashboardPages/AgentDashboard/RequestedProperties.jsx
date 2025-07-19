@@ -4,6 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../context/AuthContext";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
+import { Link } from "react-router";
 
 const RequestedProperties = () => {
     const { user } = useContext(AuthContext);
@@ -56,7 +57,7 @@ const RequestedProperties = () => {
     if (isLoading) return <LoadingFallback />;
 
     return (
-        <section className="p-4 overflow-x-auto">
+        <section className="container mx-auto p-4">
             <h2 className="text-2xl font-bold mb-4">Requested Properties</h2>
 
             {offers.length === 0 ? (
@@ -94,27 +95,34 @@ const RequestedProperties = () => {
                                     {offer.status === "rejected" && (
                                         <span className="badge badge-error">Rejected</span>
                                     )}
+                                    {offer.status === "bought" && (
+                                        <span className="badge badge-error">Sold</span>
+                                    )}
                                 </td>
                                 <td className="flex flex-wrap gap-2">
-                                    {offer.status === "pending" && (
+                                    {offer.status === "pending" ? (
                                         <>
                                             <button
-                                                onClick={() =>
-                                                    acceptOffer.mutate(offer._id)
-                                                }
+                                                onClick={() => acceptOffer.mutate(offer._id)}
                                                 className="btn btn-xs btn-success"
                                             >
                                                 Accept
                                             </button>
                                             <button
-                                                onClick={() =>
-                                                    rejectOffer.mutate(offer._id)
-                                                }
+                                                onClick={() => rejectOffer.mutate(offer._id)}
                                                 className="btn btn-xs btn-error"
                                             >
                                                 Reject
                                             </button>
                                         </>
+                                    ) : (
+                                        <div className="flex items-center gap-2">
+                                            <Link to={`/property/${offer.propertyId}`} >
+                                                <button className="btn btn-xs btn-secondary">
+                                                    Details
+                                                </button>
+                                            </Link>
+                                        </div>
                                     )}
                                 </td>
                             </tr>

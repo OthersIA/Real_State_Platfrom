@@ -60,24 +60,8 @@ const PropertyBought = () => {
               <p>{offer.propertyLocation}</p>
               <p>Agent: {offer.agentName}</p>
               <p>Offered Amount: ${offer.offerAmount}</p>
-              <p>Status: <span className="font-semibold">{offer.status}</span></p>
-
-              {offer.status === "accepted" && !offer.transactionId && (
-                <Link
-                  to={`/dashboard/payment/${offer._id}`}
-                  className="btn btn-primary btn-sm mt-2"
-                >
-                  Pay Now
-                </Link>
-              )}
-
-              {offer.status === "bought" && offer.transactionId && (
-                <p className="text-green-600 text-sm">
-                  Transaction ID: {offer.transactionId}
-                </p>
-              )}
-
-              <div className="flex gap-2 mt-2 flex-wrap">
+              <p>Offer Request: <span className="font-semibold">{offer.status}</span></p>
+              <div className="flex gap-2 justify-between mt-2 flex-wrap">
                 <Link
                   to={`/property/${offer.propertyId}`}
                   className="btn btn-sm btn-secondary"
@@ -103,6 +87,26 @@ const PropertyBought = () => {
                   Delete
                 </button>
               </div>
+              {offer.status === "pending" && (
+                <button className="btn btn-primary btn-sm mt-2">
+                  Weating for agent's response...
+                </button>
+              )}
+
+              {offer.status === "accepted" && !offer.transactionId && (
+                <Link
+                  to={`/dashboard/payment/${offer._id}`}
+                  className="btn btn-primary btn-sm mt-2"
+                >
+                  Pay Now
+                </Link>
+              )}
+
+              {offer.status === "bought" && offer.transactionId && (
+                <p className="btn btn-primary btn-xs mt-2 py-4">
+                  Transaction ID: {offer.transactionId}
+                </p>
+              )}
             </div>
           ))}
         </div>

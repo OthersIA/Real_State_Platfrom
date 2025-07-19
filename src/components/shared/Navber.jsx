@@ -7,8 +7,6 @@ import WebLogo from "../WebLogo";
 
 const Navber = () => {
     const { logOut, user } = useContext(AuthContext);
-    console.log(user);
-
 
     const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 

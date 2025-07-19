@@ -8,11 +8,9 @@ import LoadingFallback from "../components/shared/LoadingFallback";
 import { FaStar } from "react-icons/fa";
 
 const PropertyDetails = () => {
-    const { id, title } = useParams();
+    const { id } = useParams();
     const { user } = useContext(AuthContext);
     const queryClient = useQueryClient();
-
-    console.log("Property Title:", title);
 
     const [reviewText, setReviewText] = useState("");
     const [rating, setRating] = useState(0);
@@ -114,14 +112,14 @@ const PropertyDetails = () => {
             : null;
 
     return (
-        <section className="max-w-4xl mx-auto p-4">
+        <section className="container mx-auto p-4">
             <h2 className="text-3xl font-bold mb-2">{property.title}</h2>
 
             <div className="w-full md:w-96">
                 <img src={property.image} alt="Property" className="w-full rounded mb-4" />
             </div>
 
-            <p><strong>Description:</strong> {property.description || "N/A"}</p>
+            <p><strong>Description:</strong> {property.description || "No description provided."}</p>
             <p><strong>Location:</strong> {property.location}</p>
             <p><strong>Agent:</strong> {property.agentName}</p>
             <p><strong>Verification:</strong> {property.verificationStatus}</p>
@@ -131,7 +129,6 @@ const PropertyDetails = () => {
                     <strong>Average Rating:</strong> {avgRating} ⭐️
                 </p>
             )}
-            <p className="mt-4">{property.description || "No description provided."}</p>
 
             <button
                 className="btn btn-primary mt-4"
@@ -149,6 +146,16 @@ const PropertyDetails = () => {
                         ? "Already in Wishlist"
                         : "Add to Wishlist"}
             </button>
+
+
+            <button
+                className="btn btn-success ml-4 mt-4"
+                onClick={() => setShowModal(true)}
+                disabled={role !== "user"}
+            >
+                Add a Review
+            </button>
+
 
             <div className="mt-8">
                 <h3 className="text-2xl font-semibold mb-2">Reviews</h3>
@@ -192,14 +199,6 @@ const PropertyDetails = () => {
                         ))}
                     </div>
                 )}
-
-                <button
-                    className="btn btn-success mt-4"
-                    onClick={() => setShowModal(true)}
-                    disabled={role !== "user"}
-                >
-                    Add a Review
-                </button>
             </div>
 
             {showModal && (

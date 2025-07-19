@@ -18,9 +18,10 @@ import { AuthContext } from "../context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import LoadingFallback from "../components/shared/LoadingFallback";
+import { FaPersonFalling } from "react-icons/fa6";
 
 const DashboardLayout = () => {
-    const { user } = useContext(AuthContext);
+    const { logOut, user } = useContext(AuthContext);
 
     // ✅ Get user’s role from all users collection
     const { data: users = [], isLoading } = useQuery({
@@ -39,6 +40,8 @@ const DashboardLayout = () => {
     }
 
     const foundUser = users.find((u) => u.email === user?.email);
+    const userName = foundUser?.name || user?.displayName || "User";
+    const userImage = foundUser?.image || user?.photoURL;
     const role = foundUser?.role;
 
     return (
@@ -74,12 +77,8 @@ const DashboardLayout = () => {
                     <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
                     <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
                         <WebLogo />
-                        {role === "user" && (
-                            <>
-                                <p>User</p>
-                            </>
-                        )}
-                        {role === "agent" && (
+
+                        {(role === "agent" || role == "fraud") && (
                             <>
                                 <p>Agent</p>
                             </>
@@ -100,12 +99,6 @@ const DashboardLayout = () => {
                         {role === "user" && (
                             <>
                                 <li>
-                                    <NavLink className={({ isActive }) => (isActive ? "text-indigo-500" : "")} to="/dashboard/profile">
-                                        <FaUserEdit className="inline-block mr-2" />
-                                        Update Profile
-                                    </NavLink>
-                                </li>
-                                <li>
                                     <NavLink className={({ isActive }) => (isActive ? "text-indigo-500" : "")} to="/dashboard/wishlist">
                                         <FaHeart className="inline-block mr-2" />
                                         Wishlist
@@ -122,6 +115,32 @@ const DashboardLayout = () => {
                                         <FaStar className="inline-block mr-2" />
                                         My Reviews
                                     </NavLink>
+                                </li>
+                                <div className="flex-grow"></div>
+                                <li>
+                                    <NavLink
+                                        className={({ isActive }) => (isActive ? "text-indigo-500" : "")}
+                                        to="/dashboard/user-profile"
+                                    >
+                                        <div className="w-10 h-10 overflow-hidden rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                                            <img
+                                                className="object-cover w-full h-full"
+                                                src={userImage}
+                                                alt="Profile"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <p>{userName}</p>
+                                            <p>{user?.email}</p>
+                                        </div>
+
+                                    </NavLink>
+                                </li>
+                                <li className="mt-2">
+                                    <button onClick={logOut} className="btn btn-error lg:flex">
+                                        Log Out
+                                    </button>
                                 </li>
                             </>
                         )}
@@ -153,6 +172,30 @@ const DashboardLayout = () => {
                                         Requested Properties
                                     </NavLink>
                                 </li>
+                                <div className="flex-grow"></div>
+                                <li>
+                                    <NavLink
+                                        className={({ isActive }) => (isActive ? "text-indigo-500" : "")}
+                                        to="/dashboard/agent-profile"
+                                    >
+                                        <div className="w-8 h-8 overflow-hidden rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                                            <img
+                                                className="object-cover w-full h-full"
+                                                src={userImage}
+                                                alt="Profile"
+                                            />
+                                        </div>
+                                        <div>
+                                            <p>{userName}</p>
+                                            <p>{user?.email}</p>
+                                        </div>
+                                    </NavLink>
+                                </li>
+                                <li className="mt-2">
+                                    <button onClick={logOut} className="btn btn-error hidden lg:flex">
+                                        Log Out
+                                    </button>
+                                </li>
                             </>
                         )}
 
@@ -177,12 +220,36 @@ const DashboardLayout = () => {
                                         Manage Reviews
                                     </NavLink>
                                 </li>
+                                <div className="flex-grow"></div>
+                                <li>
+                                    <NavLink
+                                        className={({ isActive }) => (isActive ? "text-indigo-500" : "")}
+                                        to="/dashboard/admin-profile"
+                                    >
+                                        <div className="w-8 h-8 overflow-hidden rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                                            <img
+                                                className="object-cover w-full h-full"
+                                                src={userImage}
+                                                alt="Profile"
+                                            />
+                                        </div>
+                                        <div>
+                                            <p>{userName}</p>
+                                            <p>{user?.email}</p>
+                                        </div>
+                                    </NavLink>
+                                </li>
+                                <li className="mt-2">
+                                    <button onClick={logOut} className="btn btn-error hidden lg:flex">
+                                        Log Out
+                                    </button>
+                                </li>
                             </>
                         )}
                     </ul>
                 </div>
-            </div>
-        </section>
+            </div >
+        </section >
     );
 };
 

@@ -22,7 +22,7 @@ const Login = () => {
 
   const updateLastLogin = async (email) => {
     try {
-      await axios.put(`${import.meta.env.VITE_API_URL}/users/last-login`, {
+      await axios.patch(`${import.meta.env.VITE_API_URL}/users/last-login`, {
         email,
         last_log_in: new Date().toISOString(),
       });
