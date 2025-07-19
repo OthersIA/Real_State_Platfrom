@@ -12,6 +12,7 @@ import {
     FaClipboardList,
     FaUsersCog,
     FaTasks,
+    FaHistory,
 } from "react-icons/fa";
 import WebLogo from "../components/WebLogo";
 import { AuthContext } from "../context/AuthContext";
@@ -114,6 +115,15 @@ const DashboardLayout = () => {
                                     <NavLink className={({ isActive }) => (isActive ? "text-indigo-500" : "")} to="/dashboard/my-reviews">
                                         <FaStar className="inline-block mr-2" />
                                         My Reviews
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        className={({ isActive }) => (isActive ? "text-indigo-500" : "")}
+                                        to={`/dashboard/payments/history/${user?.email}`}
+                                    >
+                                        <FaHistory className="inline-block mr-2" />
+                                        Payment History
                                     </NavLink>
                                 </li>
                                 <div className="flex-grow"></div>

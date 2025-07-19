@@ -59,6 +59,7 @@ const ManageUsers = () => {
                             <th>Name</th>
                             <th>Email</th>
                             <th>Created At</th>
+                            <th>Last Login</th>
                             <th>Role</th>
                             <th className="text-center">Actions</th>
                         </tr>
@@ -78,7 +79,24 @@ const ManageUsers = () => {
                                 </td>
                                 <td>{u.name || "N/A"}</td>
                                 <td>{u.email}</td>
-                                <td>{new Date(u.created_at).toLocaleDateString()}</td>
+                                {/* <td>{new Date(u.created_at).toLocaleDateString()}</td> */}
+                                <td>
+                                    <p className="text-xs text-center text-gray-500">
+                                        {" "}
+                                        {u?.created_at
+                                            ? new Date(u.created_at).toLocaleString()
+                                            : "N/A"}
+                                    </p>
+                                </td>
+                                <td>
+                                    <p className="text-xs text-center text-gray-500">
+                                        {" "}
+                                        {u?.last_log_in
+                                            ? new Date(u.last_log_in).toLocaleString()
+                                            : "N/A"}
+                                    </p>
+                                </td>
+                                {/* <td>{new Date(u.last_log_in).toLocaleDateString()}</td> */}
                                 <td>
                                     {u.role === "fraud" ? (
                                         <span className="badge badge-error">Fraud</span>

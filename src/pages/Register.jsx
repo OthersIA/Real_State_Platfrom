@@ -7,6 +7,7 @@ import Lottie from "lottie-react";
 import LottieAnimation from "../assets/lotties/register.json";
 import axios from "axios";
 import { FaUserCircle } from "react-icons/fa";
+import SocialLogin from "../components/shared/SocialLogin";
 
 const Register = () => {
   const { signUp, signInWithGoogle, updateUserProfile } = useContext(AuthContext);
@@ -84,29 +85,29 @@ const Register = () => {
     }
   };
 
-  const handleGoogleSignup = async () => {
-    try {
-      const result = await signInWithGoogle();
-      const user = result.user;
+  // const handleGoogleSignup = async () => {
+  //   try {
+  //     const result = await signInWithGoogle();
+  //     const user = result.user;
 
-      const userInfo = {
-        name: user.displayName,
-        email: user.email,
-        photo: user.photoURL,
-        role: "user",
-        created_at: new Date().toISOString(),
-        last_log_in: new Date().toISOString(),
-      };
+  //     const userInfo = {
+  //       name: user.displayName,
+  //       email: user.email,
+  //       photo: user.photoURL,
+  //       role: "user",
+  //       created_at: new Date().toISOString(),
+  //       last_log_in: new Date().toISOString(),
+  //     };
 
-      await axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo);
+  //     await axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo);
 
-      Swal.fire({ icon: "success", title: "Signed up with Google!", timer: 1500, showConfirmButton: false });
-      navigate("/");
-    } catch (err) {
-      console.error(err);
-      Swal.fire({ icon: "error", title: err.message, timer: 1500, showConfirmButton: false });
-    }
-  };
+  //     Swal.fire({ icon: "success", title: "Signed up with Google!", timer: 1500, showConfirmButton: false });
+  //     navigate("/");
+  //   } catch (err) {
+  //     console.error(err);
+  //     Swal.fire({ icon: "error", title: err.message, timer: 1500, showConfirmButton: false });
+  //   }
+  // };
 
   return (
     <section className="bg-base-200">
@@ -122,9 +123,7 @@ const Register = () => {
                 </h1>
 
                 <div className="card-body">
-                  <button onClick={handleGoogleSignup} className="w-full btn rounded-full">
-                    <FaGoogle /> <span>Sign Up with Google</span>
-                  </button>
+                  <SocialLogin />
 
                   <div className="divider">OR</div>
 

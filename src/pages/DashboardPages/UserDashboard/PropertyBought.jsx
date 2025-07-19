@@ -92,6 +92,11 @@ const PropertyBought = () => {
                   Weating for agent's response...
                 </button>
               )}
+              {offer.status === "rejected" && (
+                <button className="btn btn-primary btn-sm mt-2" disabled>
+                  Rejected
+                </button>
+              )}
 
               {offer.status === "accepted" && !offer.transactionId && (
                 <Link

@@ -6,9 +6,10 @@ import Swal from "sweetalert2";
 import Lottie from "lottie-react";
 import LottieAnimation from "../assets/lotties/login.json";
 import axios from "axios";
+import SocialLogin from "../components/shared/SocialLogin";
 
 const Login = () => {
-  const { signIn, signInWithGoogle } = useContext(AuthContext);
+  const { signIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [form, setForm] = useState({ email: "", password: "" });
@@ -55,29 +56,7 @@ const Login = () => {
       });
   };
 
-  const handleGoogleLogin = () => {
-    signInWithGoogle()
-      .then(async (result) => {
-        const user = result.user;
-        await updateLastLogin(user.email);
 
-        Swal.fire({
-          icon: "success",
-          title: "Logged in with Google!",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        navigate(from, { replace: true });
-      })
-      .catch((err) => {
-        Swal.fire({
-          icon: "error",
-          title: err.message,
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      });
-  };
 
   return (
     <section className="fontJakarta bg-base-200">
@@ -93,9 +72,7 @@ const Login = () => {
                 </h1>
 
                 <div className="card-body">
-                  <button onClick={handleGoogleLogin} className="w-full btn rounded-full">
-                    <FaGoogle /> <span>Sign in with Google</span>
-                  </button>
+                  <SocialLogin />
 
                   <div className="divider">OR</div>
 

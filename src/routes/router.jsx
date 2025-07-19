@@ -29,6 +29,7 @@ import Payment from "../pages/DashboardPages/UserDashboard/Payment";
 import UserProfile from "../pages/DashboardPages/UserDashboard/UserProfile";
 import AdminProfile from "../pages/DashboardPages/AdminDashboard/AdminProfile";
 import AgentProfile from "../pages/DashboardPages/AgentDashboard/AgentProfile";
+import PaymentHistory from "../pages/DashboardPages/UserDashboard/PaymentHistory";
 
 
 const Router = createBrowserRouter([
@@ -51,7 +52,7 @@ const Router = createBrowserRouter([
                 Component: AllProperties,
             },
             {
-                path:"/property/:id",
+                path: "/property/:id",
                 Component: PropertyDetails,
             },
             {
@@ -96,6 +97,10 @@ const Router = createBrowserRouter([
             {
                 path: 'payment/:wishlistId',
                 element: <UserRoute><Payment></Payment></UserRoute>,
+            },
+            {
+                path: 'payments/history/:email',
+                element: <UserRoute><PaymentHistory /></UserRoute>,
             },
             {
                 path: 'my-reviews',
