@@ -1,6 +1,8 @@
+@import "tailwindcss/preflight";
+@tailwind utilities;
+@tailwind utilities;
 @import "tailwindcss";
 @plugin "daisyui";
-
 
 
 html {
@@ -13,6 +15,16 @@ html {
 @plugin "daisyui" {
   themes: light --default, dark --prefersdark, cupcake;
 }
+
+/* Custom gradient background using Tailwind CSS variables */
+.bg-gradient-primary {
+  background-image: linear-gradient(
+    135deg,
+    var(--tw-prose-links),    /* this is primary color */
+    var(--tw-prose-invert)    /* you can customize with your secondary color var */
+  );
+}
+
 
 @import "tailwindcss";
 @plugin "daisyui" {

@@ -45,12 +45,12 @@ const ManageUsers = () => {
         },
     });
 
-    if (isLoading) return <LoadingFallback></LoadingFallback>
+    if (isLoading) return <LoadingFallback />;
 
     return (
         <div className="container px-4 py-10 mx-auto">
-            <h2 className="text-xl font-bold mb-4">Manage Users</h2>
-            <div className='overflow-x-auto'>
+            <h2 className="text-xl font-bold mb-4 text-[#00BBA7]">Manage Users</h2>
+            <div className="overflow-x-auto">
                 <table className="table w-full">
                     <thead>
                         <tr className="bg-base-200">
@@ -66,7 +66,7 @@ const ManageUsers = () => {
                     </thead>
                     <tbody>
                         {users.map((u, idx) => (
-                            <tr key={u._id} className="">
+                            <tr key={u._id}>
                                 <td>{idx + 1}</td>
                                 <td>
                                     {u.photo ? (
@@ -79,24 +79,16 @@ const ManageUsers = () => {
                                 </td>
                                 <td>{u.name || "N/A"}</td>
                                 <td>{u.email}</td>
-                                {/* <td>{new Date(u.created_at).toLocaleDateString()}</td> */}
                                 <td>
                                     <p className="text-xs text-center text-gray-500">
-                                        {" "}
-                                        {u?.created_at
-                                            ? new Date(u.created_at).toLocaleString()
-                                            : "N/A"}
+                                        {u?.created_at ? new Date(u.created_at).toLocaleString() : "N/A"}
                                     </p>
                                 </td>
                                 <td>
                                     <p className="text-xs text-center text-gray-500">
-                                        {" "}
-                                        {u?.last_log_in
-                                            ? new Date(u.last_log_in).toLocaleString()
-                                            : "N/A"}
+                                        {u?.last_log_in ? new Date(u.last_log_in).toLocaleString() : "N/A"}
                                     </p>
                                 </td>
-                                {/* <td>{new Date(u.last_log_in).toLocaleDateString()}</td> */}
                                 <td>
                                     {u.role === "fraud" ? (
                                         <span className="badge badge-error">Fraud</span>
@@ -110,7 +102,7 @@ const ManageUsers = () => {
                                             {u.role !== "admin" && (
                                                 <button
                                                     onClick={() => updateRole.mutate({ id: u._id, role: "admin" })}
-                                                    className="btn btn-xs btn-primary"
+                                                    className="btn btn-xs border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white transition"
                                                 >
                                                     Make Admin
                                                 </button>
@@ -118,7 +110,7 @@ const ManageUsers = () => {
                                             {u.role !== "agent" && (
                                                 <button
                                                     onClick={() => updateRole.mutate({ id: u._id, role: "agent" })}
-                                                    className="btn btn-xs btn-secondary"
+                                                    className="btn btn-xs border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white transition"
                                                 >
                                                     Make Agent
                                                 </button>
@@ -137,7 +129,7 @@ const ManageUsers = () => {
                                                             }
                                                         })
                                                     }
-                                                    className="btn btn-xs btn-warning"
+                                                    className="btn btn-xs border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition"
                                                 >
                                                     Mark as Fraud
                                                 </button>
@@ -155,7 +147,7 @@ const ManageUsers = () => {
                                                 if (result.isConfirmed) deleteUser.mutate(u._id);
                                             })
                                         }
-                                        className="btn btn-xs btn-error"
+                                        className="btn btn-xs border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition"
                                     >
                                         Delete
                                     </button>

@@ -1,14 +1,20 @@
+import { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import Swal from "sweetalert2";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
 import { Link } from "react-router";
-import { FaStar, FaUserCircle } from "react-icons/fa";
+import { FaQuoteLeft, FaQuoteRight, FaStar, FaUserCircle } from "react-icons/fa";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const ManageReviews = () => {
     const queryClient = useQueryClient();
 
-    // ✅ Load all reviews
+    useEffect(() => {
+        AOS.init({ duration: 800, easing: "ease-in-out", once: true });
+    }, []);
+
     const { data: reviews = [], isLoading } = useQuery({
         queryKey: ["all-reviews"],
         queryFn: async () => {
@@ -17,7 +23,6 @@ const ManageReviews = () => {
         },
     });
 
-    // ✅ Delete review mutation
     const deleteReview = useMutation({
         mutationFn: async (id) => {
             await axios.delete(`${import.meta.env.VITE_API_URL}/reviews/${id}`);
@@ -34,28 +39,29 @@ const ManageReviews = () => {
     if (isLoading) return <LoadingFallback />;
 
     return (
-        <section className="container mx-auto p-4">
-            <h2 className="text-2xl font-bold mb-4">Manage Reviews</h2>
+        <section className="container mx-auto p-4" data-aos="fade-up">
+            <h2 className="text-2xl font-bold mb-6 text-[#00BBA7]">Manage Reviews</h2>
 
             {reviews.length === 0 ? (
-                <p>No reviews yet.</p>
+                <p className="text-gray-500">No reviews yet.</p>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {reviews.map((review) => (
                         <div
                             key={review._id}
-                            className="border p-4 rounded shadow-sm bg-white flex flex-col gap-2"
+                            data-aos="fade-up"
+                            className="border p-5 rounded-xl shadow-sm bg-base-100 hover:shadow-md transition"
                         >
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-3 mb-3">
                                 {review.userImage ? (
                                     <img
                                         src={review.userImage}
                                         alt="Reviewer"
-                                        className="w-10 h-10 rounded-full object-cover"
+                                        className="w-10 h-10 rounded-full object-cover ring ring-[#00BBA7] ring-offset-2"
                                     />
                                 ) : (
                                     <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-400">
-                                        <FaUserCircle className="w-10 h-10" />
+                                        <FaUserCircle className="w-6 h-6" />
                                     </div>
                                 )}
                                 <div>
@@ -64,9 +70,13 @@ const ManageReviews = () => {
                                 </div>
                             </div>
 
+                            <div className="relative bg-base-200 rounded-lg p-4 text-base-content">
+                                <FaQuoteLeft className="absolute top-2 left-2 text-[#00BBA7] text-xl" />
+                                <p className="italic px-4">{review.comment}</p>
+                                <FaQuoteRight className="absolute bottom-2 right-2 text-[#00BBA7] text-xl" />
+                            </div>
 
-                            <p className="text-sm text-gray-700">{review.comment}</p>
-                            <div className="flex items-center gap-1">
+                            <div className="flex items-center gap-1 mb-2">
                                 {[1, 2, 3, 4, 5].map((star) => (
                                     <span
                                         key={star}
@@ -76,16 +86,18 @@ const ManageReviews = () => {
                                     </span>
                                 ))}
                             </div>
-                            <p className="text-sm font-semibold">
-                                Property: <span className=" text-primary">{review.propertyTitle || "N/A"}</span>
-                            </p>
 
-                            <div className="flex gap-2 mt-2">
+                            {/* <p className="text-sm font-semibold">
+                                Property:{" "}
+                                <span className="text-[#00BBA7]">{review.propertyTitle || "N/A"}</span>
+                            </p> */}
+
+                            <div className="flex gap-3 mt-4">
                                 <Link
                                     to={`/property/${review.propertyId}`}
-                                    className="btn btn-xs btn-primary"
+                                    className="btn btn-xs border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white transition"
                                 >
-                                    Property Details
+                                    View Property
                                 </Link>
 
                                 <button
@@ -95,13 +107,14 @@ const ManageReviews = () => {
                                             text: "This review will be removed permanently.",
                                             icon: "warning",
                                             showCancelButton: true,
+                                            confirmButtonText: "Yes, delete it!",
                                         }).then((result) => {
                                             if (result.isConfirmed) {
                                                 deleteReview.mutate(review._id);
                                             }
                                         })
                                     }
-                                    className="btn btn-xs btn-error"
+                                    className="btn btn-xs border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition"
                                 >
                                     Delete
                                 </button>

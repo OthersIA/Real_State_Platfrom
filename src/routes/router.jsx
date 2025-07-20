@@ -31,6 +31,10 @@ import AdminProfile from "../pages/DashboardPages/AdminDashboard/AdminProfile";
 import AgentProfile from "../pages/DashboardPages/AgentDashboard/AgentProfile";
 import PaymentHistory from "../pages/DashboardPages/UserDashboard/PaymentHistory";
 import AdvertiseProperty from "../pages/DashboardPages/AdminDashboard/AdvertiseProperty";
+import AboutUs from "../pages/AboutUs";
+import FAQ from "../pages/FAQ";
+import TermsOfService from "../pages/TermsOfService";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
 
 
 const Router = createBrowserRouter([
@@ -51,6 +55,22 @@ const Router = createBrowserRouter([
             {
                 path: '/all-properties',
                 Component: AllProperties,
+            },
+            {
+                path: '/about-us',
+                Component: AboutUs,
+            },
+            {
+                path: '/faq',
+                Component: FAQ,
+            },
+            {
+                path: 'terms-of-service',
+                Component: TermsOfService,
+            },
+            {
+                path: 'privacy-policy',
+                Component: PrivacyPolicy,
             },
             {
                 path: "/property/:id",

@@ -5,7 +5,7 @@ import logo from '../../public/WebLogo.png'; // Adjust the path as necessary
 const WebLogo = () => {
     return (
         <Link to="/">
-            <div className='flex items-end w-24 md:w-32 lg:w-36 xl:w-40 2xl:w-36'>
+            <div className='flex items-end w-28 md:w-32 lg:w-36'>
                 <img className='mb-2' src={logo} alt="" />
             </div>
         </Link>

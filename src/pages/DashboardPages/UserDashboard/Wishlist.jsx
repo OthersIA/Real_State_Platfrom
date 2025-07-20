@@ -1,15 +1,21 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { AuthContext } from "../../../context/AuthContext";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Wishlist = () => {
   const { user } = useContext(AuthContext);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    AOS.init({ duration: 600, easing: "ease-out" });
+  }, []);
 
   // ✅ Load wishlist
   const { data: wishlist = [], isLoading } = useQuery({
@@ -43,7 +49,7 @@ const Wishlist = () => {
 
   return (
     <section className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">My Wishlist</h2>
+      <h2 className="text-2xl font-bold mb-4 text-[#00BBA7]">My Wishlist</h2>
 
       {wishlist.length === 0 ? (
         <p>You haven’t wishlisted any properties yet.</p>
@@ -52,14 +58,15 @@ const Wishlist = () => {
           {wishlist.map((property) => (
             <div
               key={property._id}
-              className="border p-4 rounded shadow bg-white flex flex-col gap-2"
+              data-aos="fade-up"
+              className="p-4 rounded shadow bg-base-300 flex flex-col gap-2"
             >
               <img
                 src={property.image}
                 alt="Property"
                 className="w-full h-40 object-cover rounded"
               />
-              <h3 className="text-lg font-bold">{property.title}</h3>
+              <h3 className="text-lg font-bold text-[#00BBA7]">{property.title}</h3>
               <p className="text-sm text-gray-600">{property.location}</p>
               <div className="flex items-center gap-2">
                 <img
@@ -78,7 +85,8 @@ const Wishlist = () => {
 
               <div className="flex gap-2 mt-2 flex-wrap">
                 <button
-                  className="btn btn-xs btn-primary"
+                  className="btn btn-xs"
+                  style={{ backgroundColor: "#00BBA7", borderColor: "#00BBA7" }}
                   onClick={() => handleOfferClick(property._id)}
                 >
                   Make an Offer
@@ -86,7 +94,8 @@ const Wishlist = () => {
 
                 <Link
                   to={`/property/${property.propertyId || property._id}`}
-                  className="btn btn-xs btn-secondary"
+                  className="btn btn-xs btn-outline"
+                  style={{ borderColor: "#00BBA7", color: "#00BBA7" }}
                 >
                   Details
                 </Link>

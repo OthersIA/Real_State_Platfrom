@@ -88,11 +88,11 @@ const MakeOffer = () => {
   };
 
   return (
-    <section className="max-w-xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Make an Offer</h2>
+    <section className="container max-w-2xl mx-auto p-4 flex flex-col gap-4 min-h-screen">
+      <h2 className="text-2xl font-bold text-[#00BBA7]">Make an Offer</h2>
 
-      <div className="space-y-4">
-        <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <div className="col-span-2">
           <label>Property Title</label>
           <input
             type="text"
@@ -164,7 +164,7 @@ const MakeOffer = () => {
         </div>
 
         <button
-          className="btn btn-primary w-full"
+          className="btn btn-primary w-full col-span-2"
           onClick={handleSubmit}
           disabled={makeOffer.isLoading}
         >

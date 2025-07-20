@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { FaGoogle } from "react-icons/fa6";
+import { FaGoogle } from "react-icons/fa";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router";
@@ -27,7 +27,6 @@ const SocialLogin = () => {
       .then(async (result) => {
         const user = result.user;
 
-        // ✅ Optional: Save new user to your DB if first time
         await axios.put(`${import.meta.env.VITE_API_URL}/users`, {
           name: user.displayName,
           email: user.email,
@@ -44,6 +43,7 @@ const SocialLogin = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+
         navigate(from, { replace: true });
       })
       .catch((err) => {
@@ -59,9 +59,11 @@ const SocialLogin = () => {
   return (
     <button
       onClick={handleGoogleAuth}
-      className="w-full btn rounded-full border border-primary hover:bg-primary text-primary hover:text-white"
+      className="w-full btn rounded-full border border-[#00BBA7] hover:bg-[#00BBA7] text-[#00BBA7] hover:text-white flex items-center justify-center gap-2"
+      aria-label="Continue with Google"
     >
-      <FaGoogle /> <span>Continue with Google</span>
+      <FaGoogle size={20} />
+      <span>Continue with Google</span>
     </button>
   );
 };

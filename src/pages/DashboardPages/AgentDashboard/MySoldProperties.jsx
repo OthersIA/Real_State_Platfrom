@@ -1,12 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../../../context/AuthContext";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
 import { Link } from "react-router";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const MySoldProperties = () => {
     const { user } = useContext(AuthContext);
+
+    useEffect(() => {
+        AOS.init({ duration: 800, easing: "ease-in-out", once: true });
+    }, []);
 
     const { data, isLoading } = useQuery({
         queryKey: ["soldProperties", user?.email],
@@ -24,19 +30,21 @@ const MySoldProperties = () => {
     if (isLoading) return <LoadingFallback />;
 
     return (
-        <section className="container mx-auto p-4">
-            <h2 className="text-2xl font-bold mb-4">My Sold Properties</h2>
+        <section className="container mx-auto p-4" data-aos="fade-up">
+            <h2 className="text-2xl font-bold mb-4 text-[#00BBA7]">My Sold Properties</h2>
             <p className="mb-4 font-semibold">
-                Total Sold Amount: ${totalSoldAmount}
+                Total Sold Amount:{" "}
+                <span className="text-[#00BBA7]">${totalSoldAmount}</span>
             </p>
 
             {soldProperties.length === 0 ? (
                 <p>No properties sold yet.</p>
             ) : (
                 <div className="overflow-x-auto">
-                    <table className="table w-full border">
+                    <table className="table w-full">
                         <thead>
                             <tr className="bg-base-200">
+                                <th>#</th>
                                 <th>Property Title</th>
                                 <th>Location</th>
                                 <th>Buyer Name</th>
@@ -47,7 +55,8 @@ const MySoldProperties = () => {
                         </thead>
                         <tbody>
                             {soldProperties.map((item, index) => (
-                                <tr key={index} className="hover">
+                                <tr key={index} className="hover" data-aos="fade-up">
+                                    <td>{index+1}</td>
                                     <td>{item.propertyTitle}</td>
                                     <td>{item.propertyLocation}</td>
                                     <td>{item.buyerName}</td>
@@ -55,7 +64,7 @@ const MySoldProperties = () => {
                                     <td>${item.amountPaid}</td>
                                     <td>
                                         <Link to={`/property/${item.propertyId}`}>
-                                            <button className="btn btn-primary btn-xs">
+                                            <button className="btn btn-xs border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white">
                                                 Details
                                             </button>
                                         </Link>

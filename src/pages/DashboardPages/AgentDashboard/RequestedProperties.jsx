@@ -1,16 +1,21 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../context/AuthContext";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
 import { Link } from "react-router";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const RequestedProperties = () => {
     const { user } = useContext(AuthContext);
     const queryClient = useQueryClient();
 
-    // ✅ Load offers for this agent
+    useEffect(() => {
+        AOS.init({ duration: 800, easing: "ease-in-out", once: true });
+    }, []);
+
     const { data: offers = [], isLoading } = useQuery({
         queryKey: ["agent-offers", user?.email],
         enabled: !!user?.email,
@@ -22,7 +27,6 @@ const RequestedProperties = () => {
         },
     });
 
-    // ✅ Accept mutation
     const acceptOffer = useMutation({
         mutationFn: async (id) => {
             await axios.patch(
@@ -38,7 +42,6 @@ const RequestedProperties = () => {
         },
     });
 
-    // ✅ Reject mutation
     const rejectOffer = useMutation({
         mutationFn: async (id) => {
             await axios.patch(
@@ -57,8 +60,8 @@ const RequestedProperties = () => {
     if (isLoading) return <LoadingFallback />;
 
     return (
-        <section className="container mx-auto p-4">
-            <h2 className="text-2xl font-bold mb-4">Requested Properties</h2>
+        <section className="container mx-auto p-4" data-aos="fade-up">
+            <h2 className="text-2xl font-bold mb-4 text-[#00BBA7]">Requested Properties</h2>
 
             {offers.length === 0 ? (
                 <p>No offers have been made yet.</p>
@@ -77,7 +80,7 @@ const RequestedProperties = () => {
                     </thead>
                     <tbody>
                         {offers.map((offer, idx) => (
-                            <tr key={offer._id}>
+                            <tr key={offer._id} data-aos="fade-up">
                                 <td>{idx + 1}</td>
                                 <td>{offer.propertyTitle}</td>
                                 <td>{offer.buyerEmail}</td>
@@ -85,16 +88,16 @@ const RequestedProperties = () => {
                                 <td>${offer.offerAmount}</td>
                                 <td>
                                     {offer.status === "pending" && (
-                                        <span className="badge badge-warning">Pending</span>
+                                        <span className="badge bg-yellow-500 text-white">Pending</span>
                                     )}
                                     {offer.status === "accepted" && (
-                                        <span className="badge badge-success">Accepted</span>
+                                        <span className="badge bg-[#00BBA7] text-white">Accepted</span>
                                     )}
                                     {offer.status === "rejected" && (
                                         <span className="badge badge-error">Rejected</span>
                                     )}
                                     {offer.status === "bought" && (
-                                        <span className="badge badge-error">Sold</span>
+                                        <span className="badge badge-success">Sold</span>
                                     )}
                                 </td>
                                 <td className="flex flex-wrap gap-2">
@@ -102,7 +105,7 @@ const RequestedProperties = () => {
                                         <>
                                             <button
                                                 onClick={() => acceptOffer.mutate(offer._id)}
-                                                className="btn btn-xs btn-success"
+                                                className="btn btn-xs border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white"
                                             >
                                                 Accept
                                             </button>
@@ -114,13 +117,11 @@ const RequestedProperties = () => {
                                             </button>
                                         </>
                                     ) : (
-                                        <div className="flex items-center gap-2">
-                                            <Link to={`/property/${offer.propertyId}`} >
-                                                <button className="btn btn-xs btn-secondary">
-                                                    Details
-                                                </button>
-                                            </Link>
-                                        </div>
+                                        <Link to={`/property/${offer.propertyId}`}>
+                                            <button className="btn btn-xs border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white">
+                                                Details
+                                            </button>
+                                        </Link>
                                     )}
                                 </td>
                             </tr>

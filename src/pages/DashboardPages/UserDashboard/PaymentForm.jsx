@@ -1,19 +1,25 @@
-import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import LoadingFallback from "../../../components/shared/LoadingFallback";
+import { useQuery } from "@tanstack/react-query";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
 import Swal from "sweetalert2";
+import LoadingFallback from "../../../components/shared/LoadingFallback";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const PaymentForm = () => {
     const stripe = useStripe();
     const elements = useElements();
+    const { wishlistId } = useParams();
+
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const [processing, setProcessing] = useState(false);
 
-    const { wishlistId } = useParams();
+    useEffect(() => {
+        AOS.init({ duration: 600, easing: "ease-out" });
+    }, []);
 
     const { isPending, data: offeredInfo = {} } = useQuery({
         queryKey: ["wishlist", wishlistId],
@@ -39,7 +45,7 @@ const PaymentForm = () => {
         setSuccess(null);
 
         try {
-            // ✅ Create PaymentMethod
+            // Create PaymentMethod
             const { error: paymentError, paymentMethod } = await stripe.createPaymentMethod({
                 type: "card",
                 card,
@@ -51,18 +57,18 @@ const PaymentForm = () => {
                 return;
             }
 
-            // ✅ Create PaymentIntent
+            // Create PaymentIntent on backend
             const { data: createPI } = await axios.post(
                 `${import.meta.env.VITE_API_URL}/create-payment-intent`,
                 {
-                    amount, // Stripe uses cents
+                    amount, // in cents or as expected by your backend
                     wishlistId,
                 }
             );
 
             const clientSecret = createPI.clientSecret;
 
-            // ✅ Confirm Card Payment
+            // Confirm card payment
             const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
                 payment_method: {
                     card,
@@ -80,7 +86,7 @@ const PaymentForm = () => {
             }
 
             if (paymentIntent.status === "succeeded") {
-                // ✅ Payment was successful → store payment on server
+                // Store payment info on your server
                 const paymentInfo = {
                     wishlistId,
                     propertyId: offeredInfo?.propertyId,
@@ -111,22 +117,38 @@ const PaymentForm = () => {
     };
 
     return (
-        <section>
-            <form
-                onSubmit={handleSubmit}
-                className="max-w-md mx-auto space-y-4 p-4 bg-white shadow-md w-full rounded"
-            >
-                <h2 className="text-2xl font-bold mb-4">Pay ${amount} for your property</h2>
-                <CardElement className="border p-2 rounded mb-4" />
+        <section
+            data-aos="fade-up"
+            className="max-w-md mx-auto space-y-6 p-6 bg-white shadow-md rounded"
+        >
+            <h2 className="text-3xl font-bold mb-2 text-[#00BBA7]">
+                Pay ${amount} for Your Property
+            </h2>
+
+            <p className="text-gray-700 mb-4">
+                Complete your payment securely using Stripe. Your transaction is encrypted and safe.
+            </p>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="border border-gray-300 rounded p-3">
+                    <CardElement options={{ hidePostalCode: true }} />
+                </div>
+
                 <button
                     type="submit"
                     disabled={!stripe || processing}
-                    className="btn btn-primary w-full"
+                    className="btn w-full"
+                    style={{
+                        backgroundColor: "#00BBA7",
+                        borderColor: "#00BBA7",
+                        color: "white",
+                    }}
                 >
                     {processing ? "Processing..." : `Pay $${amount}`}
                 </button>
-                {error && <p className="text-red-500">{error}</p>}
-                {success && <p className="text-green-500">{success}</p>}
+
+                {error && <p className="text-red-600 font-semibold">{error}</p>}
+                {success && <p className="text-green-600 font-semibold">{success}</p>}
             </form>
         </section>
     );

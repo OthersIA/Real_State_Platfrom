@@ -1,30 +1,206 @@
-import React from 'react';
-import "react-responsive-carousel/lib/styles/carousel.min.css"
-import bannerImg1 from '../../../public/Bannar1.jpg';
-import bannerImg2 from '../../../public/Bannar2.jpg';
-import bannerImg3 from '../../../public/Bannar3.jpg';
-import { Carousel } from 'react-responsive-carousel';
-import { Link } from 'react-router';
+import React from "react";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from "react-responsive-carousel";
+import { FaMapMarkerAlt, FaTags, FaPercent } from "react-icons/fa";
+import { motion } from "framer-motion";
+import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 
-const Banner = () => {
-    return (
-        <Carousel autoPlay={true} infiniteLoop={true} showThumbs={false}>
-            <div>
-                <img src={bannerImg1} />
-                <Link to="/all-properties">
-                    <p className="legend">Legend 1</p>
-                </Link>
+export default function Hero() {
+  return (
+    <Carousel
+      autoPlay
+      infiniteLoop
+      showThumbs={false}
+      showStatus={false}
+      emulateTouch
+      useKeyboardArrows
+      showIndicators
+      renderArrowPrev={(clickHandler, hasPrev) =>
+        hasPrev && (
+          <button
+            onClick={clickHandler}
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 p-3 rounded-full text-white z-20"
+          >
+            <MdArrowBackIos size={20} />
+          </button>
+        )
+      }
+      renderArrowNext={(clickHandler, hasNext) =>
+        hasNext && (
+          <button
+            onClick={clickHandler}
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 p-3 rounded-full text-white z-20"
+          >
+            <MdArrowForwardIos size={20} />
+          </button>
+        )
+      }
+      renderIndicator={(onClickHandler, isSelected, index) => {
+        const base = "inline-block w-3 h-3 rounded-full mx-1 cursor-pointer";
+        const active = isSelected ? "bg-[#00BBA7] scale-110" : "bg-gray-400 hover:bg-[#00BBA7]";
+        return (
+          <span
+            key={index}
+            className={`${base} ${active}`}
+            onClick={onClickHandler}
+            aria-label={`Slide ${index + 1}`}
+          />
+        );
+      }}
+    >
+      {/* === Slide 1 === */}
+      <div
+        className="relative flex items-center justify-center bg-cover bg-center text-white h-full lg:h-[80vh]"
+        style={{
+          backgroundImage:
+            "url('https://i.ibb.co/7xQjnTvr/3d-electric-car-building.jpg')",
+        }}
+      >
+        <div className="bg-black/60 w-full h-full flex items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="container py-20 md:py-10 mx-auto px-6 md:px-10 flex flex-col lg:flex-row items-center gap-10"
+          >
+            <div className="flex-1 space-y-5 text-center md:text-left">
+              <div className="flex items-center justify-center md:justify-start space-x-2 text-sm text-[#00BBA7]">
+                <FaMapMarkerAlt />
+                <span>Dhaka, Bangladesh</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold leading-tight drop-shadow-md">
+                Find Your Dream <br />
+                <span className="text-[#00BBA7]">Luxury Apartment</span>
+              </h2>
+              <p className="text-base md:text-lg font-medium max-w-md mx-auto md:mx-0">
+                Premium lifestyle residences with world-class amenities and zero hidden costs.
+              </p>
+              <p className="text-sm md:text-base font-semibold">Starting From</p>
+              <p className="text-2xl md:text-3xl font-extrabold text-[#00BBA7]">
+                $1.1 CRORE
+              </p>
             </div>
-            <div>
-                <img src={bannerImg2} />
-                <p className="legend">Legend 2</p>
-            </div>
-            <div>
-                <img src={bannerImg3} />
-                <p className="legend">Legend 3</p>
-            </div>
-        </Carousel>
-    );
-};
 
-export default Banner;
+            <div className="flex-1 flex justify-center relative">
+              <motion.div
+                initial={{ scale: 0.8 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 1 }}
+                className="w-64 h-80 md:w-72 md:h-96 rounded-full border-4 border-[#00BBA7] overflow-hidden relative z-10 shadow-xl"
+              >
+                <img
+                  src="https://i.ibb.co/MxTDW5My/new-buildings-with-green-areas.jpg"
+                  alt="Luxury Apartments"
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+
+              <div className="absolute top-4 right-4 bg-[#00BBA7] text-white text-xs md:text-sm px-4 py-2 rounded-full shadow-lg">
+                Limited Offer
+              </div>
+              <div className="absolute bottom-8 left-0 bg-black text-white px-3 py-2 rounded-full flex items-center space-x-2 text-xs md:text-sm border border-[#00BBA7]">
+                <FaTags className="text-[#00BBA7]" />
+                <span>Best Deals & Discounts</span>
+              </div>
+              <div className="absolute bottom-8 right-0 bg-black text-white px-3 py-2 rounded-full flex items-center space-x-2 text-xs md:text-sm border border-[#00BBA7]">
+                <FaPercent className="text-[#00BBA7]" />
+                <span>Zero Brokerage</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* === Slide 2 === */}
+      <div className="h-full lg:h-[80vh] bg-gradient-to-br from-black via-gray-900 to-black text-white flex items-center">
+        <div className="container py-20 md:py-10 mx-auto px-6 md:px-10 flex flex-col lg:flex-row items-center justify-between">
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1 }}
+            className="max-w-lg space-y-6"
+          >
+            <h1 className="text-4xl md:text-5xl font-bold drop-shadow-lg">
+              Grow <span className="text-[#00BBA7]">Your Business With Us</span>
+            </h1>
+            <p className="text-gray-300">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
+              laoreet dolore magna aliquam erat volutpat.{" "}
+              <span className="text-[#00BBA7] cursor-pointer">More....</span>
+            </p>
+            <div className="flex gap-4">
+              <button className="bg-[#00BBA7] px-4 py-2 rounded shadow hover:opacity-90 transition duration-300">
+                More Info
+              </button>
+              <button className="bg-[#00BBA7] px-4 py-2 rounded shadow hover:opacity-90 transition duration-300">
+                Sign Up
+              </button>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.5 }}
+            className="mt-10 md:mt-0 flex flex-col gap-6"
+          >
+            {[1, 2, 3].map((i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: i === 1 ? -20 : i === 2 ? 20 : 0 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 * i }}
+                className="overflow-hidden rounded-full border-4 border-[#00BBA7] w-72 h-24 md:h-32 md:w-96 flex items-center justify-center shadow-lg"
+              >
+                <img
+                  src={
+                    i === 1
+                      ? "https://img.freepik.com/free-photo/low-angle-shot-modern-buildings-blue-sky_181624-4539.jpg"
+                      : i === 2
+                        ? "https://img.freepik.com/free-photo/low-angle-skyscrapers-blue-sky_181624-4447.jpg"
+                        : "https://img.freepik.com/free-photo/skyscrapers-city_1127-2243.jpg"
+                  }
+                  alt={`building${i}`}
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+
+      {/* === Slide 3 === */}
+      <div className="h-full lg:h-[80vh] flex items-center bg-white font-sans">
+        <div className="container py-20 md:py-10 mx-auto px-6 md:px-10 flex flex-col lg:flex-row items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1 }}
+            className="w-full md:w-1/2 flex flex-col justify-center px-6 md:px-12 py-10 bg-[#00BBA7] text-white relative overflow-hidden"
+          >
+            <div className="relative z-10 text-center md:text-left">
+              <p className="text-sm tracking-widest uppercase">Limited Time</p>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold my-4 leading-tight drop-shadow-lg">
+                Live <span className="text-black">Closer To Nature</span>
+              </h1>
+              <p className="text-black text-opacity-80 max-w-md mx-auto md:mx-0 mb-6">
+                Eco-friendly communities with green spaces, clean air, and beautiful surroundings for your family.
+              </p>
+              <button className="bg-white text-black px-6 py-2 rounded shadow hover:bg-black hover:text-white transition-all">
+                Explore
+              </button>
+            </div>
+          </motion.div>
+
+          <div className="w-full md:w-1/2 h-full">
+            <img
+              src="https://i.ibb.co/ZRBsDKcZ/analog-landscape-city-with-buildings.jpg"
+              alt="Eco Home"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      </div>
+    </Carousel>
+  );
+}

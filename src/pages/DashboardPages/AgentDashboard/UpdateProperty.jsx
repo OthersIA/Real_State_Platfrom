@@ -5,6 +5,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../context/AuthContext";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const UpdateProperty = () => {
   const { id } = useParams();
@@ -14,13 +16,16 @@ const UpdateProperty = () => {
   const [form, setForm] = useState({
     title: "",
     location: "",
-    image: "", // will store URL or File object
+    image: "",
     minPrice: "",
     maxPrice: "",
     description: "",
   });
 
-  // Fetch property by ID
+  useEffect(() => {
+    AOS.init({ duration: 800, easing: "ease-in-out", once: true });
+  }, []);
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ["property", id],
     queryFn: async () => {
@@ -29,7 +34,6 @@ const UpdateProperty = () => {
     },
   });
 
-  // When data arrives, fill form state
   useEffect(() => {
     if (data) {
       setForm({
@@ -43,12 +47,10 @@ const UpdateProperty = () => {
     }
   }, [data]);
 
-  // Mutation to update property
   const updateProperty = useMutation({
     mutationFn: async (formData) => {
       let imageUrl = form.image;
 
-      // If image is a File (new upload), upload to imgbb first
       if (formData.image && typeof formData.image !== "string") {
         const imgFormData = new FormData();
         imgFormData.append("image", formData.image);
@@ -60,7 +62,6 @@ const UpdateProperty = () => {
         imageUrl = imgbbRes.data.data.display_url;
       }
 
-      // Prepare update payload
       const updatePayload = {
         title: formData.title,
         location: formData.location,
@@ -71,7 +72,6 @@ const UpdateProperty = () => {
         description: formData.description,
       };
 
-      // Call backend PUT to update property by ID
       return axios.put(`${import.meta.env.VITE_API_URL}/properties/${id}`, updatePayload);
     },
     onSuccess: () => {
@@ -87,10 +87,10 @@ const UpdateProperty = () => {
     const { name, value, files } = e.target;
 
     if (name === "image") {
-      setForm({ ...form, image: files[0] }); // set File object
+      setForm({ ...form, image: files[0] });
     } else if (name === "minPrice" || name === "maxPrice") {
       const num = parseFloat(value);
-      if (num < 0) return; // Prevent negative
+      if (num < 0) return;
       setForm({ ...form, [name]: value });
     } else {
       setForm({ ...form, [name]: value });
@@ -114,11 +114,11 @@ const UpdateProperty = () => {
   if (isError) return <div>Failed to load property data.</div>;
 
   return (
-    <section className="max-w-xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Update Property</h2>
+    <section className="max-w-xl mx-auto p-4" data-aos="fade-up">
+      <h2 className="text-2xl font-bold mb-4 text-[#00BBA7]">Update Property</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
+        <div data-aos="fade-up">
           <label className="block mb-1">Property Title</label>
           <input
             type="text"
@@ -130,7 +130,7 @@ const UpdateProperty = () => {
           />
         </div>
 
-        <div>
+        <div data-aos="fade-up">
           <label className="block mb-1">Property Location</label>
           <input
             type="text"
@@ -142,16 +142,12 @@ const UpdateProperty = () => {
           />
         </div>
 
-        <div>
+        <div data-aos="fade-up">
           <label className="block mb-1">Current Property Image</label>
 
           {form.image && (
             <img
-              src={
-                typeof form.image === "string"
-                  ? form.image
-                  : URL.createObjectURL(form.image)
-              }
+              src={typeof form.image === "string" ? form.image : URL.createObjectURL(form.image)}
               alt="Current property"
               className="w-full max-h-64 object-cover rounded mb-2"
             />
@@ -162,18 +158,12 @@ const UpdateProperty = () => {
             type="file"
             name="image"
             accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              if (file) {
-                setForm((prev) => ({ ...prev, image: file }));
-              }
-            }}
+            onChange={handleChange}
             className="file-input file-input-bordered w-full"
           />
         </div>
 
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4" data-aos="fade-up">
           <div>
             <label className="block mb-1">Minimum Price</label>
             <input
@@ -201,7 +191,7 @@ const UpdateProperty = () => {
           </div>
         </div>
 
-        <div>
+        <div data-aos="fade-up">
           <label className="block mb-1">Property Description</label>
           <textarea
             className="textarea textarea-bordered w-full"
@@ -213,7 +203,7 @@ const UpdateProperty = () => {
           />
         </div>
 
-        <div>
+        <div data-aos="fade-up">
           <label className="block mb-1">Agent Name</label>
           <input
             type="text"
@@ -223,7 +213,7 @@ const UpdateProperty = () => {
           />
         </div>
 
-        <div>
+        <div data-aos="fade-up">
           <label className="block mb-1">Agent Email</label>
           <input
             type="email"
@@ -235,8 +225,9 @@ const UpdateProperty = () => {
 
         <button
           type="submit"
-          className="btn btn-primary w-full"
+          className="btn w-full border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white"
           disabled={updateProperty.isLoading}
+          data-aos="fade-up"
         >
           {updateProperty.isLoading ? "Updating..." : "Update Property"}
         </button>

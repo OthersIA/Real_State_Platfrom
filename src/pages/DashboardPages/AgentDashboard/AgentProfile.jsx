@@ -1,16 +1,23 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { FaUserCircle } from "react-icons/fa";
 import { AuthContext } from "../../../context/AuthContext";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
 import Swal from "sweetalert2";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const AgentProfile = () => {
     const { user, updateUserProfile } = useContext(AuthContext);
     const [previewImage, setPreviewImage] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
+
+    useEffect(() => {
+        AOS.init({ duration: 800, easing: "ease-in-out", once: true });
+    }, []);
 
     const { data: users = [], isLoading } = useQuery({
         queryKey: ["users"],
@@ -46,24 +53,40 @@ const AgentProfile = () => {
         const displayName = e.target.displayName.value;
         let photoURL = userImage;
 
-        if (selectedFile) {
-            Swal.fire("Image selected!", "Add your upload logic here.", "info");
-        }
-
         try {
+            if (selectedFile) {
+                const storage = getStorage();
+                const storageRef = ref(
+                    storage,
+                    `profile-images/${user.uid}_${selectedFile.name}`
+                );
+                await uploadBytes(storageRef, selectedFile);
+                photoURL = await getDownloadURL(storageRef);
+            }
+
             await updateUserProfile(displayName, photoURL);
+
+            await axios.patch(`${import.meta.env.VITE_API_URL}/users/${user.email}`, {
+                name: displayName,
+                image: photoURL,
+            });
+
             Swal.fire("Success!", "Profile updated!", "success");
             setModalOpen(false);
         } catch (err) {
-            console.error("Profile update failed:", err.message);
+            console.error(err);
+            Swal.fire("Error!", err.message, "error");
         }
     };
 
     return (
-        <section className="flex items-center justify-center p-10 fontJakarta">
-            <div className="max-w-xl w-full p-6 rounded border border-gray-700  bg-base-300">
-                <div className="flex flex-col items-center">
-                    <div className="w-28 h-28 rounded-full overflow-hidden  border-4 border-gray-700 mb-4">
+        <section
+            className="flex items-center justify-center p-10 fontJakarta"
+            data-aos="fade-up"
+        >
+            <div className="max-w-xl w-full p-6 rounded border border-[#00BBA7] bg-base-300">
+                <div className="flex flex-col items-center" data-aos="fade-up">
+                    <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-[#00BBA7] mb-4">
                         {userImage || previewImage ? (
                             <img
                                 src={previewImage || userImage}
@@ -75,20 +98,20 @@ const AgentProfile = () => {
                         )}
                     </div>
                     <h2 className="text-xl font-semibold">{userName}</h2>
-                    <p className="">{user?.email}</p>
-                    <span className="mt-2 inline-block px-3 py-1 text-xs bg-green-600 rounded-full">
+                    <p>{user?.email}</p>
+                    <span className="mt-2 inline-block px-3 py-1 text-xs bg-[#00BBA7] text-white rounded-full">
                         {status}
                     </span>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6" data-aos="fade-up">
                     <div className="bg-base-100 p-4 rounded">
                         <p className="text-sm text-gray-400">Role</p>
                         <p>{role}</p>
                     </div>
                     <div className="bg-base-100 p-4 rounded">
                         <p className="text-sm text-gray-400">Status</p>
-                        <p className="text-green-500">{status}</p>
+                        <p className="text-[#00BBA7]">{status}</p>
                     </div>
                     <div className="bg-base-100 p-4 rounded col-span-1 md:col-span-2">
                         <p className="text-sm text-gray-400">Created At</p>
@@ -108,10 +131,10 @@ const AgentProfile = () => {
                     </div>
                 </div>
 
-                <div className="text-center mt-6">
+                <div className="text-center mt-6" data-aos="fade-up">
                     <button
                         onClick={() => setModalOpen(true)}
-                        className="btn btn-primary"
+                        className="btn border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white"
                     >
                         Edit Profile
                     </button>
@@ -120,8 +143,13 @@ const AgentProfile = () => {
 
             {modalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-                    <div className="bg-white text-black rounded p-6 w-full max-w-sm">
-                        <h3 className="text-xl font-bold mb-4">Edit Your Profile</h3>
+                    <div
+                        className="bg-white rounded p-6 w-full max-w-sm"
+                        data-aos="fade-up"
+                    >
+                        <h3 className="text-xl font-bold mb-4 text-[#00BBA7]">
+                            Edit Your Profile
+                        </h3>
                         <form onSubmit={handleProfileUpdate} className="space-y-4">
                             <div>
                                 <label className="label">Name</label>
@@ -129,7 +157,7 @@ const AgentProfile = () => {
                                     defaultValue={userName}
                                     type="text"
                                     name="displayName"
-                                    className="w-full input input-bordered"
+                                    className="w-full input input-bordered focus:border-[#00BBA7]"
                                     required
                                 />
                             </div>
@@ -160,7 +188,10 @@ const AgentProfile = () => {
                                 >
                                     Cancel
                                 </button>
-                                <button type="submit" className="btn btn-primary">
+                                <button
+                                    type="submit"
+                                    className="btn border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white"
+                                >
                                     Update
                                 </button>
                             </div>

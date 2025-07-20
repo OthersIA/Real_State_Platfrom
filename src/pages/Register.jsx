@@ -1,16 +1,13 @@
 import { useContext, useState } from "react";
-import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa6";
+import { FaEye, FaEyeSlash, FaFacebookF, FaTwitter, FaGoogle, FaUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
-import Lottie from "lottie-react";
-import LottieAnimation from "../assets/lotties/register.json";
 import axios from "axios";
-import { FaUserCircle } from "react-icons/fa";
 import SocialLogin from "../components/shared/SocialLogin";
 
-const Register = () => {
-  const { signUp, signInWithGoogle, updateUserProfile } = useContext(AuthContext);
+export default function Register() {
+  const { signUp, updateUserProfile } = useContext(AuthContext);
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [imageFile, setImageFile] = useState(null);
@@ -40,16 +37,13 @@ const Register = () => {
     }
 
     let imageUrl = "";
-
     if (imageFile) {
       try {
         setUploading(true);
         const formData = new FormData();
         formData.append("image", imageFile);
-
         const imgUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_UPLOAD_KEY}`;
         const res = await axios.post(imgUploadUrl, formData);
-
         imageUrl = res.data.data.url;
       } catch (err) {
         console.error("Image Upload Error:", err);
@@ -62,8 +56,7 @@ const Register = () => {
     }
 
     try {
-      const userCredential = await signUp(email, password);
-
+      await signUp(email, password);
       await updateUserProfile(name, imageUrl);
 
       const userInfo = {
@@ -76,7 +69,6 @@ const Register = () => {
       };
 
       await axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo);
-
       Swal.fire({ icon: "success", title: "Sign up successful!", timer: 1500, showConfirmButton: false });
       navigate("/");
     } catch (err) {
@@ -85,131 +77,111 @@ const Register = () => {
     }
   };
 
-  // const handleGoogleSignup = async () => {
-  //   try {
-  //     const result = await signInWithGoogle();
-  //     const user = result.user;
-
-  //     const userInfo = {
-  //       name: user.displayName,
-  //       email: user.email,
-  //       photo: user.photoURL,
-  //       role: "user",
-  //       created_at: new Date().toISOString(),
-  //       last_log_in: new Date().toISOString(),
-  //     };
-
-  //     await axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo);
-
-  //     Swal.fire({ icon: "success", title: "Signed up with Google!", timer: 1500, showConfirmButton: false });
-  //     navigate("/");
-  //   } catch (err) {
-  //     console.error(err);
-  //     Swal.fire({ icon: "error", title: err.message, timer: 1500, showConfirmButton: false });
-  //   }
-  // };
-
   return (
-    <section className="bg-base-200">
-      <div className="container mx-auto">
-        <div className="flex items-center justify-center py-10 popins rounded-xl">
-          <div className="gap-14 flex flex-col md:flex md:flex-row items-center py-6 px-4 mx-6 lg:p-10 lg:px-20 rounded-2xl">
-            <Lottie style={{ width: "300px" }} animationData={LottieAnimation} loop={true} />
+    <div
+      className="min-h-screen flex items-center justify-center bg-cover bg-center text-white font-sans"
+      style={{
+        backgroundImage:
+          "url('https://i.ibb.co/ZRBsDKcZ/analog-landscape-city-with-buildings.jpg')",
+      }}
+    >
+      <div className="bg-black/60 bg-opacity-60 w-full h-full flex items-center justify-center min-h-screen">
+        <div className="w-full container mx-auto grid md:grid-cols-2 gap-4 p-4 ">
+          {/* Left Section */}
+          <div className="flex flex-col justify-center px-6">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              Grow <span className="text-white">Your</span> <br />
+              <span className="text-teal-400">Business With</span> <br /> <span className="text-white">Us Now ?</span>
+            </h1>
+            <p className="text-gray-300 mb-6">
+              Join now to connect with amazing opportunities, unlock tools and grow your network.
+              <a href="#" className="text-teal-400"> More...</a>
+            </p>
+            <button className="bg-transparent border border-teal-400 text-teal-400 hover:bg-teal-500 hover:text-white px-6 py-2 rounded-full w-fit">
+              More Info
+            </button>
+          </div>
 
-            <div className="w-full max-w-sm">
-              <div className="border border-primary shadow-2xl card bg-base-100 mx-6 mb-4 lg:mb-0 lg:mx-0">
-                <h1 className="poppins p-5 rounded-t-md text-2xl font-bold text-center bg-primary text-primary-content/100">
-                  Sign Up
-                </h1>
+          {/* Right Section */}
+          <div className=" bg-opacity-80 rounded-lg p-8 shadow-lg flex flex-col justify-center items-center">
+            <h2 className="text-2xl font-semibold mb-4 text-white">SIGN UP</h2>
 
-                <div className="card-body">
-                  
-
-                  <div className="w-16 h-16 rounded-full overflow-hidden border border-gray-300 flex items-center mx-auto justify-center bg-gray-100">
-                    {imageFile ? (
-                      <img
-                        src={URL.createObjectURL(imageFile)}
-                        alt="Selected preview"
-                        className="object-cover w-full h-full"
-                      />
-                    ) : (
-                      <FaUserCircle className="w-14 h-14 text-gray-400" />
-                    )}
-                  </div>
-
-                  <form onSubmit={handleSubmit}>
-                    <label className="label">Name</label>
-                    <input
-                      type="text"
-                      name="name"
-                      onChange={handleChange}
-                      className="input input-bordered"
-                      placeholder="Name"
-                      required
-                    />
-
-                    <label className="mt-2 label">Email</label>
-                    <input
-                      type="email"
-                      name="email"
-                      onChange={handleChange}
-                      className="input input-bordered"
-                      placeholder="Email"
-                      required
-                    />
-
-                    <label className="mt-2 label">Password</label>
-                    <div className="relative flex items-center">
-                      <input
-                        type={passwordVisible ? "text" : "password"}
-                        name="password"
-                        onChange={handleChange}
-                        className="pr-10 input input-bordered"
-                        placeholder="Password"
-                        required
-                      />
-                      <span
-                        className="absolute text-lg text-gray-500 cursor-pointer right-8"
-                        onClick={() => setPasswordVisible((prev) => !prev)}
-                      >
-                        {passwordVisible ? <FaEyeSlash /> : <FaEye />}
-                      </span>
-                    </div>
-
-                    <label className="mt-2 label">Image (Optional)</label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        if (e.target.files[0]) {
-                          setImageFile(e.target.files[0]);
-                        }
-                      }}
-                      className="file-input file-input-bordered w-full"
-                    />
-
-                    <button type="submit" className="w-full mt-4 btn btn-neutral rounded-full">
-                      Sign Up
-                    </button>
-                  </form>
-
-                  <div className="divider">OR</div>
-                  <SocialLogin />
-
-                  <div className="mt-4 text-center">
-                    Already signed up?{" "}
-                    <Link className="text-blue-600 underline" to="/login">
-                      Login
-                    </Link>
-                  </div>
-                </div>
-              </div>
+            <div className="w-16 h-16 rounded-full overflow-hidden border border-gray-300 flex items-center mx-auto justify-center bg-gray-100 mb-4">
+              {imageFile ? (
+                <img
+                  src={URL.createObjectURL(imageFile)}
+                  alt="Selected preview"
+                  className="object-cover w-full h-full"
+                />
+              ) : (
+                <FaUserCircle className="w-14 h-14 text-gray-400" />
+              )}
             </div>
+
+            <form onSubmit={handleSubmit} className="w-full">
+              <input
+                type="text"
+                name="name"
+                onChange={handleChange}
+                placeholder="Name"
+                className="w-full mb-4 p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none"
+                required
+              />
+
+              <input
+                type="email"
+                name="email"
+                onChange={handleChange}
+                placeholder="Email"
+                className="w-full mb-4 p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none"
+                required
+              />
+
+              <div className="relative mb-4">
+                <input
+                  type={passwordVisible ? "text" : "password"}
+                  name="password"
+                  onChange={handleChange}
+                  placeholder="Password"
+                  className="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none pr-10"
+                  required
+                />
+                <span
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-lg cursor-pointer text-gray-400 hover:text-gray-200"
+                  onClick={() => setPasswordVisible(!passwordVisible)}
+                >
+                  {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  if (e.target.files[0]) setImageFile(e.target.files[0]);
+                }}
+                className="w-full mb-6 rounded bg-gray-800 text-white border border-gray-700  file-input file-input-bordered"
+              />
+
+              <button
+                type="submit"
+                className="w-full bg-teal-500 hover:bg-teal-600 text-white py-3 rounded"
+                disabled={uploading}
+              >
+                {uploading ? "Uploading..." : "SIGN UP"}
+              </button>
+            </form>
+
+            <div className="divider text-gray-400 my-6">OR</div>
+
+            <SocialLogin />
+
+            <p className="text-gray-400 mt-4 text-sm">
+              Already a user? <Link to="/login" className="text-teal-400">LOGIN</Link>
+            </p>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
-};
-
-export default Register;
+}

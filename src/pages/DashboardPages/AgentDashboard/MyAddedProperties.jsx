@@ -1,16 +1,21 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Link } from "react-router";
 import { AuthContext } from "../../../context/AuthContext";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const MyAddedProperties = () => {
     const { user } = useContext(AuthContext);
     const queryClient = useQueryClient();
 
-    // ✅ Load current user's properties
+    useEffect(() => {
+        AOS.init({ duration: 800, easing: "ease-in-out", once: true });
+    }, []);
+
     const { data: properties = [], isLoading } = useQuery({
         queryKey: ["my-properties", user?.email],
         enabled: !!user?.email,
@@ -22,7 +27,6 @@ const MyAddedProperties = () => {
         },
     });
 
-    // ✅ Delete mutation
     const deleteProperty = useMutation({
         mutationFn: async (id) => {
             await axios.delete(`${import.meta.env.VITE_API_URL}/properties/${id}`);
@@ -36,16 +40,17 @@ const MyAddedProperties = () => {
         },
     });
 
-    if (isLoading) return <LoadingFallback></LoadingFallback>;
+    if (isLoading) return <LoadingFallback />;
 
     return (
-        <div className="p-4">
-            <h2 className="text-2xl font-bold mb-4">My Added Properties</h2>
+        <div className="p-4" data-aos="fade-up">
+            <h2 className="text-2xl font-bold mb-4 text-[#00BBA7]">My Added Properties</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {properties.map((prop) => (
                     <div
                         key={prop._id}
-                        className="card bg-base-100 shadow p-4 space-y-2 border"
+                        className="card bg-base-100 shadow p-4 space-y-2 border border-[#00BBA7]"
+                        data-aos="fade-up"
                     >
                         <img
                             src={prop.image}
@@ -70,7 +75,7 @@ const MyAddedProperties = () => {
                             <strong>Verification:</strong>{" "}
                             <span
                                 className={`badge ${prop.verificationStatus === "verified"
-                                    ? "badge-success"
+                                    ? "bg-[#00BBA7] text-white"
                                     : prop.verificationStatus === "rejected"
                                         ? "badge-error"
                                         : "badge-warning"
@@ -84,15 +89,16 @@ const MyAddedProperties = () => {
                         </p>
 
                         <div className="flex gap-2 mt-2">
-                            <Link to={`/property/${prop._id}`}
-                                className="btn btn-xs btn-primary"
+                            <Link
+                                to={`/property/${prop._id}`}
+                                className="btn btn-xs border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white"
                             >
                                 Details
                             </Link>
                             {prop.verificationStatus !== "rejected" && (
                                 <Link
                                     to={`/dashboard/update-properties/${prop._id}`}
-                                    className="btn btn-xs btn-primary"
+                                    className="btn btn-xs border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white"
                                 >
                                     Update
                                 </Link>

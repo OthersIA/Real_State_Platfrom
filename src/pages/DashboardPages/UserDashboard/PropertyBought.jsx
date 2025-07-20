@@ -1,14 +1,20 @@
-import { useContext } from "react";
+import { useEffect, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../context/AuthContext";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const PropertyBought = () => {
   const { user } = useContext(AuthContext);
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    AOS.init({ duration: 600, easing: "ease-out" });
+  }, []);
 
   // ✅ Get all offers for this user
   const { data: offers = [], isLoading } = useQuery({
@@ -39,17 +45,20 @@ const PropertyBought = () => {
   if (isLoading) return <LoadingFallback />;
 
   return (
-    <section className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">My Property Offers</h2>
+    <section
+      data-aos="fade-up"
+      className="container mx-auto p-4 font-sans"
+    >
+      <h2 className="text-3xl font-bold mb-6 text-[#00BBA7]">My Property Offers</h2>
 
       {offers.length === 0 ? (
-        <p>You haven’t offered on any properties yet.</p>
+        <p className="text-gray-600">You haven’t offered on any properties yet.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {offers.map((offer) => (
             <div
               key={offer._id}
-              className="border p-4 rounded shadow bg-white flex flex-col gap-2"
+              className=" rounded shadow bg-base-300 flex flex-col gap-2 p-4 hover:shadow-lg transition-shadow"
             >
               <img
                 src={offer.propertyImage || "/placeholder.jpg"}
@@ -58,13 +67,21 @@ const PropertyBought = () => {
               />
               <h3 className="text-lg font-bold">{offer.propertyTitle}</h3>
               <p>{offer.propertyLocation}</p>
-              <p>Agent: {offer.agentName}</p>
-              <p>Offered Amount: ${offer.offerAmount}</p>
-              <p>Offer Request: <span className="font-semibold">{offer.status}</span></p>
-              <div className="flex gap-2 justify-between mt-2 flex-wrap">
+              <p>Agent: <span className="font-semibold text-[#00BBA7]">{offer.agentName}</span></p>
+              <p>Offered Amount: <span className="font-semibold">${offer.offerAmount}</span></p>
+              <p>
+                Offer Request:{" "}
+                <span className={`font-semibold ${offer.status === "accepted" ? "text-green-600" :
+                    offer.status === "rejected" ? "text-red-600" :
+                      "text-yellow-600"
+                  }`}>
+                  {offer.status}
+                </span>
+              </p>
+              <div className="flex gap-2 justify-between flex-wrap mt-2">
                 <Link
                   to={`/property/${offer.propertyId}`}
-                  className="btn btn-sm btn-secondary"
+                  className="btn btn-sm btn-outline text-[#00BBA7] border-[#00BBA7] hover:bg-[#00BBA7] hover:text-white"
                 >
                   Details
                 </Link>
@@ -87,13 +104,23 @@ const PropertyBought = () => {
                   Delete
                 </button>
               </div>
+
               {offer.status === "pending" && (
-                <button className="btn btn-primary btn-sm mt-2">
-                  Weating for agent's response...
+                <button
+                  className="btn btn-primary btn-sm mt-2"
+                  style={{ backgroundColor: "#00BBA7", borderColor: "#00BBA7" }}
+                  disabled
+                >
+                  Waiting for agent's response...
                 </button>
               )}
+
               {offer.status === "rejected" && (
-                <button className="btn btn-primary btn-sm mt-2" disabled>
+                <button
+                  className="btn btn-primary btn-sm mt-2"
+                  style={{ backgroundColor: "#00BBA7", borderColor: "#00BBA7" }}
+                  disabled
+                >
                   Rejected
                 </button>
               )}
@@ -102,13 +129,17 @@ const PropertyBought = () => {
                 <Link
                   to={`/dashboard/payment/${offer._id}`}
                   className="btn btn-primary btn-sm mt-2"
+                  style={{ backgroundColor: "#00BBA7", borderColor: "#00BBA7" }}
                 >
                   Pay Now
                 </Link>
               )}
 
               {offer.status === "bought" && offer.transactionId && (
-                <p className="btn btn-primary btn-xs mt-2 py-4">
+                <p
+                  className="btn btn-primary btn-xs mt-2 py-4 cursor-default"
+                  style={{ backgroundColor: "#00BBA7", borderColor: "#00BBA7" }}
+                >
                   Transaction ID: {offer.transactionId}
                 </p>
               )}

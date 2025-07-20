@@ -61,9 +61,9 @@ const AdminProfile = () => {
 
     return (
         <section className="flex items-center justify-center p-10 fontJakarta">
-            <div className="max-w-xl w-full p-6 rounded border border-gray-700  bg-base-300">
+            <div className="max-w-xl w-full p-6 rounded border border-[#00BBA7] bg-base-300">
                 <div className="flex flex-col items-center">
-                    <div className="w-28 h-28 rounded-full overflow-hidden  border-4 border-gray-700 mb-4">
+                    <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-[#00BBA7] mb-4">
                         {userImage || previewImage ? (
                             <img
                                 src={previewImage || userImage}
@@ -71,27 +71,27 @@ const AdminProfile = () => {
                                 className="w-full h-full object-cover"
                             />
                         ) : (
-                            <FaUserCircle className="text-7xl text-gray-500" />
+                            <FaUserCircle className="text-7xl text-[#00BBA7]" />
                         )}
                     </div>
                     <h2 className="text-xl font-semibold">{userName}</h2>
                     <p className="">{user?.email}</p>
-                    <span className="mt-2 inline-block px-3 py-1 text-xs bg-green-600 rounded-full">
+                    <span className="mt-2 inline-block px-3 py-1 text-xs bg-[#00BBA7] text-white rounded-full">
                         {status}
                     </span>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                     <div className="bg-base-100 p-4 rounded">
-                        <p className="text-sm text-gray-400">Role</p>
+                        <p className="text-sm text-gray-500">Role</p>
                         <p>{role}</p>
                     </div>
                     <div className="bg-base-100 p-4 rounded">
-                        <p className="text-sm text-gray-400">Status</p>
-                        <p className="text-green-500">{status}</p>
+                        <p className="text-sm text-gray-500">Status</p>
+                        <p className="text-[#00BBA7]">{status}</p>
                     </div>
                     <div className="bg-base-100 p-4 rounded col-span-1 md:col-span-2">
-                        <p className="text-sm text-gray-400">Created At</p>
+                        <p className="text-sm text-gray-500">Created At</p>
                         <p>
                             {foundUser?.created_at
                                 ? new Date(foundUser.created_at).toLocaleString()
@@ -99,7 +99,7 @@ const AdminProfile = () => {
                         </p>
                     </div>
                     <div className="bg-base-100 p-4 rounded col-span-1 md:col-span-2">
-                        <p className="text-sm text-gray-400">Last Sign In</p>
+                        <p className="text-sm text-gray-500">Last Sign In</p>
                         <p>
                             {foundUser?.last_log_in
                                 ? new Date(foundUser.last_log_in).toLocaleString()
@@ -111,7 +111,7 @@ const AdminProfile = () => {
                 <div className="text-center mt-6">
                     <button
                         onClick={() => setModalOpen(true)}
-                        className="btn btn-primary"
+                        className="px-6 py-2 rounded bg-[#00BBA7] text-white hover:bg-[#00a495] transition"
                     >
                         Edit Profile
                     </button>
@@ -156,11 +156,14 @@ const AdminProfile = () => {
                                 <button
                                     type="button"
                                     onClick={() => setModalOpen(false)}
-                                    className="btn btn-outline"
+                                    className="px-4 py-2 border border-[#00BBA7] text-[#00BBA7] rounded hover:bg-[#00BBA7] hover:text-white transition"
                                 >
                                     Cancel
                                 </button>
-                                <button type="submit" className="btn btn-primary">
+                                <button
+                                    type="submit"
+                                    className="px-4 py-2 bg-[#00BBA7] text-white rounded hover:bg-[#00a495] transition"
+                                >
                                     Update
                                 </button>
                             </div>
