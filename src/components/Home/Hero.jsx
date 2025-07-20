@@ -1,23 +1,30 @@
-const Hero = () => {
+import React from 'react';
+import "react-responsive-carousel/lib/styles/carousel.min.css"
+import bannerImg1 from '../../../public/Bannar1.jpg';
+import bannerImg2 from '../../../public/Bannar2.jpg';
+import bannerImg3 from '../../../public/Bannar3.jpg';
+import { Carousel } from 'react-responsive-carousel';
+import { Link } from 'react-router';
+
+const Banner = () => {
     return (
-        <section>
-            <div className="hero bg-base-200 min-h-screen">
-                <div className="hero-content flex-col lg:flex-row-reverse">
-                    <img
-                        src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
-                        className="max-w-sm rounded-lg shadow-2xl"
-                    />
-                    <div>
-                        <h1 className="text-5xl font-bold">Box Office News!</h1>
-                        <p className="py-6">
-                            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-                            quasi. In deleniti eaque aut repudiandae et a id nisi.
-                        </p>
-                        <button className="btn btn-primary">Get Started</button>
-                    </div>
-                </div>
+        <Carousel autoPlay={true} infiniteLoop={true} showThumbs={false}>
+            <div>
+                <img src={bannerImg1} />
+                <Link to="/all-properties">
+                    <p className="legend">Legend 1</p>
+                </Link>
             </div>
-        </section>
+            <div>
+                <img src={bannerImg2} />
+                <p className="legend">Legend 2</p>
+            </div>
+            <div>
+                <img src={bannerImg3} />
+                <p className="legend">Legend 3</p>
+            </div>
+        </Carousel>
     );
 };
-export default Hero;
+
+export default Banner;

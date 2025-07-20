@@ -1,17 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Link } from "react-router"; // ✅ Should be react-router-dom
+import { Link } from "react-router"; // ✅ Corrected
 import { useContext, useState } from "react";
 import LoadingFallback from "../components/shared/LoadingFallback";
 import { AuthContext } from "../context/AuthContext";
+import { LuLogIn } from "react-icons/lu";
 
 const AllProperties = () => {
   const { user } = useContext(AuthContext);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc"); // asc or desc
+  const [sortOrder, setSortOrder] = useState("asc");
 
-  // ✅ Load all verified properties
   const { data: properties = [], isLoading } = useQuery({
     queryKey: ["all-properties"],
     queryFn: async () => {
@@ -22,12 +22,10 @@ const AllProperties = () => {
 
   if (isLoading) return <LoadingFallback />;
 
-  // ✅ Filter by location
   const filteredProperties = properties.filter((prop) =>
     prop.location.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // ✅ Sort by minPrice
   const sortedProperties = [...filteredProperties].sort((a, b) => {
     const priceA = parseFloat(a.minPrice);
     const priceB = parseFloat(b.minPrice);
@@ -63,7 +61,10 @@ const AllProperties = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sortedProperties.map((prop) => (
-          <div key={prop._id} className="card bg-base-100 shadow border">
+          <div
+            key={prop._id}
+            className="relative group card bg-base-100 border shadow hover:shadow-lg transition overflow-hidden rounded-lg"
+          >
             <figure>
               <img
                 src={prop.image}
@@ -71,6 +72,7 @@ const AllProperties = () => {
                 className="w-full h-52 object-cover"
               />
             </figure>
+
             <div className="p-4 space-y-2">
               <h3 className="text-xl font-semibold">{prop.title}</h3>
               <p className="text-gray-600">{prop.location}</p>
@@ -97,12 +99,15 @@ const AllProperties = () => {
               <p>
                 <strong>Price:</strong> ${prop.minPrice} - ${prop.maxPrice}
               </p>
+            </div>
 
+            {/* ✅ Hover overlay for Details button */}
+            <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
               <Link
                 to={`/property/${prop._id}`}
-                className="btn btn-sm btn-primary"
+                className="btn btn-primary"
               >
-                Details
+                View Details <LuLogIn />
               </Link>
             </div>
           </div>

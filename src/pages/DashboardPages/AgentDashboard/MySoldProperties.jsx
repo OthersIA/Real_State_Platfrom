@@ -8,7 +8,7 @@ import { Link } from "react-router";
 const MySoldProperties = () => {
     const { user } = useContext(AuthContext);
 
-    const { data: soldProperties = [], isLoading } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ["soldProperties", user?.email],
         enabled: !!user?.email,
         queryFn: async () => {
@@ -19,11 +19,16 @@ const MySoldProperties = () => {
         },
     });
 
+    const { totalSoldAmount = 0, soldProperties = [] } = data || {};
+
     if (isLoading) return <LoadingFallback />;
 
     return (
         <section className="container mx-auto p-4">
             <h2 className="text-2xl font-bold mb-4">My Sold Properties</h2>
+            <p className="mb-4 font-semibold">
+                Total Sold Amount: ${totalSoldAmount}
+            </p>
 
             {soldProperties.length === 0 ? (
                 <p>No properties sold yet.</p>
@@ -48,11 +53,13 @@ const MySoldProperties = () => {
                                     <td>{item.buyerName}</td>
                                     <td>{item.buyerEmail}</td>
                                     <td>${item.amountPaid}</td>
-                                    <Link to={`/property/${item.propertyId}`}  >
-                                        <button className="btn btn-primary btn-xs">
-                                            Details
-                                        </button>
-                                    </Link>
+                                    <td>
+                                        <Link to={`/property/${item.propertyId}`}>
+                                            <button className="btn btn-primary btn-xs">
+                                                Details
+                                            </button>
+                                        </Link>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

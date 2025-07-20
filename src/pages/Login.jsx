@@ -72,9 +72,6 @@ const Login = () => {
                 </h1>
 
                 <div className="card-body">
-                  <SocialLogin />
-
-                  <div className="divider">OR</div>
 
                   <form onSubmit={handleSubmit}>
                     <label className="label">Email</label>
@@ -115,6 +112,10 @@ const Login = () => {
                       Login
                     </button>
                   </form>
+                  
+
+                  <div className="divider">OR</div>
+                  <SocialLogin />
 
                   <div className="mt-4 text-center">
                     Not signed up?{" "}

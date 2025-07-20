@@ -30,6 +30,7 @@ import UserProfile from "../pages/DashboardPages/UserDashboard/UserProfile";
 import AdminProfile from "../pages/DashboardPages/AdminDashboard/AdminProfile";
 import AgentProfile from "../pages/DashboardPages/AgentDashboard/AgentProfile";
 import PaymentHistory from "../pages/DashboardPages/UserDashboard/PaymentHistory";
+import AdvertiseProperty from "../pages/DashboardPages/AdminDashboard/AdvertiseProperty";
 
 
 const Router = createBrowserRouter([
@@ -53,7 +54,7 @@ const Router = createBrowserRouter([
             },
             {
                 path: "/property/:id",
-                Component: PropertyDetails,
+                element: <PrivateRoute><PropertyDetails /></PrivateRoute>,
             },
             {
                 path: '/login',
@@ -149,6 +150,10 @@ const Router = createBrowserRouter([
             {
                 path: 'manage-reviews',
                 element: <AdminRoute><ManageReviews></ManageReviews></AdminRoute>,
+            },
+            {
+                path: 'advertise-property',
+                element: <AdminRoute><AdvertiseProperty /></AdminRoute>
             },
         ],
     }

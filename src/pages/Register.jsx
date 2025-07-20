@@ -123,9 +123,7 @@ const Register = () => {
                 </h1>
 
                 <div className="card-body">
-                  <SocialLogin />
-
-                  <div className="divider">OR</div>
+                  
 
                   <div className="w-16 h-16 rounded-full overflow-hidden border border-gray-300 flex items-center mx-auto justify-center bg-gray-100">
                     {imageFile ? (
@@ -194,6 +192,9 @@ const Register = () => {
                       Sign Up
                     </button>
                   </form>
+
+                  <div className="divider">OR</div>
+                  <SocialLogin />
 
                   <div className="mt-4 text-center">
                     Already signed up?{" "}

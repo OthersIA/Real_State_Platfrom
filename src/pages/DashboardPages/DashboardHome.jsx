@@ -1,14 +1,24 @@
 import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { NavLink } from "react-router";
+import { NavLink } from "react-router"; // ✅ Fix import
 import { AuthContext } from "../../context/AuthContext";
 import LoadingFallback from "../../components/shared/LoadingFallback";
+import {
+    PieChart,
+    Pie,
+    Cell,
+    Tooltip,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    ResponsiveContainer,
+} from "recharts";
 
 const DashboardHome = () => {
     const { user } = useContext(AuthContext);
 
-    // ✅ Get all users
     const { data: users = [], isLoading: usersLoading } = useQuery({
         queryKey: ["users"],
         queryFn: async () => {
@@ -21,14 +31,13 @@ const DashboardHome = () => {
     const currentUser = users.find((u) => u.email === user?.email);
     const role = currentUser?.role || "user";
 
-    // ✅ Fetch different data based on role
     const { data: properties = [], isLoading: propertiesLoading } = useQuery({
         queryKey: ["properties"],
         queryFn: async () => {
             const res = await axios.get(`${import.meta.env.VITE_API_URL}/properties`);
             return res.data;
         },
-        enabled: role === "agent" || role === "admin",
+        enabled: ["agent", "admin"].includes(role),
     });
 
     const { data: wishlist = [], isLoading: wishlistLoading } = useQuery({
@@ -49,9 +58,57 @@ const DashboardHome = () => {
         enabled: role === "user",
     });
 
+    const { data, isLoading } = useQuery({
+        queryKey: ["soldProperties", user?.email],
+        enabled: !!user?.email,
+        queryFn: async () => {
+            const res = await axios.get(
+                `${import.meta.env.VITE_API_URL}/sold-properties?agentEmail=${user.email}`
+            );
+            return res.data;
+        },
+    });
+
+    const { totalSoldAmount = 0, soldProperties = [] } = data || {};
+
     if (usersLoading || propertiesLoading || wishlistLoading || reviewsLoading) {
         return <LoadingFallback />;
     }
+
+    if (!currentUser) {
+        return (
+            <p className="text-center mt-10 text-lg font-semibold text-red-500">
+                User not found.
+            </p>
+        );
+    }
+
+    const roleCounts = {
+        user: users.filter((u) => u.role === "user").length,
+        agent: users.filter((u) => u.role === "agent").length,
+        admin: users.filter((u) => u.role === "admin").length,
+    };
+
+    const myProperties = properties.filter((p) => p.agentEmail === user.email);
+   
+
+    const COLORS = ["#00C49F", "#FFBB28", "#FF8042"];
+
+    const rolePieData = [
+        { name: "User", value: roleCounts.user },
+        { name: "Agent", value: roleCounts.agent },
+        { name: "Admin", value: roleCounts.admin },
+    ];
+
+    const agentBarData = [
+        { name: "Listed", value: myProperties.length },
+        { name: "Sold", value: soldProperties.length },
+    ];
+
+    const userPieData = [
+        { name: "Wishlist", value: wishlist.length },
+        { name: "Reviews", value: reviews.length },
+    ];
 
     return (
         <section className="p-6 max-w-6xl mx-auto">
@@ -59,6 +116,7 @@ const DashboardHome = () => {
                 Welcome, {user?.displayName || "User"}!
             </h2>
 
+            {/* ---------- USER DASHBOARD ---------- */}
             {role === "user" && (
                 <>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -66,41 +124,153 @@ const DashboardHome = () => {
                         <div className="card bg-base-200 p-4">Reviews Given: {reviews.length}</div>
                     </div>
 
+
                     <h3 className="text-xl font-semibold mt-6 mb-2">Quick Actions</h3>
                     <div className="flex gap-4 flex-wrap">
-                        <NavLink to="/all-properties" className="btn btn-primary">Browse Properties</NavLink>
-                        <NavLink to="/dashboard/profile" className="btn btn-secondary">Update Profile</NavLink>
+                        <NavLink to="/all-properties" className="btn btn-primary">
+                            Browse Properties
+                        </NavLink>
+                        <NavLink to="/dashboard/user-profile" className="btn btn-secondary">
+                            Your Profile
+                        </NavLink>
                     </div>
+
+                    <h3 className="text-xl font-semibold mt-6 mb-2">Recent Wishlist</h3>
+                    {wishlist.length ? (
+                        <ul className="list-disc pl-5">
+                            {wishlist.slice(0, 3).map((item) => (
+                                <li key={item._id}>{item.title}</li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="text-gray-500">No wishlist items yet.</p>
+                    )}
+
+                    <h3 className="text-xl font-semibold mt-6 mb-2">Recent Reviews</h3>
+                    {reviews.length ? (
+                        <ul className="list-disc pl-5">
+                            {reviews.slice(0, 3).map((r) => (
+                                <li key={r._id}>{r.comment}</li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="text-gray-500">No reviews yet.</p>
+                    )}
+
+                    <h3 className="text-xl font-semibold mt-6 mb-2">
+                        Wishlist vs Reviews
+                    </h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <PieChart>
+                            <Pie
+                                data={userPieData}
+                                dataKey="value"
+                                nameKey="name"
+                                cx="50%"
+                                cy="50%"
+                                outerRadius={100}
+                                label
+                            >
+                                {userPieData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                ))}
+                            </Pie>
+                            <Tooltip />
+                        </PieChart>
+                    </ResponsiveContainer>
                 </>
             )}
 
-            {(role === "agent" || role=="fraud") && (
+            {/* ---------- AGENT DASHBOARD ---------- */}
+            {role === "agent" && (
                 <>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="card bg-base-200 p-4">Properties Listed: {properties.filter(p => p.agentEmail === user.email).length}</div>
-                        <div className="card bg-base-200 p-4">Estimated Earnings: $0</div>
+                        <div className="card bg-base-200 p-4">
+                            Properties Listed: {myProperties.length}
+                        </div>
+                        <div className="card bg-base-200 p-4">
+                            Sold Properties: {soldProperties.length}
+                        </div>
+                        <div className="card bg-base-200 p-4">Estimated Earnings: {totalSoldAmount}</div>
                     </div>
+
+                    <h3 className="text-xl font-semibold mt-6 mb-2">My Latest Properties</h3>
+                    {myProperties.length ? (
+                        <ul className="list-disc pl-5">
+                            {myProperties.slice(0, 3).map((p) => (
+                                <li key={p._id}>{p.title}</li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="text-gray-500">No properties listed yet.</p>
+                    )}
+
+                    <h3 className="text-xl font-semibold mt-6 mb-2">Listed vs Sold</h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <BarChart data={agentBarData}>
+                            <XAxis dataKey="name" />
+                            <YAxis allowDecimals={false} />
+                            <Tooltip />
+                            <Bar dataKey="value" fill="#00C49F" />
+                        </BarChart>
+                    </ResponsiveContainer>
 
                     <h3 className="text-xl font-semibold mt-6 mb-2">Quick Actions</h3>
                     <div className="flex gap-4 flex-wrap">
-                        <NavLink to="/dashboard/add-property" className="btn btn-primary">Add New Property</NavLink>
-                        <NavLink to="/dashboard/my-added-properties" className="btn btn-secondary">My Added Properties</NavLink>
+                        <NavLink to="/dashboard/add-property" className="btn btn-primary">
+                            Add New Property
+                        </NavLink>
+                        <NavLink
+                            to="/dashboard/my-added-properties"
+                            className="btn btn-secondary"
+                        >
+                            My Added Properties
+                        </NavLink>
                     </div>
                 </>
             )}
 
+            {/* ---------- ADMIN DASHBOARD ---------- */}
             {role === "admin" && (
                 <>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="card bg-base-200 p-4">Total Users: {users.length}</div>
-                        <div className="card bg-base-200 p-4">Total Properties: {properties.length}</div>
-                        <div className="card bg-base-200 p-4">System Revenue: $0</div>
+                        <div className="card bg-base-200 p-4">
+                            Roles — User: {roleCounts.user}, Agent: {roleCounts.agent}, Admin: {roleCounts.admin}
+                        </div>
+                        <div className="card bg-base-200 p-4">
+                            Total Properties: {properties.length}
+                        </div>
                     </div>
+
+                    <h3 className="text-xl font-semibold mt-6 mb-2">User Role Distribution</h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <PieChart>
+                            <Pie
+                                data={rolePieData}
+                                dataKey="value"
+                                nameKey="name"
+                                cx="50%"
+                                cy="50%"
+                                outerRadius={100}
+                                label
+                            >
+                                {rolePieData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                ))}
+                            </Pie>
+                            <Tooltip />
+                        </PieChart>
+                    </ResponsiveContainer>
 
                     <h3 className="text-xl font-semibold mt-6 mb-2">Quick Actions</h3>
                     <div className="flex gap-4 flex-wrap">
-                        <NavLink to="/dashboard/manage-users" className="btn btn-primary">Manage Users</NavLink>
-                        <NavLink to="/dashboard/manage-properties" className="btn btn-secondary">View All Properties</NavLink>
+                        <NavLink to="/dashboard/manage-users" className="btn btn-primary">
+                            Manage Users
+                        </NavLink>
+                        <NavLink to="/dashboard/manage-properties" className="btn btn-secondary">
+                            View All Properties
+                        </NavLink>
                     </div>
                 </>
             )}

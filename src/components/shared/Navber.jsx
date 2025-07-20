@@ -86,24 +86,28 @@ const Navber = () => {
                     </div>
                 </div>
                 <div className="navbar-center hidden lg:flex">
-                    <ul className="menu menu-horizontal px-1 text-lg">
+                    <ul className="menu menu-horizontal px-1 space-x-2 text-lg">
                         <li className="hidden lg:flex">
                             <NavLink className={({ isActive }) =>
-                                isActive ? "text-indigo-500" : ""
+                                isActive ? "bg-indigo-300 rounded-full" : ""
                             } to="/">Home</NavLink>
                         </li>
 
                         <li className="hidden lg:flex">
                             <NavLink className={({ isActive }) =>
-                                isActive ? "text-indigo-500" : ""
+                                isActive ? "bg-indigo-300 rounded-full" : ""
                             } to="/all-properties">All Properties</NavLink>
                         </li>
 
-                        <li className="hidden lg:flex">
-                            <NavLink className={({ isActive }) =>
-                                isActive ? "text-indigo-500" : ""
-                            } to="/dashboard">Dashboard</NavLink>
-                        </li>
+                        {user ? (
+                            <>
+                                <li className="hidden lg:flex">
+                                    <NavLink className={({ isActive }) =>
+                                        isActive ? "bg-indigo-300" : ""
+                                    } to="/dashboard">Dashboard</NavLink>
+                                </li>
+                            </>
+                        ) : ('')}
                     </ul>
                 </div>
                 <div className="navbar-end">
@@ -137,7 +141,7 @@ const Navber = () => {
                         </div>
                         {user ? (
                             <>
-                                <li className="-ml-2">
+                                <li className="">
                                     <button onClick={logOut} className="btn btn-error hidden lg:flex">
                                         Log Out
                                     </button>
@@ -150,9 +154,6 @@ const Navber = () => {
                             <>
                                 <li>
                                     <NavLink className={({ isActive }) => isActive ? "bg-indigo-700 btn rounded-full" : "btn btn-primary rounded-full"} to="/login">Login</NavLink>
-                                </li>
-                                <li>
-                                    <NavLink className={({ isActive }) => isActive ? "bg-indigo-700 btn rounded-full" : "btn btn-primary rounded-full"} to="/register">SignUp</NavLink>
                                 </li>
                             </>
                         )}

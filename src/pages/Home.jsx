@@ -9,7 +9,7 @@ const Home = () => {
   const { data: properties = [], isLoading: isLoadingProperties } = useQuery({
     queryKey: ["advertised-properties"],
     queryFn: async () => {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/properties`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/property/advertised`);
       return res.data.slice(0, 4);
     },
   });

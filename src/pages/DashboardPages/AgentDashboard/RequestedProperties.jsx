@@ -68,7 +68,6 @@ const RequestedProperties = () => {
                         <tr className="bg-base-200">
                             <th>#</th>
                             <th>Property Title</th>
-                            <th>Location</th>
                             <th>Buyer Email</th>
                             <th>Buyer Name</th>
                             <th>Offered Price</th>
@@ -81,7 +80,6 @@ const RequestedProperties = () => {
                             <tr key={offer._id}>
                                 <td>{idx + 1}</td>
                                 <td>{offer.propertyTitle}</td>
-                                <td>{offer.propertyLocation}</td>
                                 <td>{offer.buyerEmail}</td>
                                 <td>{offer.buyerName}</td>
                                 <td>${offer.offerAmount}</td>

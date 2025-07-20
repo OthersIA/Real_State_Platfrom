@@ -13,6 +13,7 @@ import {
     FaUsersCog,
     FaTasks,
     FaHistory,
+    FaBackspace,
 } from "react-icons/fa";
 import WebLogo from "../components/WebLogo";
 import { AuthContext } from "../context/AuthContext";
@@ -20,6 +21,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import LoadingFallback from "../components/shared/LoadingFallback";
 import { FaPersonFalling } from "react-icons/fa6";
+import { MdLogout } from "react-icons/md";
 
 const DashboardLayout = () => {
     const { logOut, user } = useContext(AuthContext);
@@ -67,7 +69,8 @@ const DashboardLayout = () => {
                                 </svg>
                             </label>
                         </div>
-                        <div className="mx-2 flex-1 px-2 lg:hidden">Dashboard</div>
+                        <WebLogo />
+                        <div className="mx-2 flex-1 text-2xl font-bold px-2 lg:hidden text-end">Dashboard</div>
                     </div>
 
                     {/* Page content here */}
@@ -78,21 +81,16 @@ const DashboardLayout = () => {
                     <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
                     <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
                         <WebLogo />
-
-                        {(role === "agent" || role == "fraud") && (
-                            <>
-                                <p>Agent</p>
-                            </>
-                        )}
-                        {role === "admin" && (
-                            <>
-                                <p>Admin</p>
-                            </>
-                        )}
                         <li className="mt-4">
-                            <NavLink className={({ isActive }) => (isActive ? "text-cyan-300" : "")} to="/dashboard">
+                            <NavLink className={({ isActive }) => (isActive ? "font-bold" : "")} to="/">
+                                <FaBackspace className="inline-block mr-2" />
+                                Home
+                            </NavLink>
+                        </li>
+                        <li className="">
+                            <NavLink className={({ isActive }) => (isActive ? "font-bold" : "")} to="/dashboard">
                                 <FaHome className="inline-block mr-2" />
-                                Dashboard Home
+                                Dashboard
                             </NavLink>
                         </li>
 
@@ -142,14 +140,14 @@ const DashboardLayout = () => {
 
                                         <div>
                                             <p>{userName}</p>
-                                            <p>{user?.email}</p>
+                                            <p>Profile</p>
                                         </div>
 
                                     </NavLink>
                                 </li>
                                 <li className="mt-2">
                                     <button onClick={logOut} className="btn btn-error lg:flex">
-                                        Log Out
+                                        Log Out <MdLogout />
                                     </button>
                                 </li>
                             </>
@@ -197,13 +195,13 @@ const DashboardLayout = () => {
                                         </div>
                                         <div>
                                             <p>{userName}</p>
-                                            <p>{user?.email}</p>
+                                            <p>Profile</p>
                                         </div>
                                     </NavLink>
                                 </li>
                                 <li className="mt-2">
                                     <button onClick={logOut} className="btn btn-error hidden lg:flex">
-                                        Log Out
+                                        Log Out <MdLogout />
                                     </button>
                                 </li>
                             </>
@@ -230,6 +228,12 @@ const DashboardLayout = () => {
                                         Manage Reviews
                                     </NavLink>
                                 </li>
+                                <li>
+                                    <NavLink className={({ isActive }) => (isActive ? "text-indigo-500" : "")} to="/dashboard/advertise-property">
+                                        <FaStar className="inline-block mr-2" />
+                                        Advertise Property
+                                    </NavLink>
+                                </li>
                                 <div className="flex-grow"></div>
                                 <li>
                                     <NavLink
@@ -245,13 +249,13 @@ const DashboardLayout = () => {
                                         </div>
                                         <div>
                                             <p>{userName}</p>
-                                            <p>{user?.email}</p>
+                                            <p>Profile</p>
                                         </div>
                                     </NavLink>
                                 </li>
                                 <li className="mt-2">
                                     <button onClick={logOut} className="btn btn-error hidden lg:flex">
-                                        Log Out
+                                        Log Out <MdLogout />
                                     </button>
                                 </li>
                             </>

@@ -6,12 +6,12 @@ const MainLayout = () => {
     return (
         <div className="popins flex flex-col min-h-screen overflow-hidden">
             {/* Fixed Navbar */}
-            <div className="">
+            <div className=" fixed top-0 left-0 right-0 z-50">
                 <Navber />
             </div>
 
             {/* Content wrapper with padding top for navbar height */}
-            <main className="flex-grow">
+            <main className="flex-grow pt-20">
                 <Outlet />
             </main>
 

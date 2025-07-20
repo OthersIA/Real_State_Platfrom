@@ -35,22 +35,22 @@ const PaymentHistory = () => {
                     <table className="table w-full">
                         <thead>
                             <tr>
+                                <th>#</th>
                                 <th>Property Title</th>
                                 <th>Location</th>
                                 <th>Buyer</th>
-                                <th>Buyer Email</th>
                                 <th>Sold Price</th>
                                 <th>Transaction ID</th>
                                 <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {payments.map((payment) => (
+                            {payments.map((payment, idx) => (
                                 <tr key={payment._id}>
+                                    <td>{idx + 1}</td>
                                     <td>{payment.propertyTitle}</td>
                                     <td>{payment.propertyLocation}</td>
-                                    <td>{payment.buyerName}</td>
-                                    <td>{payment.buyerEmail}</td>
+                                    <td>{payment.agentName}</td>
                                     <td>${payment.amountPaid}</td>
                                     <td>{payment.transactionId}</td>
                                     <td>{new Date(payment.createdAt).toLocaleDateString()}</td>

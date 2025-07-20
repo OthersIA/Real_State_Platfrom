@@ -1,14 +1,14 @@
 import { useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { toast } from "react-hot-toast";
 import { FaUserCircle } from "react-icons/fa";
 import { AuthContext } from "../../../context/AuthContext";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
+import Swal from "sweetalert2";
 
 const UserProfile = () => {
     const { user, updateUserProfile } = useContext(AuthContext);
-    const [previewImage, setPreviewImage] = useState(user?.photoURL || "");
+    const [previewImage, setPreviewImage] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -26,25 +26,8 @@ const UserProfile = () => {
     const foundUser = users.find((u) => u.email === user?.email);
     const userName = foundUser?.name || user?.displayName || "User";
     const userImage = foundUser?.image || user?.photoURL;
-    const role = foundUser?.role;
-
-    const handleProfileUpdate = async (e) => {
-        e.preventDefault();
-        const displayName = e.target.displayName.value;
-        let photoURL = previewImage;
-
-        if (selectedFile) {
-            toast.success("New image selected. Add upload logic if needed.");
-        }
-
-        try {
-            await updateUserProfile(displayName, photoURL);
-            toast.success("Profile updated successfully!");
-            setModalOpen(false);
-        } catch (error) {
-            console.error("Profile update failed:", error.message);
-        }
-    };
+    const role = foundUser?.role || "User";
+    const status = foundUser?.status || "Active";
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -58,61 +41,86 @@ const UserProfile = () => {
         }
     };
 
+    const handleProfileUpdate = async (e) => {
+        e.preventDefault();
+        const displayName = e.target.displayName.value;
+        let photoURL = userImage;
+
+        if (selectedFile) {
+            Swal.fire("Image selected!", "Add your upload logic here.", "info");
+        }
+
+        try {
+            await updateUserProfile(displayName, photoURL);
+            Swal.fire("Success!", "Profile updated!", "success");
+            setModalOpen(false);
+        } catch (err) {
+            console.error("Profile update failed:", err.message);
+        }
+    };
+
     return (
-        <section className="fontJakarta flex items-center justify-center p-10">
-            <div className="w-full max-w-md card bg-base-200">
-                <h1 className="poppins pt-6 text-3xl font-bold text-center">My Profile</h1>
-
-                <div className="card-body">
-                    <div className="space-y-2">
-                        <div className="flex items-center justify-center w-24 h-24 mx-auto overflow-hidden bg-gray-300 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                            {userImage ? (
-                                <img
-                                    className="object-cover w-full h-full"
-                                    src={previewImage || userImage}
-                                    alt="Profile"
-                                />
-                            ) : (
-                                <FaUserCircle className="text-6xl text-gray-600" />
-                            )}
-                        </div>
-
-                        <div className="text-xl font-semibold text-center">{userName}</div>
-                        <div className="text-sm text-center opacity-70">{user?.email || "Email not available"}</div>
-
-                        {role && role == "user" && (
-                            <div className="text-center">
-                                <span className="inline-block bg-primary text-white px-3 py-1 rounded-full text-xs uppercase tracking-wider">
-                                    {role}
-                                </span>
-                            </div>
+        <section className="flex items-center justify-center p-10 fontJakarta">
+            <div className="max-w-xl w-full p-6 rounded border border-gray-700  bg-base-300">
+                <div className="flex flex-col items-center">
+                    <div className="w-28 h-28 rounded-full overflow-hidden  border-4 border-gray-700 mb-4">
+                        {userImage || previewImage ? (
+                            <img
+                                src={previewImage || userImage}
+                                alt="Profile"
+                                className="w-full h-full object-cover"
+                            />
+                        ) : (
+                            <FaUserCircle className="text-7xl text-gray-500" />
                         )}
+                    </div>
+                    <h2 className="text-xl font-semibold">{userName}</h2>
+                    <p className="">{user?.email}</p>
+                    <span className="mt-2 inline-block px-3 py-1 text-xs bg-green-600 rounded-full">
+                        {status}
+                    </span>
+                </div>
 
-                        <p className="text-xs text-center text-gray-500">
-                            Joined:{" "}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                    <div className="bg-base-100 p-4 rounded">
+                        <p className="text-sm text-gray-400">Role</p>
+                        <p>{role}</p>
+                    </div>
+                    <div className="bg-base-100 p-4 rounded">
+                        <p className="text-sm text-gray-400">Status</p>
+                        <p className="text-green-500">{status}</p>
+                    </div>
+                    <div className="bg-base-100 p-4 rounded col-span-1 md:col-span-2">
+                        <p className="text-sm text-gray-400">Created At</p>
+                        <p>
                             {foundUser?.created_at
                                 ? new Date(foundUser.created_at).toLocaleString()
                                 : "N/A"}
                         </p>
-                        <p className="text-xs text-center text-gray-500">
-                            Last Login{" "}
+                    </div>
+                    <div className="bg-base-100 p-4 rounded col-span-1 md:col-span-2">
+                        <p className="text-sm text-gray-400">Last Sign In</p>
+                        <p>
                             {foundUser?.last_log_in
                                 ? new Date(foundUser.last_log_in).toLocaleString()
                                 : "N/A"}
                         </p>
                     </div>
+                </div>
 
-                    <div className="mt-6 text-center">
-                        <button onClick={() => setModalOpen(true)} className="btn btn-success">
-                            Edit Profile
-                        </button>
-                    </div>
+                <div className="text-center mt-6">
+                    <button
+                        onClick={() => setModalOpen(true)}
+                        className="btn btn-primary"
+                    >
+                        Edit Profile
+                    </button>
                 </div>
             </div>
 
             {modalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-                    <div className="bg-white rounded shadow p-6 w-full max-w-sm">
+                    <div className="bg-white text-black rounded p-6 w-full max-w-sm">
                         <h3 className="text-xl font-bold mb-4">Edit Your Profile</h3>
                         <form onSubmit={handleProfileUpdate} className="space-y-4">
                             <div>
@@ -122,7 +130,6 @@ const UserProfile = () => {
                                     type="text"
                                     name="displayName"
                                     className="w-full input input-bordered"
-                                    placeholder="Name"
                                     required
                                 />
                             </div>
@@ -138,13 +145,11 @@ const UserProfile = () => {
                             </div>
 
                             {previewImage && (
-                                <div className="mt-2">
-                                    <img
-                                        src={previewImage}
-                                        alt="Preview"
-                                        className="w-20 h-20 rounded-full mx-auto"
-                                    />
-                                </div>
+                                <img
+                                    src={previewImage}
+                                    alt="Preview"
+                                    className="w-20 h-20 rounded-full mx-auto"
+                                />
                             )}
 
                             <div className="flex justify-end gap-2">
