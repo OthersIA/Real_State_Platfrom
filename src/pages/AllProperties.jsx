@@ -41,7 +41,7 @@ const AllProperties = () => {
   return (
     <div className="container mx-auto p-6">
       <h2
-        className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-red-500 dark:from-purple-400 dark:via-pink-400 dark:to-red-400"
+        className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#00BBA7] to-[#009d8f]"
         data-aos="fade-down"
       >
         All Verified Properties

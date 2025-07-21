@@ -31,7 +31,7 @@ const mockPosts = [
 
 export default function LatestNews() {
     return (
-        <section className="bg-base-100 py-16 px-4 md:px-10">
+        <section className="bg-base-200 py-12 px-4 md:px-10">
             <div className="container mx-auto text-center mb-10">
                 <h2 className="text-3xl md:text-4xl font-bold text-[#00BBA7] mb-2">
                     Latest News & Articles
@@ -60,7 +60,7 @@ export default function LatestNews() {
                                 <FaCalendarAlt className="mr-2" />
                                 {post.date}
                             </div>
-                            <p className="text-gray-700 mb-4 flex-grow">{post.excerpt}</p>
+                            <p className=" mb-4 flex-grow">{post.excerpt}</p>
                             <NavLink
                                 to="/update"
                                 className="inline-flex items-center text-[#00BBA7] font-semibold hover:underline"

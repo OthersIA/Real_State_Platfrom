@@ -54,7 +54,7 @@ export default function Hero() {
         className="relative flex items-center justify-center bg-cover bg-center text-white h-full lg:h-[80vh]"
         style={{
           backgroundImage:
-            "url('https://i.ibb.co/7xQjnTvr/3d-electric-car-building.jpg')",
+            "url('https://i.ibb.co/MxTDW5My/new-buildings-with-green-areas.jpg')",
         }}
       >
         <div className="bg-black/60 w-full h-full flex items-center justify-center">
@@ -159,10 +159,10 @@ export default function Hero() {
                 <img
                   src={
                     i === 1
-                      ? "https://img.freepik.com/free-photo/low-angle-shot-modern-buildings-blue-sky_181624-4539.jpg"
+                      ? "https://i.ibb.co/HTwy6Z9Z/14735.jpg"
                       : i === 2
-                        ? "https://img.freepik.com/free-photo/low-angle-skyscrapers-blue-sky_181624-4447.jpg"
-                        : "https://img.freepik.com/free-photo/skyscrapers-city_1127-2243.jpg"
+                        ? "https://i.ibb.co/X9b8qdg/14696.jpg"
+                        : "https://i.ibb.co/39QtwC9z/download.jpg"
                   }
                   alt={`building${i}`}
                   className="w-full h-full object-cover"
@@ -177,7 +177,7 @@ export default function Hero() {
       <div className="h-full lg:h-[80vh] flex items-center font-sans justify-center bg-cover bg-center"
         style={{
           backgroundImage:
-            "url('https://i.ibb.co/7xQjnTvr/3d-electric-car-building.jpg')",
+            "url('https://i.ibb.co/ZRBsDKcZ/analog-landscape-city-with-buildings.jpg')",
         }}
       >
         <div className="container py-20 md:py-10 mx-auto px-6 md:px-10 flex flex-col lg:flex-row items-center">
