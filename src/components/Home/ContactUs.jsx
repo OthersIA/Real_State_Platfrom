@@ -49,14 +49,13 @@ const ContactUs = () => {
                 <span>Contact Us</span>
                 <hr className="flex-grow border-t-2 border-[#00BBA7]" />
             </h1> */}
-            <h2
-                className="text-3xl text-center font-bold border-b-2 pb-2 mb-20 text-[#00BBA7]"
-                style={{ boxShadow: "0 4px 4px -2px rgba(0, 0, 0, 0.25)" }}
-            >
-                Contact Us
-            </h2>
-            <div className="bg-base-300 w-3/4 mx-auto rounded shadow-md my-6 p-6">
 
+            <div className="bg-base-300 w-3/4 mx-auto rounded shadow-md my-6 p-6">
+                <h2
+                    className="text-3xl mt-6 text-center md:text-4xl font-bold mb-12 text-[#00BBA7]"
+                >
+                    Contact Us
+                </h2>
                 <form onSubmit={handleSubmit} noValidate className="space-y-5">
                     <div>
                         <label className="block mb-1 font-semibold" htmlFor="name">

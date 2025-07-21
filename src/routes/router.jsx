@@ -39,6 +39,7 @@ import SellingStatistics from "../pages/DashboardPages/AgentDashboard/SellingSta
 import ReportedProperty from "../pages/DashboardPages/AdminDashboard/ReportedProperty";
 import ContactSupport from "../pages/ContactSupport";
 import MoreInfo from "../pages/MoreInfo";
+import ComingSoonUpdate from "../pages/ComingSoonUpdate";
 
 
 const Router = createBrowserRouter([
@@ -83,6 +84,10 @@ const Router = createBrowserRouter([
             {
                 path: 'more-info',
                 Component: MoreInfo,
+            },
+            {
+                path: 'update',
+                Component: ComingSoonUpdate,
             },
             {
                 path: "/property/:id",

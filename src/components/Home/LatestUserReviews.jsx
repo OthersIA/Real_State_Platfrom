@@ -4,7 +4,6 @@ import "aos/dist/aos.css";
 
 import { Link } from "react-router";
 import { FaStar, FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
-import { LuLogIn } from "react-icons/lu";
 
 const LatestUserReviews = ({ reviews }) => {
   useEffect(() => {
@@ -17,12 +16,14 @@ const LatestUserReviews = ({ reviews }) => {
   return (
     <section className="container mx-auto p-4 my-6">
       <h2
-        className="text-3xl text-center font-bold border-b-2 pb-2 mb-20 text-[#00BBA7]"
-        style={{ boxShadow: "0 4px 4px -2px rgba(0, 0, 0, 0.25)" }}
+        className="text-3xl text-center font-bold mb-4 text-[#00BBA7]"
       >
         Latest User Reviews
       </h2>
 
+      <p className="text-center text-gray-600 max-w-2xl mx-auto mb-12">
+        Hear what our satisfied users are saying! Real feedback from real buyers and sellers helps you make informed choices and trust us for your next property deal.
+      </p>
 
       {reviews?.length ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -79,16 +80,6 @@ const LatestUserReviews = ({ reviews }) => {
                     </span>
                   </p>
                 </div>
-
-                {/* Always visible button */}
-                {/* <div className="mt-6">
-                  <Link
-                    to={`/property/${review.propertyId}`}
-                    className="btn w-full bg-[#00BBA7] text-white border-none"
-                  >
-                    View Property Details <LuLogIn />
-                  </Link>
-                </div> */}
               </div>
             </div>
           ))}

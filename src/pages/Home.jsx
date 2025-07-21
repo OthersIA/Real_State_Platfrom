@@ -6,6 +6,11 @@ import LatestUserReviews from "../components/Home/LatestUserReviews";
 import LoadingFallback from "../components/shared/LoadingFallback";
 import ContactUs from "../components/Home/ContactUs";
 import HowItWorksMarquee from "../components/Home/HowItWorksCarousel";
+import VideoIntro from "../components/Home/VideoIntro";
+import SocialMediaFeed from "../components/Home/SocialMediaFeed";
+import LatestNews from "../components/Home/LatestNews";
+import PartnersSection from "../components/Home/PartnersSection";
+import MapSection from "../components/Home/MapSection";
 
 const Home = () => {
   const { data: properties = [], isLoading: isLoadingProperties } = useQuery({
@@ -34,7 +39,13 @@ const Home = () => {
       <Advertisement properties={properties} />
       <LatestUserReviews reviews={reviews} />
       <HowItWorksMarquee></HowItWorksMarquee>
+      <VideoIntro></VideoIntro>
+      <SocialMediaFeed></SocialMediaFeed>
+      <LatestNews></LatestNews>
+      <PartnersSection></PartnersSection>
       <ContactUs></ContactUs>
+
+      <MapSection></MapSection>
     </section>
   );
 };
