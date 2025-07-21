@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { FaEye, FaEyeSlash, FaFacebookF, FaTwitter, FaGoogle, FaUserCircle } from "react-icons/fa";
-import { Link, useNavigate } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -87,20 +87,24 @@ export default function Register() {
     >
       <div className="bg-black/60 bg-opacity-60 w-full h-full flex items-center justify-center min-h-screen">
         <div className="w-full container mx-auto grid md:grid-cols-2 gap-4 p-4 ">
-          {/* Left Section */}
+          {/* Left Section */}  
           <div className="flex flex-col justify-center px-6">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Grow <span className="text-white">Your</span> <br />
-              <span className="text-teal-400">Business With</span> <br /> <span className="text-white">Us Now ?</span>
+              Welcome to<br />
+              <span className="text-teal-400">Your Next Journey</span>
             </h1>
-            <p className="text-gray-300 mb-6">
-              Join now to connect with amazing opportunities, unlock tools and grow your network.
-              <a href="#" className="text-teal-400"> More...</a>
+            <p className="text-gray-300 max-w-md mb-6">
+              Join our real estate platform to buy or sell flats, houses, and properties with confidence.
+              Explore verified listings and connect with trusted agents easily.
             </p>
-            <button className="bg-transparent border border-teal-400 text-teal-400 hover:bg-teal-500 hover:text-white px-6 py-2 rounded-full w-fit">
-              More Info
-            </button>
+            <NavLink to='/more-info'>
+              <button className="bg-transparent border border-teal-400 text-teal-400 hover:bg-teal-500 hover:text-white px-6 py-2 rounded-full w-fit">
+                More Info
+              </button>
+            </NavLink>
           </div>
+
+
 
           {/* Right Section */}
           <div className=" bg-opacity-80 rounded-lg p-8 shadow-lg flex flex-col justify-center items-center">

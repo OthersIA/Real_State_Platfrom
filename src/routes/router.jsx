@@ -37,6 +37,8 @@ import TermsOfService from "../pages/TermsOfService";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
 import SellingStatistics from "../pages/DashboardPages/AgentDashboard/SellingStatistics";
 import ReportedProperty from "../pages/DashboardPages/AdminDashboard/ReportedProperty";
+import ContactSupport from "../pages/ContactSupport";
+import MoreInfo from "../pages/MoreInfo";
 
 
 const Router = createBrowserRouter([
@@ -73,6 +75,14 @@ const Router = createBrowserRouter([
             {
                 path: 'privacy-policy',
                 Component: PrivacyPolicy,
+            },
+            {
+                path: 'contact-support',
+                Component: ContactSupport,
+            },
+            {
+                path: 'more-info',
+                Component: MoreInfo,
             },
             {
                 path: "/property/:id",

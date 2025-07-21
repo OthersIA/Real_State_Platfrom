@@ -129,6 +129,14 @@ const Footer = () => {
           <ul className="flex flex-wrap items-center justify-center gap-4">
             <li>
               <NavLink
+                to="/contact-support"
+                className="hover:text-accent transition-colors duration-300"
+              >
+                Contact Support
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
                 to="/privacy-policy"
                 className="hover:text-accent transition-colors duration-300"
               >

@@ -73,37 +73,37 @@ const HowItWorksCarousel = () => {
         <div className="flex gap-4 items-end transition-all">
           {/* Previous Card */}
           <div
-            className="min-w-[200px] transition-all duration-500 p-6 rounded-lg border shadow-md bg-white opacity-40 scale-90"
+            className="w-[280px] h-[180px] transition-all duration-500 p-6 rounded-lg border shadow-md bg-base-300 opacity-40 scale-90"
           >
             <div>{steps[(activeIndex - 1 + steps.length) % steps.length].icon}</div>
             <h3 className="text-lg font-semibold text-[#00BBA7]">
               {steps[(activeIndex - 1 + steps.length) % steps.length].title}
             </h3>
-            <p className="text-gray-500 text-sm">
+            <p className=" text-xl">
               {steps[(activeIndex - 1 + steps.length) % steps.length].description}
             </p>
           </div>
 
           {/* Active Card */}
-          <div className="min-w-[220px] transition-all duration-500 p-6 rounded-lg border shadow-lg bg-white opacity-100 scale-100">
+          <div className="w-[320px] h-[180px] transition-all duration-500 p-6 rounded-lg border shadow-lg bg-base-300 opacity-100 scale-100">
             <div>{steps[activeIndex].icon}</div>
             <h3 className="text-xl font-bold text-[#00BBA7]">
               {steps[activeIndex].title}
             </h3>
-            <p className="text-gray-700 text-sm">
+            <p className=" text-xl">
               {steps[activeIndex].description}
             </p>
           </div>
 
           {/* Next Card */}
           <div
-            className="min-w-[200px] transition-all duration-500 p-6 rounded-lg border shadow-md bg-white opacity-40 scale-90"
+            className="w-[280px] h-[180px] transition-all duration-500 p-6 rounded-lg border shadow-md bg-base-300 opacity-40 scale-90"
           >
             <div>{steps[(activeIndex + 1) % steps.length].icon}</div>
             <h3 className="text-lg font-semibold text-[#00BBA7]">
               {steps[(activeIndex + 1) % steps.length].title}
             </h3>
-            <p className="text-gray-500 text-sm">
+            <p className=" text-xl">
               {steps[(activeIndex + 1) % steps.length].description}
             </p>
           </div>

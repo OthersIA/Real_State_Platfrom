@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { FaEye, FaEyeSlash, FaFacebookF, FaTwitter, FaGoogle } from "react-icons/fa6";
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 import Lottie from "lottie-react";
@@ -81,9 +81,11 @@ const Login = () => {
               Please login to access your account, manage your listings, wishlist and more.
               <a href="#" className="text-teal-400"> Learn more...</a>
             </p>
-            <button className="bg-transparent border border-teal-400 text-teal-400 hover:bg-teal-500 hover:text-white px-6 py-2 rounded-full w-fit">
-              Contact Support
-            </button>
+            <NavLink to="/contact-support">
+              <button className="bg-transparent border border-teal-400 text-teal-400 hover:bg-teal-500 hover:text-white px-6 py-2 rounded-full w-fit">
+                Contact Support
+              </button>
+            </NavLink>
           </div>
 
           {/* Right Section */}
