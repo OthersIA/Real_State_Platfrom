@@ -10,10 +10,18 @@ const Advertisement = ({ properties }) => {
   }, []);
 
   return (
-    <section className="container mx-auto p-4">
-      <h2 className="text-3xl font-bold mb-6 text-[#00BBA7]">
+    <section className="container mx-auto p-4 my-6">
+      {/* <h2 className="text-3xl font-bold mb-6 text-[#00BBA7]">
+        Featured Advertisements
+      </h2> */}
+
+      <h2
+        className="text-3xl text-center font-bold border-b-2 pb-2 mb-20 text-[#00BBA7]"
+        style={{ boxShadow: "0 4px 4px -2px rgba(0, 0, 0, 0.25)" }}
+      >
         Featured Advertisements
       </h2>
+
 
       {properties?.length ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

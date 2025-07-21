@@ -15,10 +15,14 @@ const LatestUserReviews = ({ reviews }) => {
   }, []);
 
   return (
-    <section className="container mx-auto p-4">
-      <h2 className="text-3xl font-bold mb-20 text-[#00BBA7]">
+    <section className="container mx-auto p-4 my-6">
+      <h2
+        className="text-3xl text-center font-bold border-b-2 pb-2 mb-20 text-[#00BBA7]"
+        style={{ boxShadow: "0 4px 4px -2px rgba(0, 0, 0, 0.25)" }}
+      >
         Latest User Reviews
       </h2>
+
 
       {reviews?.length ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -61,8 +65,8 @@ const LatestUserReviews = ({ reviews }) => {
                       <FaStar
                         key={star}
                         className={`text-xl ${star <= review.rating
-                            ? "text-[#00BBA7]"
-                            : "text-base-content opacity-30"
+                          ? "text-[#00BBA7]"
+                          : "text-base-content opacity-30"
                           }`}
                       />
                     ))}

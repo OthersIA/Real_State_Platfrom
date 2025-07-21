@@ -4,6 +4,8 @@ import Advertisement from "../components/Home/Advertisement";
 import Hero from "../components/Home/Hero";
 import LatestUserReviews from "../components/Home/LatestUserReviews";
 import LoadingFallback from "../components/shared/LoadingFallback";
+import ContactUs from "../components/Home/ContactUs";
+import HowItWorksMarquee from "../components/Home/HowItWorksCarousel";
 
 const Home = () => {
   const { data: properties = [], isLoading: isLoadingProperties } = useQuery({
@@ -31,6 +33,8 @@ const Home = () => {
       <Hero />
       <Advertisement properties={properties} />
       <LatestUserReviews reviews={reviews} />
+      <HowItWorksMarquee></HowItWorksMarquee>
+      <ContactUs></ContactUs>
     </section>
   );
 };

@@ -4,6 +4,7 @@ import { Carousel } from "react-responsive-carousel";
 import { FaMapMarkerAlt, FaTags, FaPercent } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
+import { NavLink } from "react-router";
 
 export default function Hero() {
   return (
@@ -128,13 +129,18 @@ export default function Hero() {
               laoreet dolore magna aliquam erat volutpat.{" "}
               <span className="text-[#00BBA7] cursor-pointer">More....</span>
             </p>
-            <div className="flex gap-4">
-              <button className="bg-[#00BBA7] px-4 py-2 rounded shadow hover:opacity-90 transition duration-300">
-                More Info
-              </button>
-              <button className="bg-[#00BBA7] px-4 py-2 rounded shadow hover:opacity-90 transition duration-300">
-                Sign Up
-              </button>
+            <div className="flex sm:justify-center gap-4">
+              <NavLink to='/learn-more'>
+                <button className="bg-[#00BBA7] px-4 py-2 rounded shadow hover:opacity-90 transition duration-300">
+                  More Info
+                </button>
+              </NavLink>
+
+              <NavLink to="/register">
+                <button className="bg-[#00BBA7] px-4 py-2 rounded shadow hover:opacity-90 transition duration-300">
+                  Sign Up
+                </button>
+              </NavLink>
             </div>
           </motion.div>
 

@@ -43,7 +43,7 @@ const MyAddedProperties = () => {
     if (isLoading) return <LoadingFallback />;
 
     return (
-        <div className="p-4" data-aos="fade-up">
+        <div className="container mx-auto p-4" data-aos="fade-up">
             <h2 className="text-2xl font-bold mb-4 text-[#00BBA7]">My Added Properties</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {properties.map((prop) => (
@@ -55,7 +55,7 @@ const MyAddedProperties = () => {
                         <img
                             src={prop.image}
                             alt="Property"
-                            className="w-full h-48 object-cover rounded"
+                            className="w-full h-full object-cover rounded"
                         />
                         <h3 className="text-xl font-semibold">{prop.title}</h3>
                         <p className="text-sm text-gray-600">{prop.location}</p>

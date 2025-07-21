@@ -13,8 +13,11 @@ import {
   FaTasks,
   FaHistory,
   FaBackspace,
+  FaChartBar,
+  FaBullhorn,
+  FaFlag,
 } from "react-icons/fa";
-import { MdLogout } from "react-icons/md";
+import { MdLogout, MdReportProblem } from "react-icons/md";
 import WebLogo from "../components/WebLogo";
 import { AuthContext } from "../context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
@@ -92,7 +95,7 @@ const DashboardLayout = () => {
             <WebLogo />
 
             <li className="mt-2">
-              <NavLink to="/dashboard" onClick={closeDrawer}>
+              <NavLink to="/dashboard" className={({ isActive }) => (isActive ? "font-bold" : "")} onClick={closeDrawer}>
                 <FaHome className="inline-block mr-2" />
                 Dashboard Home
               </NavLink>
@@ -102,25 +105,25 @@ const DashboardLayout = () => {
             {role === "user" && (
               <>
                 <li>
-                  <NavLink to="/dashboard/wishlist" onClick={closeDrawer}>
+                  <NavLink to="/dashboard/wishlist" className={({ isActive }) => (isActive ? "text-[#00BBA7]" : "")} onClick={closeDrawer}>
                     <FaHeart className="inline-block mr-2" />
                     Wishlist
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/dashboard/property-bought" onClick={closeDrawer}>
+                  <NavLink to="/dashboard/property-bought" className={({ isActive }) => (isActive ? "text-[#00BBA7]" : "")} onClick={closeDrawer}>
                     <FaShoppingCart className="inline-block mr-2" />
                     Property Bought
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/dashboard/my-reviews" onClick={closeDrawer}>
+                  <NavLink to="/dashboard/my-reviews" className={({ isActive }) => (isActive ? "text-[#00BBA7]" : "")} onClick={closeDrawer}>
                     <FaStar className="inline-block mr-2" />
                     My Reviews
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to={`/dashboard/payments/history/${user?.email}`} onClick={closeDrawer}>
+                  <NavLink to={`/dashboard/payments/history/${user?.email}`} className={({ isActive }) => (isActive ? "text-[#00BBA7]" : "")} onClick={closeDrawer}>
                     <FaHistory className="inline-block mr-2" />
                     Payment History
                   </NavLink>
@@ -132,27 +135,36 @@ const DashboardLayout = () => {
             {(role === "agent" || role === "fraud") && (
               <>
                 <li>
-                  <NavLink to="/dashboard/add-property" onClick={closeDrawer}>
+                  <NavLink to="/dashboard/add-property" className={({ isActive }) => (isActive ? "text-[#00BBA7]" : "")} onClick={closeDrawer}>
                     <FaPlus className="inline-block mr-2" />
                     Add Property
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/dashboard/my-added-properties" onClick={closeDrawer}>
+                  <NavLink to="/dashboard/my-added-properties" className={({ isActive }) => (isActive ? "text-[#00BBA7]" : "")} onClick={closeDrawer}>
                     <FaList className="inline-block mr-2" />
                     My Added Properties
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/dashboard/my-sold-properties" onClick={closeDrawer}>
+                  <NavLink to="/dashboard/my-sold-properties" className={({ isActive }) => (isActive ? "text-[#00BBA7]" : "")} onClick={closeDrawer}>
                     <FaCheckCircle className="inline-block mr-2" />
                     My Sold Properties
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/dashboard/requested-properties" onClick={closeDrawer}>
+                  <NavLink to="/dashboard/requested-properties" className={({ isActive }) => (isActive ? "text-[#00BBA7]" : "")} onClick={closeDrawer}>
                     <FaClipboardList className="inline-block mr-2" />
                     Requested Properties
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/dashboard/agent/selling-statistics"
+                    className={({ isActive }) => (isActive ? "text-[#00BBA7]" : "")} onClick={closeDrawer}
+                  >
+                    <FaChartBar className="inline-block mr-2" />
+                    Selling Statistics
                   </NavLink>
                 </li>
               </>
@@ -162,34 +174,55 @@ const DashboardLayout = () => {
             {role === "admin" && (
               <>
                 <li>
-                  <NavLink to="/dashboard/manage-properties" onClick={closeDrawer}>
+                  <NavLink to="/dashboard/manage-properties" className={({ isActive }) => (isActive ? "text-[#00BBA7]" : "")} onClick={closeDrawer}>
                     <FaTasks className="inline-block mr-2" />
                     Manage Properties
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/dashboard/manage-users" onClick={closeDrawer}>
+                  <NavLink to="/dashboard/manage-users" className={({ isActive }) => (isActive ? "text-[#00BBA7]" : "")} onClick={closeDrawer}>
                     <FaUsersCog className="inline-block mr-2" />
                     Manage Users
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/dashboard/manage-reviews" onClick={closeDrawer}>
+                  <NavLink
+                    to="/dashboard/manage-reviews"
+                    className={({ isActive }) => (isActive ? "text-[#00BBA7]" : "")}
+                    onClick={closeDrawer}
+                  >
                     <FaStar className="inline-block mr-2" />
                     Manage Reviews
                   </NavLink>
                 </li>
+
                 <li>
-                  <NavLink to="/dashboard/advertise-property" onClick={closeDrawer}>
-                    <FaStar className="inline-block mr-2" />
+                  <NavLink
+                    to="/dashboard/advertise-property"
+                    className={({ isActive }) => (isActive ? "text-[#00BBA7]" : "")}
+                    onClick={closeDrawer}
+                  >
+                    <FaBullhorn className="inline-block mr-2" />
                     Advertise Property
                   </NavLink>
                 </li>
+
+                <li>
+                  <NavLink
+                    to="/dashboard/reported-property"
+                    className={({ isActive }) => (isActive ? "text-[#00BBA7]" : "")}
+                    onClick={closeDrawer}
+                  >
+                    <MdReportProblem className="inline-block mr-2" />
+                    Reported Property
+                  </NavLink>
+                </li>
+
               </>
             )}
 
             <li>
-              <NavLink to="/" onClick={closeDrawer}>
+              <NavLink to="/" className={({ isActive }) => (isActive ? "text-[#00BBA7]" : "")} onClick={closeDrawer}>
                 <FaBackspace className="inline-block mr-2" />
                 Back To HomePage
               </NavLink>
@@ -203,8 +236,7 @@ const DashboardLayout = () => {
                   : role === "agent" || role === "fraud"
                     ? "agent-profile"
                     : "user-profile"
-                  }`}
-                onClick={closeDrawer}
+                  }`} onClick={closeDrawer}
               >
                 <div className="w-10 h-10 rounded-full overflow-hidden ring ring-[#00BBA7] ring-offset-base-100 ring-offset-2">
                   <img src={userImage} alt="Profile" className="object-cover w-full h-full" />

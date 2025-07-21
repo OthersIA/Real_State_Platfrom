@@ -17,6 +17,7 @@ const PropertyDetails = () => {
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [openReportModal, setOpenReportModal] = useState(false);
 
   useEffect(() => {
     AOS.init({ duration: 900, easing: "ease-in-out", once: true });
@@ -104,6 +105,36 @@ const PropertyDetails = () => {
     },
   });
 
+  const handleReportSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const reporterName = form.reporterName.value;
+    const reporterEmail = form.reporterEmail.value;
+    const description = form.description.value;
+
+    const reportData = {
+      propertyId: property._id,
+      propertyTitle: property.title,
+      agentName: property.agentName,
+      agentEmail: property.agentEmail,
+      reporterName,
+      reporterEmail,
+      description,
+    };
+
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/reports`, reportData);
+      Swal.fire("Reported!", "Your report has been submitted.", "success");
+      setOpenReportModal(false);
+    } catch (error) {
+      console.error(error);
+      Swal.fire("Error!", "Something went wrong.", "error");
+    }
+  };
+
+
+
+
   if (isLoading) return <LoadingFallback />;
 
   const avgRating =
@@ -112,9 +143,15 @@ const PropertyDetails = () => {
       : null;
 
   return (
-    <section className="container mx-auto p-6 max-w-6xl">
+    <section className="container mx-auto py-10 p-6 max-w-6xl">
       <h2
-        className="text-4xl font-extrabold mb-6 text-[#00BBA7]"
+        className="text-4xl text-center font-extrabold mb-6"
+        data-aos="fade-down"
+      >
+        Propertie Details
+      </h2>
+      <h2
+        className="text-4xl text-center font-extrabold mb-6 text-[#00BBA7]"
         data-aos="fade-down"
       >
         {property.title}
@@ -122,7 +159,7 @@ const PropertyDetails = () => {
 
       {/* Property Image */}
       <div
-        className="w-full md:w-3/4 mx-auto rounded-xl overflow-hidden shadow-lg mb-8"
+        className="w-2/3 md:w-3/4 mx-auto rounded-xl overflow-hidden shadow-lg mb-8"
         data-aos="zoom-in"
       >
         <img
@@ -147,7 +184,7 @@ const PropertyDetails = () => {
         </p>
         <p className=" dark:text-gray-300">
           <strong>Agent:</strong>{" "}
-          <span className="font-semibold text-[#00BBA7]">{property.agentName}</span>
+          <span className="font-semibold text-[#00BBA7]">{property.agentName} ({property.agentEmail})</span>
         </p>
         <p className=" dark:text-gray-300">
           <strong>Verification:</strong>{" "}
@@ -202,6 +239,13 @@ const PropertyDetails = () => {
           >
             Add a Review
           </button>
+          <button
+            onClick={() => setOpenReportModal(true)}
+            className="btn w-full md:w-auto bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full shadow-lg transition-colors duration-300 disabled:opacity-50"
+            disabled={!user || role !== "user"}
+          >
+            Report this Property
+          </button>
         </div>
       </div>
 
@@ -227,7 +271,7 @@ const PropertyDetails = () => {
                     className="w-16 h-16 rounded-full border-4 border-base-100 shadow-lg object-cover"
                   />
                 </div>
-                
+
                 <div className="pt-8 flex flex-col items-center gap-4 flex-grow p-6 rounded-xl shadow-md overflow-hidden text-center border border-base-200 bg-base-300 justify-between">
                   <div className="flex flex-col items-center">
                     <p className="font-bold text-[#00BBA7]">
@@ -283,7 +327,7 @@ const PropertyDetails = () => {
             </div>
 
             <textarea
-              className="textarea textarea-bordered w-full resize-none bg-white dark:bg-gray-800  dark:text-gray-100"
+              className="textarea textarea-bordered w-full resize-none  dark:bg-gray-800  dark:text-gray-100"
               rows="4"
               placeholder="Your review..."
               value={reviewText}
@@ -318,6 +362,73 @@ const PropertyDetails = () => {
           </div>
         </div>
       )}
+
+      {/* Reporting Modal */}
+      {openReportModal && (
+        <div
+          className="fixed inset-0 bg-black/60 bg-opacity-70 flex justify-center items-center z-50"
+          data-aos="zoom-in"
+        >
+          <div className="bg-base-300 p-8 rounded-2xl w-full max-w-md shadow-xl">
+            <h4 className="text-2xl font-bold mb-4 text-[#00BBA7]">
+              Report this Property
+            </h4>
+
+            <form onSubmit={handleReportSubmit} className="space-y-4">
+              <div>
+                <label className="label text-base-content">Your Name</label>
+                <input
+                  type="text"
+                  name="reporterName"
+                  defaultValue={user?.displayName || ""}
+                  readOnly
+                  className="input input-bordered w-full  dark:bg-gray-800 dark:text-gray-100"
+                  required
+                />
+              </div>
+              <div>
+                <label className="label text-base-content">Your Email</label>
+                <input
+                  type="email"
+                  name="reporterEmail"
+                  defaultValue={user?.email}
+                  readOnly
+                  placeholder="Enter your email"
+                  className="input input-bordered w-full  dark:bg-gray-800 dark:text-gray-100"
+                  required
+                />
+              </div>
+              <div>
+                <label className="label text-base-content">Description</label>
+                <textarea
+                  name="description"
+                  placeholder="Describe the issue..."
+                  rows="4"
+                  className="textarea textarea-bordered w-full resize-none  dark:bg-gray-800 dark:text-gray-100"
+                  required
+                ></textarea>
+              </div>
+
+              <div className="flex justify-end gap-4 mt-6">
+                <button
+                  type="button"
+                  onClick={() => setOpenReportModal(false)}
+                  className="btn btn-ghost text-[#00BBA7] font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn bg-red-600 hover:bg-red-700 text-white font-semibold px-6"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
     </section>
   );
 };

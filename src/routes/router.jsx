@@ -35,6 +35,8 @@ import AboutUs from "../pages/AboutUs";
 import FAQ from "../pages/FAQ";
 import TermsOfService from "../pages/TermsOfService";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
+import SellingStatistics from "../pages/DashboardPages/AgentDashboard/SellingStatistics";
+import ReportedProperty from "../pages/DashboardPages/AdminDashboard/ReportedProperty";
 
 
 const Router = createBrowserRouter([
@@ -153,6 +155,10 @@ const Router = createBrowserRouter([
                 path: 'requested-properties',
                 element: <AgentRoute><RequestedProperties></RequestedProperties></AgentRoute>,
             },
+            {
+                path: 'agent/selling-statistics',
+                element: <AgentRoute><SellingStatistics></SellingStatistics></AgentRoute>,
+            },
 
             // ✅ Admin only
             {
@@ -174,6 +180,10 @@ const Router = createBrowserRouter([
             {
                 path: 'advertise-property',
                 element: <AdminRoute><AdvertiseProperty /></AdminRoute>
+            },
+            {
+                path: 'reported-property',
+                element: <AdminRoute><ReportedProperty /></AdminRoute>
             },
         ],
     }

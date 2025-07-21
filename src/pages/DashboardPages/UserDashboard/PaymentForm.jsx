@@ -105,9 +105,15 @@ const PaymentForm = () => {
 
                 await axios.post(`${import.meta.env.VITE_API_URL}/payments`, paymentInfo);
 
+                // Update property status to sold
+                await axios.patch(`${import.meta.env.VITE_API_URL}/properties/${offeredInfo.propertyId}/status`, {
+                    status: "sold",
+                });
+
                 setSuccess(`Payment successful! Transaction ID: ${paymentIntent.id}`);
                 Swal.fire("Success!", "Payment completed successfully.", "success");
             }
+
         } catch (err) {
             console.error(err);
             setError("Something went wrong during payment.");
