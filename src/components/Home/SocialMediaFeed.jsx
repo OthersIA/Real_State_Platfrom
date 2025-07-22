@@ -1,5 +1,6 @@
 import React from "react";
 import { FaInstagram, FaHeart, FaComment } from "react-icons/fa";
+import { NavLink } from "react-router";
 
 const mockPosts = [
     {
@@ -53,7 +54,7 @@ export default function SocialMediaFeed() {
                 {mockPosts.map((post, index) => (
                     <div
                         key={post.id}
-                        className="rounded-lg overflow-hidden shadow-md border hover:shadow-lg transition duration-300"
+                        className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300"
                         data-aos="fade-up"
                         data-aos-delay={200 + index * 150}
                     >
@@ -71,14 +72,10 @@ export default function SocialMediaFeed() {
                                 <div className="flex items-center gap-2">
                                     <FaComment /> {post.comments}
                                 </div>
-                                <a
-                                    href="https://www.instagram.com/yeasin.islam2018"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="flex items-center gap-1 text-[#00BBA7] hover:underline"
-                                >
+                                <NavLink to="/update"
+                                    className="inline-flex items-center gap-1 text-[#00BBA7] hover:underline">
                                     <FaInstagram /> View
-                                </a>
+                                </NavLink>
                             </div>
                         </div>
                     </div>

@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -13,6 +13,7 @@ const PropertyDetails = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(0);
@@ -72,6 +73,7 @@ const PropertyDetails = () => {
     onSuccess: () => {
       Swal.fire("Added to wishlist!", "", "success");
       queryClient.invalidateQueries(["wishlist", id, user?.email]);
+      navigate('/dashboard/wishlist')
     },
     onError: () => {
       Swal.fire("Already in wishlist!", "", "error");

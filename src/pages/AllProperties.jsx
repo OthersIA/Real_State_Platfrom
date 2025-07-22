@@ -12,9 +12,10 @@ import "aos/dist/aos.css";
 const AllProperties = () => {
   const { user } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortOrder, setSortOrder] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+  const [dateOrder, setDateOrder] = useState(""); // ✅ NEW
 
   useEffect(() => {
     AOS.init({ duration: 800, easing: "ease-in-out", once: true });
@@ -24,10 +25,9 @@ const AllProperties = () => {
     queryKey: ["all-properties"],
     queryFn: async () => {
       const res = await axios.get(`${import.meta.env.VITE_API_URL}/properties`);
-      // ✅ Fix: only verified OR sold
-      return res.data.filter((p) => p.verificationStatus === "verified" || p.status === "sold"
+      return res.data.filter(
+        (p) => p.verificationStatus === "verified" || p.status === "sold"
       );
-
     },
   });
 
@@ -49,33 +49,37 @@ const AllProperties = () => {
     return matchesLocation && matchesPrice;
   });
 
-  const sortedProperties = [...filteredProperties].sort((a, b) => {
+  const sortedProperties = [...filteredProperties]
+    
+if (sortOrder) {
+  sortedProperties.sort((a, b) => {
     const priceA = parseFloat(a.minPrice);
     const priceB = parseFloat(b.minPrice);
     return sortOrder === "asc" ? priceA - priceB : priceB - priceA;
   });
+}
+
+if (dateOrder) {
+  sortedProperties.sort((a, b) => {
+    const dateA = new Date(a.createdDate);
+    const dateB = new Date(b.createdDate);
+    return dateOrder === "newest" ? dateB - dateA : dateA - dateB;
+  });
+}
 
   return (
     <div className="container mx-auto px-4 py-8">
       <h2
-        className="text-center text-3xl md:text-4xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#00BBA7] to-[#009d8f]"
+        className="text-center text-3xl md:text-4xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#00BBA7] to-[#009d8f]"
         data-aos="fade-down"
       >
         All Verified Properties
       </h2>
 
-      <p
-        className="text-center max-w-2xl mx-auto text-base md:text-lg mb-8"
-        data-aos="fade-up"
-        data-aos-delay="100"
-      >
-        Browse our selection of carefully verified properties. Every listing is
-        checked for accuracy to help you buy or sell with complete confidence.
-      </p>
 
       {/* Search, Sort & Price Filters */}
       <div
-        className="mb-8 flex flex-col md:flex-row flex-wrap gap-4 items-center justify-center"
+        className="mb-8 grid grid-cols-2 lg:grid-cols-6 gap-4 items-center justify-end w-3/4 mx-auto"
         data-aos="fade-up"
       >
         <input
@@ -83,16 +87,27 @@ const AllProperties = () => {
           placeholder="Search by location..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="input input-bordered w-full md:w-1/3"
+          className="input input-bordered w-full col-span-2 md:col-span-2"
         />
 
         <select
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value)}
-          className="select select-bordered w-full md:w-40"
+          className="select select-bordered w-full "
         >
+          <option value="">Price: No Limit</option>
           <option value="asc">Price: Low to High</option>
           <option value="desc">Price: High to Low</option>
+        </select>
+
+        <select
+          value={dateOrder}
+          onChange={(e) => setDateOrder(e.target.value)}
+          className="select select-bordered w-full "
+        >
+          <option value="">No Sorting</option>
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
         </select>
 
         <input
@@ -101,7 +116,7 @@ const AllProperties = () => {
           placeholder="Min Price"
           value={minPrice}
           onChange={(e) => setMinPrice(e.target.value)}
-          className="input input-bordered w-full md:w-32"
+          className="input input-bordered w-full "
         />
 
         <input
@@ -110,7 +125,7 @@ const AllProperties = () => {
           placeholder="Max Price"
           value={maxPrice}
           onChange={(e) => setMaxPrice(e.target.value)}
-          className="input input-bordered w-full md:w-32"
+          className="input input-bordered w-full "
         />
       </div>
 
@@ -166,8 +181,8 @@ const AllProperties = () => {
                 <strong>Status: </strong>
                 <span
                   className={`badge ${prop.verificationStatus === "sold"
-                    ? "badge-error"
-                    : "badge-success"
+                      ? "badge-error"
+                      : "badge-success"
                     }`}
                 >
                   {prop.verificationStatus}

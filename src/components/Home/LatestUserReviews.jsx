@@ -33,16 +33,16 @@ const LatestUserReviews = ({ reviews }) => {
         </p>
 
         {reviews?.length ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {reviews.map((review, index) => (
               <div
                 key={review._id}
-                className="relative"
+                className="relative flex flex-col h-full"
                 data-aos="fade-up"
                 data-aos-delay={300 + index * 100}
               >
                 {/* User image */}
-                <div className=" w-16 h-16 absolute -top-8 left-1/2 transform -translate-x-1/2 z-10">
+                <div className="w-16 h-16 absolute -top-8 left-1/2 transform -translate-x-1/2 z-10">
                   {review.userImage ? (
                     <img
                       src={review.userImage}
@@ -54,9 +54,8 @@ const LatestUserReviews = ({ reviews }) => {
                   )}
                 </div>
 
-
                 {/* Card */}
-                <div className="p-6 rounded-xl shadow-md overflow-hidden text-center border border-base-200 bg-base-300 flex flex-col justify-between">
+                <div className="p-6 rounded-xl shadow-md overflow-hidden text-center border border-base-200 bg-base-300 flex flex-col justify-between flex-grow h-full">
                   <div className="pt-8 flex flex-col items-center gap-4 flex-grow">
                     <div className="flex flex-col items-center">
                       <p className="font-bold text-[#00BBA7]">
@@ -67,7 +66,7 @@ const LatestUserReviews = ({ reviews }) => {
                       </p>
                     </div>
 
-                    <div className="relative bg-base-200 rounded-lg p-4 text-base-content">
+                    <div className="relative bg-base-200 rounded-lg p-4 text-base-content flex-grow">
                       <FaQuoteLeft className="absolute top-2 left-2 text-[#00BBA7] text-xl" />
                       <p className="italic px-4">{review.comment}</p>
                       <FaQuoteRight className="absolute bottom-2 right-2 text-[#00BBA7] text-xl" />
@@ -78,8 +77,8 @@ const LatestUserReviews = ({ reviews }) => {
                         <FaStar
                           key={star}
                           className={`text-xl ${star <= review.rating
-                            ? "text-[#00BBA7]"
-                            : "text-base-content opacity-30"
+                              ? "text-[#00BBA7]"
+                              : "text-base-content opacity-30"
                             }`}
                         />
                       ))}
@@ -94,6 +93,7 @@ const LatestUserReviews = ({ reviews }) => {
                   </div>
                 </div>
               </div>
+
             ))}
           </div>
         ) : (

@@ -70,7 +70,7 @@ const AddProperty = () => {
         agentEmail: user.email,
         agentPhoto: user.photoURL,
         image: imageUrl,
-        image: imageUrl,
+        createdDate: new Date().toISOString() // e.g. "2025-07-22T18:25:43.511Z"
       };
 
       const res = await axios.post(

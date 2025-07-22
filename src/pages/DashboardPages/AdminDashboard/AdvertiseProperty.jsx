@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState, useMemo } from "react"; // Import useState and useMemo
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -8,6 +8,12 @@ import LoadingFallback from "../../../components/shared/LoadingFallback";
 
 const AdvertiseProperty = () => {
   const queryClient = useQueryClient();
+
+  // State for sorting
+  const [sortOrder, setSortOrder] = useState(""); // 'newest' | 'oldest' | ''
+
+  // State for email search/filter
+  const [selectedAgentEmail, setSelectedAgentEmail] = useState("");
 
   useEffect(() => {
     AOS.init({ duration: 800, easing: "ease-in-out", once: true });
@@ -71,6 +77,48 @@ const AdvertiseProperty = () => {
     });
   };
 
+  // --- Filtering and Sorting Logic ---
+
+  // Get unique agent emails for the dropdown
+  const uniqueAgentEmails = useMemo(() => {
+    const emails = new Set();
+    properties.forEach((property) => {
+      if (property.agentEmail) {
+        emails.add(property.agentEmail);
+      }
+    });
+    return ["", ...Array.from(emails)]; // Add an empty option for "All Agents"
+  }, [properties]);
+
+  // Filter and sort properties based on state
+  const filteredAndSortedProperties = useMemo(() => {
+    let filtered = properties;
+
+    // 1. Filter by Agent Email
+    if (selectedAgentEmail) {
+      filtered = filtered.filter(
+        (property) => property.agentEmail === selectedAgentEmail
+      );
+    }
+
+    // 2. Sort by Created Date
+    if (sortOrder) {
+      filtered = [...filtered].sort((a, b) => {
+        const dateA = new Date(a.createdDate);
+        const dateB = new Date(b.createdDate);
+        if (sortOrder === "newest") {
+          return dateB.getTime() - dateA.getTime(); // Newest first
+        } else {
+          return dateA.getTime() - dateB.getTime(); // Oldest first
+        }
+      });
+    }
+
+    return filtered;
+  }, [properties, selectedAgentEmail, sortOrder]);
+
+  // --- End Filtering and Sorting Logic ---
+
   if (isLoading) return <LoadingFallback />;
 
   return (
@@ -80,6 +128,45 @@ const AdvertiseProperty = () => {
           Advertise Properties
         </h2>
 
+        <div className="flex flex-col md:flex-row gap-4 mb-6">
+          {/* Sort by Created Date */}
+          <div className="form-control">
+            <label htmlFor="sortDate" className="label">
+              <span className="label-text">Sort by Date:</span>
+            </label>
+            <select
+              id="sortDate"
+              className="select select-bordered w-full max-w-xs"
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value)}
+            >
+              <option value="">No Sorting</option>
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+            </select>
+          </div>
+
+          {/* Filter by Agent Email */}
+          <div className="form-control">
+            <label htmlFor="filterEmail" className="label">
+              <span className="label-text">Filter by Agent Email:</span>
+            </label>
+            <select
+              id="filterEmail"
+              className="select select-bordered w-full max-w-xs"
+              value={selectedAgentEmail}
+              onChange={(e) => setSelectedAgentEmail(e.target.value)}
+            >
+              <option value="">All Agents</option>
+              {uniqueAgentEmails.map((email) => (
+                <option key={email} value={email}>
+                  {email}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
         <div className="overflow-x-auto">
           <table className="table w-full">
             <thead>
@@ -88,57 +175,74 @@ const AdvertiseProperty = () => {
                 <th>Title</th>
                 <th>Price Range</th>
                 <th>Agent</th>
+                <th>Created Date</th> {/* Added Created Date column */}
                 <th>Stats</th>
                 <th>Advertise</th>
                 <th>Remove</th>
               </tr>
             </thead>
             <tbody>
-              {properties.map((property) => (
-                <tr
-                  key={property._id}
-                  data-aos="fade-up"
-                  className="transition-colors duration-300 hover:bg-[#00bba7]/20 cursor-pointer"
-                >
-                  <td>
-                    <img
-                      src={property.image}
-                      alt={property.title}
-                      className="w-20 h-14 object-cover rounded ring ring-[#00BBA7] ring-offset-2"
-                    />
-                  </td>
-                  <td className="font-medium">{property.title}</td>
-                  <td>
-                    ${property.minPrice} - ${property.maxPrice}
-                  </td>
-                  <td>{property.agentName}</td>
-                  <td>
-                    {property?.status === "sold" ? (
-                      <span className="text-red-500 font-semibold">{property.status}</span>
-                    ) : (
-                      <span className="text-blue-600">Verified</span>
-                    )}
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => handleAddAdvertise(property._id)}
-                      className="btn btn-xs border border-[#00BBA7]  hover:bg-[#00BBA7] hover:text-white transition hover:scale-105"
-                      disabled={property.advertise}
-                    >
-                      Advertise
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => handleRemoveAdvertise(property._id)}
-                      className="btn btn-xs border border-red-500 hover:bg-red-500 hover:text-white transition hover:scale-105"
-                      disabled={!property.advertise}
-                    >
-                      Remove
-                    </button>
+              {filteredAndSortedProperties.length === 0 ? (
+                <tr>
+                  <td colSpan="8" className="text-center py-4 text-gray-500">
+                    No properties found matching your criteria.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                filteredAndSortedProperties.map((property) => (
+                  <tr
+                    key={property._id}
+                    data-aos="fade-up"
+                    className="transition-colors duration-300 hover:bg-[#00bba7]/20 cursor-pointer"
+                  >
+                    <td>
+                      <img
+                        src={property.image}
+                        alt={property.title}
+                        className="w-20 h-14 object-cover rounded ring ring-[#00BBA7] ring-offset-2"
+                      />
+                    </td>
+                    <td className="font-medium">{property.title}</td>
+                    <td>
+                      ${property.minPrice} - ${property.maxPrice}
+                    </td>
+                    <td>{property.agentName}</td>
+                    <td>
+                      {property.createdDate
+                        ? new Date(property.createdDate).toLocaleDateString()
+                        : "N/A"}
+                    </td>{" "}
+                    {/* Display formatted date */}
+                    <td>
+                      {property?.status === "sold" ? (
+                        <span className="text-red-500 font-semibold">
+                          {property.status}
+                        </span>
+                      ) : (
+                        <span className="text-blue-600">Verified</span>
+                      )}
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => handleAddAdvertise(property._id)}
+                        className="btn btn-xs border border-[#00BBA7] hover:bg-[#00BBA7] hover:text-white transition hover:scale-105"
+                        disabled={property.advertise}
+                      >
+                        Advertise
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => handleRemoveAdvertise(property._id)}
+                        className="btn btn-xs border border-red-500 hover:bg-red-500 hover:text-white transition hover:scale-105"
+                        disabled={!property.advertise}
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
