@@ -47,12 +47,12 @@ const PropertyBought = () => {
   return (
     <section
       data-aos="fade-up"
-      className="container mx-auto p-4 font-sans"
+      className="container mx-auto px-4 py-8 font-sans"
     >
-      <h2 className="text-3xl font-bold mb-6 text-[#00BBA7]">My Property Offers</h2>
+      <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#00BBA7]">My Property Offers</h2>
 
       {offers.length === 0 ? (
-        <p className="text-gray-600">You haven’t offered on any properties yet.</p>
+        <p >You haven’t offered on any properties yet.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {offers.map((offer) => (

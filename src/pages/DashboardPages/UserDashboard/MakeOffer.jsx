@@ -88,90 +88,95 @@ const MakeOffer = () => {
   };
 
   return (
-    <section className="container max-w-2xl mx-auto p-4 flex flex-col gap-4 min-h-screen">
-      <h2 className="text-2xl font-bold text-[#00BBA7]">Make an Offer</h2>
+    <section className="container mx-auto md:w-2/3  px-4 py-8 gap-6 min-h-screen">
+      <div className="bg-base-300 shadow-md rounded-lg p-6 md:p-8 ">
+        <h2 className="text-3xl lg:text-4xl text-center font-bold text-[#00BBA7] mb-6">
+          Make an Offer
+        </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-        <div className="col-span-2">
-          <label>Property Title</label>
-          <input
-            type="text"
-            value={property?.title || ""}
-            readOnly
-            className="input input-bordered w-full"
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="col-span-1 md:col-span-2">
+            <label className="block mb-1 font-semibold">Property Title</label>
+            <input
+              type="text"
+              value={property?.title || ""}
+              readOnly
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          <div>
+            <label className="block mb-1 font-semibold">Property Location</label>
+            <input
+              type="text"
+              value={property?.location || ""}
+              readOnly
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          <div>
+            <label className="block mb-1 font-semibold">Agent Name</label>
+            <input
+              type="text"
+              value={property?.agentName || ""}
+              readOnly
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          <div>
+            <label className="block mb-1 font-semibold">Offer Amount</label>
+            <input
+              type="number"
+              placeholder={`$${property?.minPrice || 0} - $${property?.maxPrice || 0}`}
+              value={offerAmount}
+              onChange={(e) => setOfferAmount(e.target.value)}
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          <div>
+            <label className="block mb-1 font-semibold">Buying Date</label>
+            <input
+              type="date"
+              value={buyingDate}
+              onChange={(e) => setBuyingDate(e.target.value)}
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          <div>
+            <label className="block mb-1 font-semibold">Buyer Email</label>
+            <input
+              type="email"
+              value={user?.email || ""}
+              readOnly
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          <div>
+            <label className="block mb-1 font-semibold">Buyer Name</label>
+            <input
+              type="text"
+              value={user?.displayName || ""}
+              readOnly
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          <button
+            className="btn btn-primary w-full col-span-1 md:col-span-2 mt-4"
+            onClick={handleSubmit}
+            disabled={makeOffer.isLoading}
+          >
+            {makeOffer.isLoading ? "Submitting..." : "Submit Offer"}
+          </button>
         </div>
-
-        <div>
-          <label>Property Location</label>
-          <input
-            type="text"
-            value={property?.location || ""}
-            readOnly
-            className="input input-bordered w-full"
-          />
-        </div>
-
-        <div>
-          <label>Agent Name</label>
-          <input
-            type="text"
-            value={property?.agentName || ""}
-            readOnly
-            className="input input-bordered w-full"
-          />
-        </div>
-
-        <div>
-          <label>Offer Amount</label>
-          <input
-            type="number"
-            placeholder={`$${property?.minPrice || 0} - $${property?.maxPrice || 0}`}
-            value={offerAmount}
-            onChange={(e) => setOfferAmount(e.target.value)}
-            className="input input-bordered w-full"
-          />
-        </div>
-
-        <div>
-          <label>Buyer Email</label>
-          <input
-            type="email"
-            value={user?.email || ""}
-            readOnly
-            className="input input-bordered w-full"
-          />
-        </div>
-
-        <div>
-          <label>Buyer Name</label>
-          <input
-            type="text"
-            value={user?.displayName || ""}
-            readOnly
-            className="input input-bordered w-full"
-          />
-        </div>
-
-        <div>
-          <label>Buying Date</label>
-          <input
-            type="date"
-            value={buyingDate}
-            onChange={(e) => setBuyingDate(e.target.value)}
-            className="input input-bordered w-full"
-          />
-        </div>
-
-        <button
-          className="btn btn-primary w-full col-span-2"
-          onClick={handleSubmit}
-          disabled={makeOffer.isLoading}
-        >
-          {makeOffer.isLoading ? "Submitting..." : "Submit Offer"}
-        </button>
       </div>
     </section>
+
   );
 };
 

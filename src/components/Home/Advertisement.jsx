@@ -47,6 +47,13 @@ const Advertisement = ({ properties }) => {
                   className="h-48 w-full object-cover"
                 />
 
+                {property.status === "sold" && (
+                  <span className="absolute top-2 right-2 bg-red-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow">
+                    SOLD
+                  </span>
+                )}
+
+
                 <div className="p-4 flex flex-col flex-grow">
                   <h3 className="text-lg font-bold mb-2 text-[#00BBA7]">
                     {property.location}

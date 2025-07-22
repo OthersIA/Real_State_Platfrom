@@ -13,8 +13,6 @@ const AllProperties = () => {
   const { user } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
-
-  // ✅ Added price filter states
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
 
@@ -26,7 +24,10 @@ const AllProperties = () => {
     queryKey: ["all-properties"],
     queryFn: async () => {
       const res = await axios.get(`${import.meta.env.VITE_API_URL}/properties`);
-      return res.data.filter((p) => p.verificationStatus === "verified");
+      // ✅ Fix: only verified OR sold
+      return res.data.filter((p) => p.verificationStatus === "verified" || p.status === "sold"
+      );
+
     },
   });
 
@@ -64,7 +65,7 @@ const AllProperties = () => {
       </h2>
 
       <p
-        className="text-center max-w-2xl mx-auto text-base md:text-lg  mb-8"
+        className="text-center max-w-2xl mx-auto text-base md:text-lg mb-8"
         data-aos="fade-up"
         data-aos-delay="100"
       >
@@ -72,7 +73,7 @@ const AllProperties = () => {
         checked for accuracy to help you buy or sell with complete confidence.
       </p>
 
-      {/* ✅ Search, Sort & New Price Filter */}
+      {/* Search, Sort & Price Filters */}
       <div
         className="mb-8 flex flex-col md:flex-row flex-wrap gap-4 items-center justify-center"
         data-aos="fade-up"
@@ -82,26 +83,25 @@ const AllProperties = () => {
           placeholder="Search by location..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="input input-bordered w-full md:w-1/3 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
+          className="input input-bordered w-full md:w-1/3"
         />
 
         <select
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value)}
-          className="select select-bordered w-full md:w-40 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
+          className="select select-bordered w-full md:w-40"
         >
           <option value="asc">Price: Low to High</option>
           <option value="desc">Price: High to Low</option>
         </select>
 
-        {/* ✅ New price inputs */}
         <input
           type="number"
           min="0"
           placeholder="Min Price"
           value={minPrice}
           onChange={(e) => setMinPrice(e.target.value)}
-          className="input input-bordered w-full md:w-32 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
+          className="input input-bordered w-full md:w-32"
         />
 
         <input
@@ -110,41 +110,44 @@ const AllProperties = () => {
           placeholder="Max Price"
           value={maxPrice}
           onChange={(e) => setMaxPrice(e.target.value)}
-          className="input input-bordered w-full md:w-32 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
+          className="input input-bordered w-full md:w-32"
         />
       </div>
 
       {sortedProperties.length === 0 && (
-        <p className="text-gray-500 dark:text-gray-400 text-lg text-center">
+        <p className="text-gray-500 text-lg text-center">
           No matching properties found.
         </p>
       )}
 
-      {/* Property Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-10">
         {sortedProperties.map((prop) => (
           <div
             key={prop._id}
-            className="relative rounded-xl shadow-lg overflow-hidden dark:border-gray-700 bg-base-300 dark:bg-gray-900 hover:shadow-2xl transition flex flex-col"
+            className="relative rounded-xl shadow-lg overflow-hidden bg-base-300 hover:shadow-2xl transition flex flex-col"
             data-aos="fade-up"
             data-aos-delay={prop._id.length * 30}
           >
             <figure className="overflow-hidden rounded-t-xl">
-              <img
-                src={prop.image}
-                alt={prop.title}
-                className="w-full h-56 object-cover"
-                loading="lazy"
-              />
+              <div className="relative">
+                <img
+                  src={prop.image}
+                  alt={prop.title}
+                  className="h-56 w-full object-cover"
+                  loading="lazy"
+                />
+
+                {prop.status === "sold" && (
+                  <span className="absolute top-2 right-2 bg-red-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow">
+                    SOLD
+                  </span>
+                )}
+              </div>
             </figure>
 
             <div className="p-5 space-y-2 flex-grow">
-              <h3 className="text-2xl font-semibold  dark:text-gray-100 truncate">
-                {prop.title}
-              </h3>
-              <p className="text-indigo-600 dark:text-indigo-400 font-semibold">
-                {prop.location}
-              </p>
+              <h3 className="text-2xl font-semibold truncate">{prop.title}</h3>
+              <p className="text-indigo-600 font-semibold">{prop.location}</p>
 
               <div className="flex items-center gap-3 mt-2">
                 {prop.agentPhoto ? (
@@ -154,23 +157,29 @@ const AllProperties = () => {
                     className="w-10 h-10 rounded-full object-cover"
                   />
                 ) : (
-                  <FaUserCircle className="w-10 h-10 text-gray-400 dark:text-gray-600" />
+                  <FaUserCircle className="w-10 h-10 text-gray-400" />
                 )}
-                <span className=" dark:text-gray-300">{prop.agentName}</span>
+                <span>{prop.agentName}</span>
               </div>
 
               <p className="mt-3">
                 <strong>Status: </strong>
-                <span className="badge badge-success">{prop.verificationStatus}</span>
+                <span
+                  className={`badge ${prop.verificationStatus === "sold"
+                    ? "badge-error"
+                    : "badge-success"
+                    }`}
+                >
+                  {prop.verificationStatus}
+                </span>
               </p>
 
-              <p className="text-lg font-bold text-purple-700 dark:text-purple-400">
+              <p className="text-lg font-bold text-purple-700">
                 ${prop.minPrice} - ${prop.maxPrice}
               </p>
             </div>
 
-            {/* Persistent View Details Button at bottom */}
-            <div className="p-5 -pt-5">
+            <div className="p-5">
               <Link
                 to={`/property/${prop._id}`}
                 className="btn btn-primary w-full flex items-center justify-center gap-2 bg-[#00BBA7] hover:bg-[#009d8f] text-white px-6 py-2 rounded-full shadow-lg transition-colors duration-300"

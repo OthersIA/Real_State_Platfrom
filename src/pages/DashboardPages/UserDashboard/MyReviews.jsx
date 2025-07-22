@@ -46,8 +46,8 @@ const MyReviews = () => {
     if (isLoading) return <LoadingFallback />;
 
     return (
-        <section className="container mx-auto p-4">
-            <h2 className="text-2xl font-bold mb-6 text-[#00BBA7]">My Reviews</h2>
+        <section className="container mx-auto px-4 py-8" data-aos="fade-up">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#00BBA7]">My Reviews</h2>
 
             {reviews.length === 0 ? (
                 <p>You haven’t added any reviews yet.</p>

@@ -52,11 +52,19 @@ const MyAddedProperties = () => {
                         className="card bg-base-100 shadow p-4 space-y-2 border border-[#00BBA7]"
                         data-aos="fade-up"
                     >
-                        <img
-                            src={prop.image}
-                            alt="Property"
-                            className="w-full h-full object-cover rounded"
-                        />
+                        <div className="relative">
+                            <img
+                                src={prop.image}
+                                alt="Property"
+                                className="w-full h-40 object-cover rounded"
+                            />
+                            <span
+                                className={`badge absolute top-2 left-2 ${prop.status === "sold" ? "badge-error" : "badge-success"
+                                    }`}
+                            >
+                                {prop.status}
+                            </span>
+                        </div>
                         <h3 className="text-xl font-semibold">{prop.title}</h3>
                         <p className="text-sm text-gray-600">{prop.location}</p>
                         <div className="flex items-center gap-2">
@@ -98,7 +106,10 @@ const MyAddedProperties = () => {
                             {prop.verificationStatus !== "rejected" && (
                                 <Link
                                     to={`/dashboard/update-properties/${prop._id}`}
-                                    className="btn btn-xs border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white"
+                                    className={`btn btn-xs border ${prop.status === "sold" || prop.verificationStatus === "rejected"
+                                        ? "border-gray-400 text-gray-400 cursor-not-allowed opacity-50 pointer-events-none"
+                                        : "border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white"
+                                        }`}
                                 >
                                     Update
                                 </Link>

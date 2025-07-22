@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
@@ -7,11 +7,14 @@ import Swal from "sweetalert2";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { AuthContext } from "../../../context/AuthContext";
 
 const PaymentForm = () => {
+    const { user } = useContext(AuthContext);
     const stripe = useStripe();
     const elements = useElements();
     const { wishlistId } = useParams();
+    const navigate = useNavigate();
 
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
@@ -112,6 +115,7 @@ const PaymentForm = () => {
 
                 setSuccess(`Payment successful! Transaction ID: ${paymentIntent.id}`);
                 Swal.fire("Success!", "Payment completed successfully.", "success");
+                navigate(`/dashboard/payments/history/${user.email}`);
             }
 
         } catch (err) {
@@ -122,10 +126,12 @@ const PaymentForm = () => {
         }
     };
 
+    console.log("Fetching accepted offer for:", wishlistId);
+
     return (
         <section
             data-aos="fade-up"
-            className="max-w-md mx-auto space-y-6 p-6 bg-white shadow-md rounded"
+            className="container w-8/9 md:w-3/4 my-10  mx-auto space-y-6 p-6 bg-white shadow-md rounded"
         >
             <h2 className="text-3xl font-bold mb-2 text-[#00BBA7]">
                 Pay ${amount} for Your Property

@@ -7,6 +7,7 @@ import { AuthContext } from "../../../context/AuthContext";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { FaUserCircle } from "react-icons/fa";
 
 const Wishlist = () => {
   const { user } = useContext(AuthContext);
@@ -14,10 +15,9 @@ const Wishlist = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    AOS.init({ duration: 600, easing: "ease-out" });
+    AOS.init({ duration: 600, easing: "ease-out", once: true });
   }, []);
 
-  // ✅ Load wishlist
   const { data: wishlist = [], isLoading } = useQuery({
     queryKey: ["wishlist", user?.email],
     enabled: !!user?.email,
@@ -27,7 +27,6 @@ const Wishlist = () => {
     },
   });
 
-  // ✅ Remove from wishlist
   const removeItem = useMutation({
     mutationFn: async (id) => {
       await axios.delete(`${import.meta.env.VITE_API_URL}/wishlist/${id}`);
@@ -48,32 +47,45 @@ const Wishlist = () => {
   if (isLoading) return <LoadingFallback />;
 
   return (
-    <section className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4 text-[#00BBA7]">My Wishlist</h2>
+    <section className="container mx-auto px-4 py-8 " data-aos="fade-up" >
+      <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#00BBA7]">My Wishlist</h2>
 
       {wishlist.length === 0 ? (
         <p>You haven’t wishlisted any properties yet.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {wishlist.map((property) => (
+          {wishlist.map((property, idx) => (
             <div
               key={property._id}
               data-aos="fade-up"
-              className="p-4 rounded shadow bg-base-300 flex flex-col gap-2"
+              data-aos-delay={idx * 100}
+              className="p-4 rounded shadow bg-base-300 flex flex-col gap-2 transition-transform hover:scale-[1.02] hover:shadow-lg"
             >
-              <img
-                src={property.image}
-                alt="Property"
-                className="w-full h-40 object-cover rounded"
-              />
+              <div className="relative">
+                <img
+                  src={property.image}
+                  alt="Property"
+                  className="w-full h-40 object-cover rounded"
+                />
+                <span
+                  className={`badge absolute top-2 left-2 ${property.status === "sold" ? "badge-error" : "badge-success"
+                    }`}
+                >
+                  {property.status === "sold" ? "Sold" : "Availavle"}
+                </span>
+              </div>
               <h3 className="text-lg font-bold text-[#00BBA7]">{property.title}</h3>
               <p className="text-sm text-gray-600">{property.location}</p>
               <div className="flex items-center gap-2">
-                <img
-                  src={property.agentImage || "/default-avatar.png"}
-                  alt="Agent"
-                  className="w-8 h-8 rounded-full"
-                />
+                {property?.agentImage ? (
+                  <img
+                    src={property.agentImage}
+                    alt={property.agentName}
+                    className="w-8 h-8 rounded-full object-cover border-2 border-[#00BBA7]"
+                  />
+                ) : (
+                  <FaUserCircle className="w-8 h-8 text-[#00BBA7]" />
+                )}
                 <span className="text-sm">{property.agentName}</span>
               </div>
               <p>
@@ -86,8 +98,13 @@ const Wishlist = () => {
               <div className="flex gap-2 mt-2 flex-wrap">
                 <button
                   className="btn btn-xs"
-                  style={{ backgroundColor: "#00BBA7", borderColor: "#00BBA7" }}
+                  style={{
+                    backgroundColor: property.status === "sold" ? "#cccccc" : "#00BBA7",
+                    borderColor: property.status === "sold" ? "#cccccc" : "#00BBA7",
+                    cursor: property.status === "sold" ? "not-allowed" : "pointer",
+                  }}
                   onClick={() => handleOfferClick(property._id)}
+                  disabled={property.status === "sold"}
                 >
                   Make an Offer
                 </button>
@@ -118,6 +135,7 @@ const Wishlist = () => {
                   Remove
                 </button>
               </div>
+
             </div>
           ))}
         </div>

@@ -88,6 +88,7 @@ const AdvertiseProperty = () => {
                 <th>Title</th>
                 <th>Price Range</th>
                 <th>Agent</th>
+                <th>Stats</th>
                 <th>Advertise</th>
                 <th>Remove</th>
               </tr>
@@ -112,9 +113,16 @@ const AdvertiseProperty = () => {
                   </td>
                   <td>{property.agentName}</td>
                   <td>
+                    {property?.status === "sold" ? (
+                      <span className="text-red-500 font-semibold">{property.status}</span>
+                    ) : (
+                      <span className="text-blue-600">Verified</span>
+                    )}
+                  </td>
+                  <td>
                     <button
                       onClick={() => handleAddAdvertise(property._id)}
-                      className="btn btn-xs border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white transition hover:scale-105"
+                      className="btn btn-xs border border-[#00BBA7]  hover:bg-[#00BBA7] hover:text-white transition hover:scale-105"
                       disabled={property.advertise}
                     >
                       Advertise
@@ -123,7 +131,7 @@ const AdvertiseProperty = () => {
                   <td>
                     <button
                       onClick={() => handleRemoveAdvertise(property._id)}
-                      className="btn btn-xs border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition hover:scale-105"
+                      className="btn btn-xs border border-red-500 hover:bg-red-500 hover:text-white transition hover:scale-105"
                       disabled={!property.advertise}
                     >
                       Remove

@@ -30,9 +30,9 @@ const PaymentHistory = () => {
   return (
     <section
       data-aos="fade-up"
-      className="container mx-auto p-4 font-sans"
+      className="container mx-auto px-4 py-8 font-sans"
     >
-      <h2 className="text-3xl font-bold mb-4 text-[#00BBA7]">My Payment History</h2>
+      <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#00BBA7]">My Payment History</h2>
 
       <p className="mb-4 font-semibold ">
         Below is the record of all your completed payments for purchased properties.

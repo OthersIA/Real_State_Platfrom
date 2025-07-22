@@ -74,7 +74,7 @@ const PropertyDetails = () => {
       queryClient.invalidateQueries(["wishlist", id, user?.email]);
     },
     onError: () => {
-      Swal.fire("Failed to add to wishlist", "", "error");
+      Swal.fire("Already in wishlist!", "", "error");
     },
   });
 
@@ -157,12 +157,20 @@ const PropertyDetails = () => {
         className="w-2/3 md:w-2/4 mx-auto rounded-xl overflow-hidden shadow-lg mb-8"
         data-aos="zoom-in"
       >
-        <img
+        <div className="relative">
+          <img
           src={property.image}
           alt={property.title || "Property Image"}
           className="w-full rounded-lg object-cover"
           loading="lazy"
-        />
+          />
+
+          {property.status === "sold" && (
+            <span className="absolute top-2 right-2 bg-red-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow">
+              SOLD
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Property Details Card */}
@@ -221,7 +229,8 @@ const PropertyDetails = () => {
               isWishlistLoading ||
               addToWishlist.isLoading ||
               isWishlisted ||
-              role !== "user"
+              role !== "user" ||
+              property.status === "sold"
             }
           >
             {isWishlistLoading
@@ -236,18 +245,24 @@ const PropertyDetails = () => {
           <button
             className="btn w-full md:w-auto bg-[#00BBA7] hover:bg-[#009d8f] text-white px-6 py-2 rounded-full shadow-lg transition-colors duration-300 disabled:opacity-50"
             onClick={() => setShowModal(true)}
-            disabled={!user || role !== "user"}
+            disabled={
+              !user || role !== "user" || property.status === "sold"
+            }
           >
             Add a Review
           </button>
+
           <button
             onClick={() => setOpenReportModal(true)}
             className="btn w-full md:w-auto bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full shadow-lg transition-colors duration-300 disabled:opacity-50"
-            disabled={!user || role !== "user"}
+            disabled={
+              !user || role !== "user" || property.status === "sold"
+            }
           >
             Report this Property
           </button>
         </div>
+
       </div>
 
       {/* Reviews */}
