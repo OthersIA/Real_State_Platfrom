@@ -39,8 +39,8 @@ const ManageReviews = () => {
     if (isLoading) return <LoadingFallback />;
 
     return (
-        <section className="container mx-auto p-4" data-aos="fade-up">
-            <h2 className="text-2xl font-bold mb-6 text-[#00BBA7]">Manage Reviews</h2>
+        <section className="container mx-auto px-4 py-8" data-aos="fade-up">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#00BBA7]">Manage Reviews</h2>
 
             {reviews.length === 0 ? (
                 <p className="text-gray-500">No reviews yet.</p>

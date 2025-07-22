@@ -1,11 +1,18 @@
+import { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import Swal from "sweetalert2";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
 import { FaUserCircle } from "react-icons/fa";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const ManageUsers = () => {
     const queryClient = useQueryClient();
+
+    useEffect(() => {
+        AOS.init({ duration: 700, easing: "ease-in-out" });
+    }, []);
 
     const { data: users = [], isLoading } = useQuery({
         queryKey: ["users"],
@@ -48,8 +55,8 @@ const ManageUsers = () => {
     if (isLoading) return <LoadingFallback />;
 
     return (
-        <div className="container px-4 py-10 mx-auto">
-            <h2 className="text-xl font-bold mb-4 text-[#00BBA7]">Manage Users</h2>
+        <div className="container px-4 py-8 mx-auto" data-aos="fade-up">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#00BBA7]">Manage Users</h2>
             <div className="overflow-x-auto">
                 <table className="table w-full">
                     <thead>
@@ -66,7 +73,11 @@ const ManageUsers = () => {
                     </thead>
                     <tbody>
                         {users.map((u, idx) => (
-                            <tr key={u._id}>
+                            <tr
+                                key={u._id}
+                                data-aos="fade-up"
+                                className="transition-colors duration-300 hover:bg-[#00bba7]/20 cursor-pointer"
+                            >
                                 <td>{idx + 1}</td>
                                 <td>
                                     {u.photo ? (

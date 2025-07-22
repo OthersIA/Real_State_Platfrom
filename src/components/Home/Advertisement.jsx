@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { MdVisibility } from "react-icons/md";
 
 const Advertisement = ({ properties }) => {
   useEffect(() => {
@@ -62,9 +63,9 @@ const Advertisement = ({ properties }) => {
                   <div className="mt-auto">
                     <Link
                       to={`/property/${property._id}`}
-                      className="btn w-full bg-[#00BBA7] text-white border-none"
+                      className="btn btn-primary w-full flex items-center justify-center gap-2 bg-[#00BBA7] hover:bg-[#009d8f] text-white px-6 py-2 rounded-full shadow-lg transition-colors duration-300"
                     >
-                      View Details <LuLogIn className="ml-1" />
+                      View Details <MdVisibility size={20} />
                     </Link>
                   </div>
                 </div>

@@ -1,13 +1,19 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEye } from "react-icons/fa";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
 
-const PropertyReports = () => {
+const ReportedProperty = () => {
     const queryClient = useQueryClient();
     const [viewReport, setViewReport] = useState(null);
+
+    useEffect(() => {
+        AOS.init({ duration: 700, easing: "ease-in-out" });
+    }, []);
 
     // Fetch all reports
     const { data: reports = [], isLoading, isError } = useQuery({
@@ -18,7 +24,7 @@ const PropertyReports = () => {
         },
     });
 
-    // ✅ Remove FULL property + reports + reviews + bookmarks, etc.
+    // Remove FULL property + related data
     const removePropertyAndReport = useMutation({
         mutationFn: async ({ propertyId }) => {
             await axios.delete(`${import.meta.env.VITE_API_URL}/all-reports/${propertyId}`);
@@ -49,7 +55,7 @@ const PropertyReports = () => {
         });
     };
 
-    // ✅ Remove JUST report
+    // Remove JUST the report
     const removeReport = useMutation({
         mutationFn: async ({ reportId }) => {
             await axios.delete(`${import.meta.env.VITE_API_URL}/reports/${reportId}`);
@@ -83,8 +89,8 @@ const PropertyReports = () => {
     if (isError) return <p className="text-error">Failed to load reports.</p>;
 
     return (
-        <section className="container mx-auto p-6 max-w-6xl">
-            <h2 className="text-3xl font-bold mb-6 text-[#00BBA7]">Property Reports</h2>
+        <section className="container mx-auto px-6 py-8" data-aos="fade-up" >
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#00BBA7]">Property Reports</h2>
 
             {reports.length === 0 ? (
                 <p className="text-gray-500 dark:text-gray-400 text-lg">No reports found.</p>
@@ -104,14 +110,13 @@ const PropertyReports = () => {
                         </thead>
                         <tbody>
                             {reports.map((report, idx) => (
-                                <tr key={report._id}>
+                                <tr
+                                    key={report._id}
+                                    data-aos="fade-up"
+                                    className="transition-colors duration-300 hover:bg-[#00BBA7]/10 cursor-pointer"
+                                >
                                     <td className="font-semibold">{idx + 1}</td>
                                     <td className="font-semibold">{report.reporterName}</td>
-                                    {/* <td>
-                                        {report.reporterEmail.length > 10
-                                            ? `${report.reporterEmail.slice(0, 10)}...`
-                                            : report.reporterEmail}
-                                    </td> */}
                                     <td>
                                         {report.reporterEmail.length > 10
                                             ? `...${report.reporterEmail.slice(-10)}`
@@ -122,7 +127,6 @@ const PropertyReports = () => {
                                             ? `${report.propertyTitle.slice(0, 10)}...`
                                             : report.propertyTitle}
                                     </td>
-
                                     <td>{report.agentName}</td>
                                     <td className="text-center">
                                         <button
@@ -133,7 +137,7 @@ const PropertyReports = () => {
                                             <FaEye className="w-6 h-4" />
                                         </button>
                                     </td>
-                                    <td className=" flex flex-col space-y-2 text-center">
+                                    <td className="flex flex-col space-y-2 text-center">
                                         <button
                                             onClick={() => handleRemoveReport(report._id)}
                                             className="btn btn-warning btn-xs"
@@ -166,7 +170,7 @@ const PropertyReports = () => {
                             <p><span className="font-semibold">Email:</span> {viewReport.reporterEmail}</p>
                             <p><span className="font-semibold">Property:</span> {viewReport.propertyTitle}</p>
                             <p><span className="font-semibold">Agent:</span> {viewReport.agentName}</p>
-                            <p><span className="font-semibold">Agent:</span> {viewReport.agentEmail}</p>
+                            <p><span className="font-semibold">Agent Email:</span> {viewReport.agentEmail}</p>
                             <p><span className="font-semibold">Description:</span></p>
                             <p className="bg-base-200 p-3 rounded text-sm">{viewReport.description}</p>
                         </div>
@@ -182,9 +186,8 @@ const PropertyReports = () => {
                     </div>
                 </div>
             )}
-
         </section>
     );
 };
 
-export default PropertyReports;
+export default ReportedProperty;

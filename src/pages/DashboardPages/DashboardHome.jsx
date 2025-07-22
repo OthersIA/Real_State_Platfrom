@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { NavLink } from "react-router";
@@ -15,9 +15,15 @@ import {
     YAxis,
     ResponsiveContainer,
 } from "recharts";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const DashboardHome = () => {
     const { user } = useContext(AuthContext);
+
+    useEffect(() => {
+        AOS.init({ duration: 700, easing: "ease-in-out" });
+    }, []);
 
     const { data: users = [], isLoading: usersLoading } = useQuery({
         queryKey: ["users"],
@@ -119,10 +125,9 @@ const DashboardHome = () => {
                 Welcome, {user?.displayName || "User"}!
             </h2>
 
-            {/* ---------- USER DASHBOARD ---------- */}
             {role === "user" && (
                 <>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4" data-aos="fade-up">
                         <div className="card bg-base-200 p-4 border-l-4 border-[#00BBA7]">
                             Wishlisted: {wishlist.length}
                         </div>
@@ -134,16 +139,16 @@ const DashboardHome = () => {
                     <h3 className="text-xl font-semibold mt-6 mb-2 text-[#00BBA7]">
                         Quick Actions
                     </h3>
-                    <div className="flex gap-4 flex-wrap">
+                    <div className="flex gap-4 flex-wrap" data-aos="fade-up">
                         <NavLink
                             to="/all-properties"
-                            className="btn border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white"
+                            className="btn border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white transition"
                         >
                             Browse Properties
                         </NavLink>
                         <NavLink
                             to="/dashboard/user-profile"
-                            className="btn border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white"
+                            className="btn border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white transition"
                         >
                             Your Profile
                         </NavLink>
@@ -202,10 +207,9 @@ const DashboardHome = () => {
                 </>
             )}
 
-            {/* ---------- AGENT DASHBOARD ---------- */}
             {role === "agent" && (
                 <>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4" data-aos="fade-up">
                         <div className="card bg-base-200 p-4 border-l-4 border-[#00BBA7]">
                             Properties Listed: {myProperties.length}
                         </div>
@@ -230,6 +234,25 @@ const DashboardHome = () => {
                         <p className="text-gray-500">No properties listed yet.</p>
                     )}
 
+
+                    <h3 className="text-xl font-semibold mt-6 mb-2 text-[#00BBA7]">
+                        Quick Actions
+                    </h3>
+                    <div className="flex gap-4 flex-wrap" data-aos="fade-up">
+                        <NavLink
+                            to="/dashboard/add-property"
+                            className="btn border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white transition"
+                        >
+                            Add New Property
+                        </NavLink>
+                        <NavLink
+                            to="/dashboard/my-added-properties"
+                            className="btn border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white transition"
+                        >
+                            My Added Properties
+                        </NavLink>
+                    </div>
+
                     <h3 className="text-xl font-semibold mt-6 mb-2 text-[#00BBA7]">
                         Listed vs Sold
                     </h3>
@@ -241,31 +264,12 @@ const DashboardHome = () => {
                             <Bar dataKey="value" fill="#00BBA7" />
                         </BarChart>
                     </ResponsiveContainer>
-
-                    <h3 className="text-xl font-semibold mt-6 mb-2 text-[#00BBA7]">
-                        Quick Actions
-                    </h3>
-                    <div className="flex gap-4 flex-wrap">
-                        <NavLink
-                            to="/dashboard/add-property"
-                            className="btn border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white"
-                        >
-                            Add New Property
-                        </NavLink>
-                        <NavLink
-                            to="/dashboard/my-added-properties"
-                            className="btn border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white"
-                        >
-                            My Added Properties
-                        </NavLink>
-                    </div>
                 </>
             )}
 
-            {/* ---------- ADMIN DASHBOARD ---------- */}
             {role === "admin" && (
                 <>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4" data-aos="fade-up">
                         <div className="card bg-base-200 p-4 border-l-4 border-[#00BBA7]">
                             Total Users: {users.length}
                         </div>
@@ -275,6 +279,25 @@ const DashboardHome = () => {
                         <div className="card bg-base-200 p-4 border-l-4 border-[#00BBA7]">
                             Total Properties: {properties.length}
                         </div>
+                    </div>
+
+
+                    <h3 className="text-xl font-semibold mt-6 mb-2 text-[#00BBA7]">
+                        Quick Actions
+                    </h3>
+                    <div className="flex gap-4 flex-wrap" data-aos="fade-up">
+                        <NavLink
+                            to="/dashboard/manage-users"
+                            className="btn border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white transition"
+                        >
+                            Manage Users
+                        </NavLink>
+                        <NavLink
+                            to="/dashboard/manage-properties"
+                            className="btn border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white transition"
+                        >
+                            View All Properties
+                        </NavLink>
                     </div>
 
                     <h3 className="text-xl font-semibold mt-6 mb-2 text-[#00BBA7]">
@@ -301,24 +324,6 @@ const DashboardHome = () => {
                             <Tooltip />
                         </PieChart>
                     </ResponsiveContainer>
-
-                    <h3 className="text-xl font-semibold mt-6 mb-2 text-[#00BBA7]">
-                        Quick Actions
-                    </h3>
-                    <div className="flex gap-4 flex-wrap">
-                        <NavLink
-                            to="/dashboard/manage-users"
-                            className="btn border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white"
-                        >
-                            Manage Users
-                        </NavLink>
-                        <NavLink
-                            to="/dashboard/manage-properties"
-                            className="btn border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white"
-                        >
-                            View All Properties
-                        </NavLink>
-                    </div>
                 </>
             )}
         </section>

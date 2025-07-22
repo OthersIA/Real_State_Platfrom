@@ -16,6 +16,7 @@ import {
   FaChartBar,
   FaBullhorn,
   FaFlag,
+  FaUserCircle,
 } from "react-icons/fa";
 import { MdLogout, MdReportProblem } from "react-icons/md";
 import WebLogo from "../components/WebLogo";
@@ -40,7 +41,7 @@ const DashboardLayout = () => {
 
   const foundUser = users.find((u) => u.email === user?.email);
   const userName = foundUser?.name || user?.displayName || "User";
-  const userImage = foundUser?.photo || user?.photoURL || "/default-avatar.png";
+  const userImage = foundUser?.photo || user?.photoURL ;
   const role = foundUser?.role;
 
   // ✅ Closes the drawer on mobile
@@ -239,7 +240,15 @@ const DashboardLayout = () => {
                   }`} onClick={closeDrawer}
               >
                 <div className="w-10 h-10 rounded-full overflow-hidden ring ring-[#00BBA7] ring-offset-base-100 ring-offset-2">
-                  <img src={userImage} alt="Profile" className="object-cover w-full h-full" />
+                  {userImage ? (
+                    <img
+                      src={userImage}
+                      alt="User"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <FaUserCircle className="w-full h-full text-[#00BBA7]" />
+                  )}
                 </div>
                 <div>
                   <p>{userName}</p>

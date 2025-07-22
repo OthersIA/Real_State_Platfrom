@@ -45,7 +45,7 @@ const MyAddedProperties = () => {
     return (
         <div className="container mx-auto p-4" data-aos="fade-up">
             <h2 className="text-2xl font-bold mb-4 text-[#00BBA7]">My Added Properties</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {properties.map((prop) => (
                     <div
                         key={prop._id}

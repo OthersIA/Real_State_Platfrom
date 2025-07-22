@@ -94,7 +94,7 @@ const AgentProfile = () => {
                                 className="w-full h-full object-cover"
                             />
                         ) : (
-                            <FaUserCircle className="text-7xl text-gray-500" />
+                            <FaUserCircle className="w-full h-full text-[#00BBA7]" />
                         )}
                     </div>
                     <h2 className="text-xl font-semibold">{userName}</h2>

@@ -3,7 +3,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 import { Link } from "react-router";
-import { FaStar, FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
+import { FaStar, FaQuoteLeft, FaQuoteRight, FaUserCircle } from "react-icons/fa";
 
 const LatestUserReviews = ({ reviews }) => {
   useEffect(() => {
@@ -42,13 +42,18 @@ const LatestUserReviews = ({ reviews }) => {
                 data-aos-delay={300 + index * 100}
               >
                 {/* User image */}
-                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 z-10">
-                  <img
-                    src={review.userImage}
-                    alt={review.userName}
-                    className="w-16 h-16 rounded-full border-4 border-base-100 shadow-lg object-cover"
-                  />
+                <div className=" w-16 h-16 absolute -top-8 left-1/2 transform -translate-x-1/2 z-10">
+                  {review.userImage ? (
+                    <img
+                      src={review.userImage}
+                      alt={review.userName}
+                      className="w-full h-full rounded-full border-4 border-base-100 shadow-lg object-cover"
+                    />
+                  ) : (
+                    <FaUserCircle className="w-full h-full text-[#00BBA7]" />
+                  )}
                 </div>
+
 
                 {/* Card */}
                 <div className="p-6 rounded-xl shadow-md overflow-hidden text-center border border-base-200 bg-base-300 flex flex-col justify-between">
@@ -73,8 +78,8 @@ const LatestUserReviews = ({ reviews }) => {
                         <FaStar
                           key={star}
                           className={`text-xl ${star <= review.rating
-                              ? "text-[#00BBA7]"
-                              : "text-base-content opacity-30"
+                            ? "text-[#00BBA7]"
+                            : "text-base-content opacity-30"
                             }`}
                         />
                       ))}

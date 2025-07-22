@@ -14,6 +14,10 @@ const AllProperties = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
+  // ✅ Added price filter states
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+
   useEffect(() => {
     AOS.init({ duration: 800, easing: "ease-in-out", once: true });
   }, []);
@@ -28,9 +32,21 @@ const AllProperties = () => {
 
   if (isLoading) return <LoadingFallback />;
 
-  const filteredProperties = properties.filter((prop) =>
-    prop.location.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredProperties = properties.filter((prop) => {
+    const matchesLocation = prop.location
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+
+    const propMin = parseFloat(prop.minPrice) || 0;
+    const propMax = parseFloat(prop.maxPrice) || 0;
+
+    const min = parseFloat(minPrice) || 0;
+    const max = parseFloat(maxPrice) || Infinity;
+
+    const matchesPrice = propMax >= min && propMin <= max;
+
+    return matchesLocation && matchesPrice;
+  });
 
   const sortedProperties = [...filteredProperties].sort((a, b) => {
     const priceA = parseFloat(a.minPrice);
@@ -39,17 +55,26 @@ const AllProperties = () => {
   });
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto px-4 py-8">
       <h2
-        className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#00BBA7] to-[#009d8f]"
+        className="text-center text-3xl md:text-4xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#00BBA7] to-[#009d8f]"
         data-aos="fade-down"
       >
         All Verified Properties
       </h2>
 
-      {/* Search and Sort */}
+      <p
+        className="text-center max-w-2xl mx-auto text-base md:text-lg  mb-8"
+        data-aos="fade-up"
+        data-aos-delay="100"
+      >
+        Browse our selection of carefully verified properties. Every listing is
+        checked for accuracy to help you buy or sell with complete confidence.
+      </p>
+
+      {/* ✅ Search, Sort & New Price Filter */}
       <div
-        className="mb-8 flex flex-col md:flex-row gap-4 items-center"
+        className="mb-8 flex flex-col md:flex-row flex-wrap gap-4 items-center justify-center"
         data-aos="fade-up"
       >
         <input
@@ -68,6 +93,25 @@ const AllProperties = () => {
           <option value="asc">Price: Low to High</option>
           <option value="desc">Price: High to Low</option>
         </select>
+
+        {/* ✅ New price inputs */}
+        <input
+          type="number"
+          min="0"
+          placeholder="Min Price"
+          value={minPrice}
+          onChange={(e) => setMinPrice(e.target.value)}
+          className="input input-bordered w-full md:w-32 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
+        />
+
+        <input
+          type="number"
+          min="0"
+          placeholder="Max Price"
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(e.target.value)}
+          className="input input-bordered w-full md:w-32 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
+        />
       </div>
 
       {sortedProperties.length === 0 && (
@@ -77,7 +121,7 @@ const AllProperties = () => {
       )}
 
       {/* Property Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-10">
         {sortedProperties.map((prop) => (
           <div
             key={prop._id}

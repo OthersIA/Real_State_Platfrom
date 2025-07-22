@@ -145,21 +145,16 @@ const PropertyDetails = () => {
   return (
     <section className="container mx-auto py-10 p-6 max-w-6xl">
       <h2
-        className="text-4xl text-center font-extrabold mb-6"
+        className="text-3xl md:text-4xl text-center font-extrabold mb-6 border-b-2 border-[#00BBA7] pb-4"
         data-aos="fade-down"
       >
         Propertie Details
       </h2>
-      <h2
-        className="text-4xl text-center font-extrabold mb-6 text-[#00BBA7]"
-        data-aos="fade-down"
-      >
-        {property.title}
-      </h2>
+
 
       {/* Property Image */}
       <div
-        className="w-2/3 md:w-3/4 mx-auto rounded-xl overflow-hidden shadow-lg mb-8"
+        className="w-2/3 md:w-2/4 mx-auto rounded-xl overflow-hidden shadow-lg mb-8"
         data-aos="zoom-in"
       >
         <img
@@ -175,8 +170,14 @@ const PropertyDetails = () => {
         className="bg-base-300 rounded-xl shadow-lg p-8 space-y-4 border border-gray-200 dark:border-gray-700"
         data-aos="fade-up"
       >
-        <p className="text-lg  dark:text-gray-200">
-          <strong>Description:</strong> {property.description || "No description provided."}
+        <h2
+          className="text-4xl text-center font-extrabold mb-6 text-[#00BBA7]"
+          data-aos="fade-down"
+        >
+          {property.title}
+        </h2>
+        <p className="text-lg text-center dark:text-gray-200">
+          {property.description || "No description provided."}
         </p>
         <p className=" dark:text-gray-300">
           <strong>Location:</strong>{" "}
@@ -264,13 +265,18 @@ const PropertyDetails = () => {
                 data-aos-delay={r._id.length * 30}
               >
                 {/* User image */}
-                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 z-10">
-                  <img
-                    src={r.userImage}
-                    alt={r.userName}
-                    className="w-16 h-16 rounded-full border-4 border-base-100 shadow-lg object-cover"
-                  />
+                <div className="w-16 h-16  absolute -top-8 left-1/2 transform -translate-x-1/2 z-10">
+                  {r.userImage ? (
+                    <img
+                      src={r.userImage}
+                      alt={r.userName}
+                      className="w-full h-full rounded-full border-4 border-base-100 shadow-lg bg-[#00BBA7] object-cover"
+                    />
+                  ) : (
+                    <FaUserCircle className="w-full h-full text-[#00BBA7]" />
+                  )}
                 </div>
+
 
                 <div className="pt-8 flex flex-col items-center gap-4 flex-grow p-6 rounded-xl shadow-md overflow-hidden text-center border border-base-200 bg-base-300 justify-between">
                   <div className="flex flex-col items-center">
