@@ -70,6 +70,7 @@ const AddProperty = () => {
         agentEmail: user.email,
         agentPhoto: user.photoURL,
         image: imageUrl,
+        image: imageUrl,
       };
 
       const res = await axios.post(
