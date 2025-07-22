@@ -17,12 +17,18 @@ const LatestUserReviews = ({ reviews }) => {
     <section className="bg-base-200">
       <div className="container mx-auto p-4 py-12">
         <h2
-          className="text-3xl text-center font-bold mb-4 text-[#00BBA7]"
+          className="text-3xl md:text-4xl text-center font-bold mb-4 text-[#00BBA7]"
+          data-aos="fade-down"
+          data-aos-delay="100"
         >
           Latest User Reviews
         </h2>
 
-        <p className="text-center max-w-2xl mx-auto mb-12">
+        <p
+          className="text-center max-w-2xl mx-auto mb-12"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        >
           Hear what our satisfied users are saying! Real feedback from real buyers and sellers helps you make informed choices and trust us for your next property deal.
         </p>
 
@@ -33,7 +39,7 @@ const LatestUserReviews = ({ reviews }) => {
                 key={review._id}
                 className="relative"
                 data-aos="fade-up"
-                data-aos-delay={index * 100}
+                data-aos-delay={300 + index * 100}
               >
                 {/* User image */}
                 <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 z-10">
@@ -67,8 +73,8 @@ const LatestUserReviews = ({ reviews }) => {
                         <FaStar
                           key={star}
                           className={`text-xl ${star <= review.rating
-                            ? "text-[#00BBA7]"
-                            : "text-base-content opacity-30"
+                              ? "text-[#00BBA7]"
+                              : "text-base-content opacity-30"
                             }`}
                         />
                       ))}

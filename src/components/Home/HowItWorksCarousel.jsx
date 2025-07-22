@@ -54,46 +54,57 @@ const HowItWorksCarousel = () => {
   };
 
   return (
-    <section className=" bg-base-100">
-      <div className="container mx-auto py-16 px-4 md:px-10 text-center">
-        <h2 className="text-2xl md:text-3xl font-bold text-[#00BBA7] mb-2">
+    <section className="bg-base-100">
+      <div
+        className="container mx-auto py-16 px-4 md:px-10 text-center"
+        data-aos="fade-up"
+      >
+        <h2
+          className="text-3xl  md:text-4xl font-bold text-[#00BBA7] mb-2"
+          data-aos="fade-down"
+          data-aos-delay="100"
+        >
           How It Works
         </h2>
-        <p className=" max-w-xl mx-auto mb-10">
-          Follow these simple steps to find your perfect property and close the deal with confidence.
+        <p
+          className="max-w-xl mx-auto mb-10"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        >
+          Follow these simple steps to find your perfect property and close the
+          deal with confidence.
         </p>
 
-        <div className="flex justify-center items-center gap-4 mb-8">
-          <button
-            onClick={handlePrev}
-            className="btn btn-outline hover:bg-[#00BBA7] hover:text-white btn-sm rounded-full"
-          >
-            <FaArrowLeft />
-          </button>
-
+        <div
+          className="flex justify-center items-center gap-4 mb-8"
+          data-aos="zoom-in"
+          data-aos-delay="300"
+        >
           <div className="flex gap-4 items-end transition-all">
             {/* Previous Card */}
             <div
               className="w-[280px] h-[180px] transition-all duration-500 p-6 rounded-lg border shadow-md bg-base-300 opacity-40 scale-90"
             >
-              <div>{steps[(activeIndex - 1 + steps.length) % steps.length].icon}</div>
+              <div>{steps[(activeIndex + 1) % steps.length].icon}</div>
               <h3 className="text-lg font-semibold text-[#00BBA7]">
-                {steps[(activeIndex - 1 + steps.length) % steps.length].title}
+                {steps[(activeIndex + 1) % steps.length].title}
               </h3>
               <p className=" text-xl">
-                {steps[(activeIndex - 1 + steps.length) % steps.length].description}
+                {steps[(activeIndex + 1) % steps.length].description}
               </p>
             </div>
 
             {/* Active Card */}
-            <div className="w-[320px] h-[180px] transition-all duration-500 p-6 rounded-lg border shadow-lg bg-base-300 opacity-100 scale-100">
+            <div
+              className="w-[320px] h-[180px] transition-all duration-500 p-6 rounded-lg border shadow-lg bg-base-300 opacity-100 scale-100"
+              data-aos="zoom-in"
+              data-aos-delay="600"
+            >
               <div>{steps[activeIndex].icon}</div>
               <h3 className="text-xl font-bold text-[#00BBA7]">
                 {steps[activeIndex].title}
               </h3>
-              <p className=" text-xl">
-                {steps[activeIndex].description}
-              </p>
+              <p className="text-xl">{steps[activeIndex].description}</p>
             </div>
 
             {/* Next Card */}
@@ -109,25 +120,43 @@ const HowItWorksCarousel = () => {
               </p>
             </div>
           </div>
+        </div>
+
+        <div className="flex justify-center items-center gap-4">
+          <button
+            onClick={handlePrev}
+            className="btn btn-outline hover:bg-[#00BBA7] hover:text-white btn-sm rounded-full"
+            data-aos="fade-right"
+            data-aos-delay="400"
+          >
+            <FaArrowLeft />
+          </button>
+          {/* Pagination dots */}
+          <div
+            className="flex items-center justify-center gap-2"
+            data-aos="fade-up"
+            data-aos-delay="800"
+          >
+            {steps.map((_, index) => (
+              <div
+                key={index}
+                className={`w-3 h-3 rounded-full transition-all ${index === activeIndex ? "bg-[#00BBA7]" : "bg-gray-300"
+                  }`}
+              ></div>
+            ))}
+          </div>
 
           <button
             onClick={handleNext}
             className="btn btn-outline hover:bg-[#00BBA7] hover:text-white btn-sm rounded-full"
+            data-aos="fade-left"
+            data-aos-delay="400"
           >
             <FaArrowRight />
           </button>
         </div>
 
-        {/* Pagination dots */}
-        <div className="flex items-center justify-center gap-2">
-          {steps.map((_, index) => (
-            <div
-              key={index}
-              className={`w-3 h-3 rounded-full transition-all ${index === activeIndex ? "bg-[#00BBA7]" : "bg-gray-300"
-                }`}
-            ></div>
-          ))}
-        </div>
+
       </div>
     </section>
   );

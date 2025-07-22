@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import { FaMapMarkerAlt, FaTags, FaPercent } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 import { NavLink } from "react-router";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 export default function Hero() {
+  useEffect(() => {
+    AOS.init({ duration: 800, once: true, easing: "ease-in-out" });
+  }, []);
+
   return (
     <Carousel
       autoPlay
@@ -38,7 +44,9 @@ export default function Hero() {
       }
       renderIndicator={(onClickHandler, isSelected, index) => {
         const base = "inline-block w-3 h-3 rounded-full mx-1 cursor-pointer";
-        const active = isSelected ? "bg-[#00BBA7] scale-110" : "bg-gray-400 hover:bg-[#00BBA7]";
+        const active = isSelected
+          ? "bg-[#00BBA7] scale-110"
+          : "bg-gray-400 hover:bg-[#00BBA7]";
         return (
           <span
             key={index}
@@ -56,6 +64,7 @@ export default function Hero() {
           backgroundImage:
             "url('https://i.ibb.co/MxTDW5My/new-buildings-with-green-areas.jpg')",
         }}
+        data-aos="fade-up"
       >
         <div className="bg-black/60 w-full h-full flex items-center justify-center">
           <motion.div
@@ -64,7 +73,7 @@ export default function Hero() {
             transition={{ duration: 1 }}
             className="container py-20 md:py-10 mx-auto px-6 md:px-10 flex flex-col lg:flex-row items-center gap-10"
           >
-            <div className="flex-1 space-y-5 text-center md:text-left">
+            <div className="flex-1 space-y-5 text-center md:text-left" data-aos="fade-right" data-aos-delay="200">
               <div className="flex items-center justify-center md:justify-start space-x-2 text-sm text-[#00BBA7]">
                 <FaMapMarkerAlt />
                 <span>Dhaka, Bangladesh</span>
@@ -77,12 +86,10 @@ export default function Hero() {
                 Modern designs, spacious living, and world-class amenities for your premium lifestyle.
               </p>
               <p className="text-sm md:text-base font-semibold">Starting From</p>
-              <p className="text-2xl md:text-3xl font-extrabold text-[#00BBA7]">
-                $ 1,00,000
-              </p>
+              <p className="text-2xl md:text-3xl font-extrabold text-[#00BBA7]">$ 1,00,000</p>
             </div>
 
-            <div className="flex-1 flex justify-center relative">
+            <div className="flex-1 flex justify-center relative" data-aos="fade-left" data-aos-delay="300">
               <motion.div
                 initial={{ scale: 0.8 }}
                 animate={{ scale: 1 }}
@@ -93,6 +100,7 @@ export default function Hero() {
                   src="https://i.ibb.co/MxTDW5My/new-buildings-with-green-areas.jpg"
                   alt="Luxury Apartments"
                   className="w-full h-full object-cover"
+                  loading="lazy"
                 />
               </motion.div>
 
@@ -113,13 +121,18 @@ export default function Hero() {
       </div>
 
       {/* === Slide 2 === */}
-      <div className="h-full lg:h-[80vh] bg-gradient-to-br from-black via-gray-900 to-black text-white flex items-center">
+      <div
+        className="h-full lg:h-[80vh] bg-gradient-to-br from-black via-gray-900 to-black text-white flex items-center"
+        data-aos="fade-up"
+      >
         <div className="container py-20 md:py-10 mx-auto px-6 md:px-10 flex flex-col lg:flex-row items-center justify-between">
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1 }}
             className="max-w-lg space-y-6"
+            data-aos="fade-right"
+            data-aos-delay="200"
           >
             <h1 className="text-4xl md:text-5xl font-bold drop-shadow-lg">
               Find Your <span className="text-[#00BBA7]">Dream Property</span>
@@ -128,7 +141,7 @@ export default function Hero() {
               Partner with us to access the best market insights, trusted agents, and secure investments for a brighter future.
             </p>
             <div className="flex sm:justify-center gap-4 mb-5 lg:mb-0">
-              <NavLink to='/about-us'>
+              <NavLink to="/about-us">
                 <button className="bg-[#00BBA7] px-4 py-2 rounded shadow hover:opacity-90 transition duration-300">
                   Learn More
                 </button>
@@ -147,6 +160,8 @@ export default function Hero() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
             className="mt-10 md:mt-0 flex flex-col gap-6"
+            data-aos="fade-left"
+            data-aos-delay="300"
           >
             {[1, 2, 3].map((i) => (
               <motion.div
@@ -166,6 +181,7 @@ export default function Hero() {
                   }
                   alt={`building${i}`}
                   className="w-full h-full object-cover"
+                  loading="lazy"
                 />
               </motion.div>
             ))}
@@ -174,11 +190,13 @@ export default function Hero() {
       </div>
 
       {/* === Slide 3 === */}
-      <div className="h-full lg:h-[80vh] flex items-center font-sans justify-center bg-cover bg-center"
+      <div
+        className="h-full lg:h-[80vh] flex items-center font-sans justify-center bg-cover bg-center"
         style={{
           backgroundImage:
             "url('https://i.ibb.co/ZRBsDKcZ/analog-landscape-city-with-buildings.jpg')",
         }}
+        data-aos="fade-up"
       >
         <div className="container py-20 md:py-10 mx-auto px-6 md:px-10 flex flex-col lg:flex-row items-center">
           <motion.div
@@ -186,6 +204,8 @@ export default function Hero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1 }}
             className="w-full md:w-1/2 flex flex-col justify-center px-6 md:px-12 py-10 bg-[#00BBA7] text-white relative overflow-hidden"
+            data-aos="fade-right"
+            data-aos-delay="200"
           >
             <div className="relative z-10 text-center md:text-left">
               <p className="text-sm tracking-widest uppercase">Limited Time</p>
@@ -195,7 +215,7 @@ export default function Hero() {
               <p className="text-black text-opacity-80 max-w-md mx-auto md:mx-0 mb-6">
                 Discover eco-friendly communities surrounded by lush greenery, clean air, and peaceful living — the perfect blend of modern comfort and nature.
               </p>
-              <NavLink to='/all-properties'>
+              <NavLink to="/all-properties">
                 <button className="bg-white text-black px-6 py-2 rounded shadow hover:bg-black hover:text-white transition-all">
                   Explore Now
                 </button>
@@ -203,11 +223,12 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          <div className="w-full md:w-1/2 h-full">
+          <div className="w-full md:w-1/2 h-full" data-aos="fade-left" data-aos-delay="300">
             <img
               src="https://i.ibb.co/ZRBsDKcZ/analog-landscape-city-with-buildings.jpg"
               alt="Eco Home"
               className="w-full h-full object-cover"
+              loading="lazy"
             />
           </div>
         </div>

@@ -11,12 +11,24 @@ const logos = [logo1, logo2, logo3, logo4, logo5, logo6, logo7];
 
 const PartnersSection = () => {
   return (
-    <section className="py-14 px-4 md:px-10 bg-base-100">
+    <section
+      className="py-14 px-4 md:px-10 bg-base-100"
+      data-aos="fade-up"
+      data-aos-duration="800"
+    >
       <div className="container mx-auto text-center">
-        <h2 className="text-2xl md:text-3xl font-bold text-[#00BBA7] mb-4">
+        <h2
+          className="text-3xl md:text-4xl font-bold text-[#00BBA7] mb-4"
+          data-aos="fade-down"
+          data-aos-delay="100"
+        >
           Trusted by Global Brands & Partners
         </h2>
-        <p className="max-w-xl mx-auto mb-8">
+        <p
+          className="max-w-xl mx-auto mb-8"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        >
           We’re proud to work with industry-leading companies who trust us to power their real estate success.
         </p>
       </div>

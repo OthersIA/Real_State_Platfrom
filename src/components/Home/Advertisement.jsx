@@ -6,32 +6,38 @@ import "aos/dist/aos.css";
 
 const Advertisement = ({ properties }) => {
   useEffect(() => {
-    AOS.init({ duration: 700, easing: "ease-in-out" });
+    AOS.init({ duration: 700, easing: "ease-in-out", once: true });
   }, []);
 
   return (
     <section className="bg-base-100">
       <div className="container mx-auto p-4 py-12">
-        {/* <h2
-        className="text-3xl text-center font-bold border-b-2 pb-2 mb-4 text-[#00BBA7]"
-        style={{ boxShadow: "0 4px 4px -2px rgba(0, 0, 0, 0.25)" }}
-      >
-        Featured Advertisements
-      </h2> */}
-        <h2 className="text-3xl font-bold mb-4 text-center text-[#00BBA7]">
+        <h2
+          className="text-3xl md:text-4xl font-bold mb-4 text-center text-[#00BBA7]"
+          data-aos="fade-down"
+          data-aos-duration="700"
+        >
           Featured Advertisements
         </h2>
 
-        <p className="text-center  max-w-2xl mx-auto mb-12">
-          Discover our hand-picked featured properties — from modern apartments to luxurious houses. Each listing is verified and updated to help you find your dream place with confidence.
+        <p
+          className="text-center max-w-2xl mx-auto mb-12"
+          data-aos="fade-up"
+          data-aos-duration="700"
+          data-aos-delay="100"
+        >
+          Discover our hand-picked featured properties — from modern apartments to
+          luxurious houses. Each listing is verified and updated to help you find
+          your dream place with confidence.
         </p>
 
         {properties?.length ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {properties.map((property) => (
+            {properties.map((property, index) => (
               <div
                 key={property._id}
                 data-aos="fade-up"
+                data-aos-delay={index * 100}
                 className="rounded-lg overflow-hidden shadow-md border border-base-200 bg-base-300 flex flex-col"
               >
                 <img
