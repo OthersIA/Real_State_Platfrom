@@ -1,4 +1,4 @@
-## 🏠 RealEstate Platform
+# 🏠 RealEstate Platform
 
 A modern property management web application built with React and Vite, featuring robust authentication, role-based dashboards, and a sleek, responsive UI.
 
@@ -37,6 +37,18 @@ A modern property management web application built with React and Vite, featurin
 - 🕵️ **Fraud Detection:** Admins can mark agents as fraud, automatically removing their properties.
 - 📝 **Detailed Property Info:** View property details, images, and agent contact information.
 - 🔍 **Search & Filter:** Easily search and filter properties by various criteria.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** React, Vite, Tailwind CSS, DaisyUI, React Router, React Hook Form, React Helmet Async, Framer Motion, AOS, Lottie React, React Icons, Recharts, React Fast Marquee, React Responsive Carousel, Leaflet, React Leaflet
+- **Backend:** Node.js, Express.js (see [server repo](https://github.com/Programming-Hero-Web-Course4/b11a12-server-side-yeasin-islam))
+- **Authentication:** Firebase Authentication
+- **Database:** MongoDB (via backend)
+- **APIs:** Axios, Custom Hooks
+- **Payments:** Stripe
+- **Other:** SweetAlert2, React Query
 
 ---
 
