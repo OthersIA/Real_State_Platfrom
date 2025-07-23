@@ -47,7 +47,7 @@ export default function Register() {
         const res = await axios.post(imgUploadUrl, formData);
         imageUrl = res.data.data.url;
       } catch (err) {
-        console.error("Image Upload Error:", err);
+        //console.error("Image Upload Error:", err);
         Swal.fire({ icon: "error", title: "Image upload failed!" });
         setUploading(false);
         return;
@@ -73,7 +73,7 @@ export default function Register() {
       Swal.fire({ icon: "success", title: "Sign up successful!", timer: 1500, showConfirmButton: false });
       navigate("/");
     } catch (err) {
-      console.error(err);
+      //console.error(err);
       Swal.fire({ icon: "error", title: err.message, timer: 2000, showConfirmButton: false });
     }
   };

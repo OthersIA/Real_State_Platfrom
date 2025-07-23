@@ -71,7 +71,7 @@ const UserProfile = () => {
       Swal.fire("Success!", "Profile updated!", "success");
       setModalOpen(false);
     } catch (err) {
-      console.error(err);
+      //console.error(err);
       Swal.fire("Error!", err.message, "error");
     }
   };

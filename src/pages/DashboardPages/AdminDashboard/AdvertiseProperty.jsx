@@ -124,6 +124,9 @@ const AdvertiseProperty = () => {
 
   return (
     <section className="px-4 py-8" data-aos="fade-up">
+       <Helmet>
+                <title>Manage ReviewsAdvertise Propertie | RealEstate</title>
+            </Helmet>
       <div className="container mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#00BBA7]">
           Advertise Properties

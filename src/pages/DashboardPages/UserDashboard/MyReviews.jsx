@@ -24,7 +24,7 @@ const MyReviews = () => {
         enabled: !!user?.email,
         queryFn: async () => {
             const res = await axios.get(
-                `${import.meta.env.VITE_API_URL}/reviews?email=${user.email}`
+                `${import.meta.env.VITE_API_URL}/reviews/email=${user.email}`
             );
             return res.data;
         },

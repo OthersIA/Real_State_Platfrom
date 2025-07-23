@@ -130,7 +130,7 @@ const PropertyDetails = () => {
       Swal.fire("Reported!", "Your report has been submitted.", "success");
       setOpenReportModal(false);
     } catch (error) {
-      console.error(error);
+      //console.error(error);
       Swal.fire("Error!", "Something went wrong.", "error");
     }
   };

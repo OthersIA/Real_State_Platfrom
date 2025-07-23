@@ -6,6 +6,7 @@ import { useEffect, useState, useMemo } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
+import { Helmet } from "react-helmet-async";
 
 const ManageProperties = () => {
   const queryClient = useQueryClient();
@@ -131,6 +132,9 @@ const ManageProperties = () => {
 
   return (
     <div className="px-4 py-8 overflow-x-auto">
+      <Helmet>
+        <title>Manage Properties | RealEstate</title>
+      </Helmet>
       <div className="container mx-auto" data-aos="fade-up">
         <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#00BBA7]">
           Manage Properties
@@ -242,7 +246,7 @@ const ManageProperties = () => {
                       </span>
                     )}
                     {!prop.verificationStatus ||
-                    prop.verificationStatus === "pending" ? (
+                      prop.verificationStatus === "pending" ? (
                       <span className="badge bg-yellow-500 text-white">
                         Pending
                       </span>
@@ -258,51 +262,51 @@ const ManageProperties = () => {
 
                     {(!prop.verificationStatus ||
                       prop.verificationStatus === "pending") && (
-                      <>
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            verifyProperty.mutate(prop._id);
-                          }}
-                          className="btn btn-xs border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white transition"
-                        >
-                          Verify
-                        </button>
+                        <>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              verifyProperty.mutate(prop._id);
+                            }}
+                            className="btn btn-xs border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white transition"
+                          >
+                            Verify
+                          </button>
 
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            rejectProperty.mutate(prop._id);
-                          }}
-                          className="btn btn-xs border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition"
-                        >
-                          Reject
-                        </button>
-                      </>
-                    )}
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              rejectProperty.mutate(prop._id);
+                            }}
+                            className="btn btn-xs border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition"
+                          >
+                            Reject
+                          </button>
+                        </>
+                      )}
 
                     {(prop.verificationStatus === "verified" ||
                       prop.verificationStatus === "rejected") && (
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          Swal.fire({
-                            title: "Delete?",
-                            text: "This property will be removed permanently.",
-                            icon: "warning",
-                            showCancelButton: true,
-                            confirmButtonText: "Yes, delete it!",
-                          }).then((result) => {
-                            if (result.isConfirmed) {
-                              deleteProperty.mutate(prop._id);
-                            }
-                          });
-                        }}
-                        className="btn btn-xs border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition"
-                      >
-                        Delete
-                      </button>
-                    )}
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            Swal.fire({
+                              title: "Delete?",
+                              text: "This property will be removed permanently.",
+                              icon: "warning",
+                              showCancelButton: true,
+                              confirmButtonText: "Yes, delete it!",
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                deleteProperty.mutate(prop._id);
+                              }
+                            });
+                          }}
+                          className="btn btn-xs border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition"
+                        >
+                          Delete
+                        </button>
+                      )}
                   </td>
                 </tr>
               ))

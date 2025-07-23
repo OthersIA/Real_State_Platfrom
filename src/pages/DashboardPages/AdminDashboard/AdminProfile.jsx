@@ -61,12 +61,15 @@ const AdminProfile = () => {
             Swal.fire("Success!", "Profile updated!", "success");
             setModalOpen(false);
         } catch (err) {
-            console.error("Profile update failed:", err.message);
+            //console.error("Profile update failed:", err.message);
         }
     };
 
     return (
         <section className="flex items-center justify-center p-10 fontJakarta">
+            <Helmet>
+                <title>Your Profile | RealEstate</title>
+            </Helmet>
             <div
                 data-aos="zoom-in"
                 className="max-w-xl w-full p-6 rounded border border-[#00BBA7] bg-base-300 transition hover:shadow-lg hover:border-[#00a495]"

@@ -120,7 +120,7 @@ const PaymentForm = () => {
             }
 
         } catch (err) {
-            console.error(err);
+            //console.error(err);
             setError("Something went wrong during payment.");
         } finally {
             setProcessing(false);

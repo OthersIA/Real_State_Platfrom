@@ -77,7 +77,7 @@ const AuthProvider = ({ children }) => {
             });
           })
           .catch((error) => {
-            console.error("Logout error:", error);
+            //console.error("Logout error:", error);
             Swal.fire("Error", "Failed to log out.", "error");
           });
       }

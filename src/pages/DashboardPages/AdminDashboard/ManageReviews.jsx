@@ -7,6 +7,7 @@ import { Link } from "react-router";
 import { FaQuoteLeft, FaQuoteRight, FaStar, FaUserCircle } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Helmet } from "react-helmet-async";
 
 const ManageReviews = () => {
     const queryClient = useQueryClient();
@@ -40,6 +41,9 @@ const ManageReviews = () => {
 
     return (
         <section className="container mx-auto px-4 py-8" data-aos="fade-up">
+            <Helmet>
+                <title>Manage Reviews | RealEstate</title>
+            </Helmet>
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#00BBA7]">Manage Reviews</h2>
 
             {reviews.length === 0 ? (

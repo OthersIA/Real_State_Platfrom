@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { useState } from "react";
 import { FaEye } from "react-icons/fa";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
+import { Helmet } from "react-helmet-async";
 
 const PropertyReports = () => {
     const queryClient = useQueryClient();
@@ -84,6 +85,9 @@ const PropertyReports = () => {
 
     return (
         <section className="container mx-auto p-6 max-w-6xl">
+            <Helmet>
+                <title>Reported Properties | RealEstate</title>
+            </Helmet>
             <h2 className="text-3xl font-bold mb-6 text-[#00BBA7]">Property Reports</h2>
 
             {reports.length === 0 ? (

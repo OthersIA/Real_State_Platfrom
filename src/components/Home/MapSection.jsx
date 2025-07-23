@@ -1,7 +1,17 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
+// Custom icon
+const markerIcon = new L.Icon({
+    iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
+    iconSize: [60, 60],
+});
+
 const MapSection = () => {
+
+
+
+
     const position = [23.8504054, 90.3771042]; // Sector 17, Dhaka, Bangladesh
 
     return (
@@ -27,7 +37,7 @@ const MapSection = () => {
                 </p>
 
                 <div
-                    className="w-full h-[400px] rounded-lg shadow-lg relative z-0"
+                    className="w-full h-[600px] rounded-lg shadow-lg relative z-0"
                     data-aos="zoom-in"
                     data-aos-delay="300"
                 >
@@ -40,7 +50,8 @@ const MapSection = () => {
                             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
-                        <Marker position={position}>
+
+                        <Marker position={position} icon={markerIcon}>
                             <Popup>
                                 📍 <strong>Our Main Office</strong>
                                 <br />

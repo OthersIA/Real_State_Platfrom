@@ -35,7 +35,7 @@ const Login = () => {
         last_log_in: new Date().toISOString(),
       });
     } catch (err) {
-      console.error("Failed to update last login", err);
+      //console.error("Failed to update last login", err);
     }
   };
 

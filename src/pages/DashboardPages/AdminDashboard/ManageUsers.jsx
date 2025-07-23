@@ -6,6 +6,7 @@ import LoadingFallback from "../../../components/shared/LoadingFallback";
 import { FaUserCircle } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Helmet } from "react-helmet-async";
 
 const ManageUsers = () => {
     const queryClient = useQueryClient();
@@ -56,6 +57,9 @@ const ManageUsers = () => {
 
     return (
         <div className="container px-4 py-8 mx-auto" data-aos="fade-up">
+            <Helmet>
+                <title>Manage Users | RealEstate</title>
+            </Helmet>
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#00BBA7]">Manage Users</h2>
             <div className="overflow-x-auto">
                 <table className="table w-full">
