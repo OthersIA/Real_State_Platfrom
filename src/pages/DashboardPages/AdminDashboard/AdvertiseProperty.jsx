@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
+import { NavLink } from "react-router";
 
 const AdvertiseProperty = () => {
   const queryClient = useQueryClient();
@@ -196,11 +197,13 @@ const AdvertiseProperty = () => {
                     className="transition-colors duration-300 hover:bg-[#00bba7]/20 cursor-pointer"
                   >
                     <td>
-                      <img
-                        src={property.image}
-                        alt={property.title}
-                        className="w-20 h-14 object-cover rounded ring ring-[#00BBA7] ring-offset-2"
-                      />
+                      <NavLink to={`/property/${property._id}`}>
+                        <img
+                          src={property.image}
+                          alt={property.title}
+                          className="w-20 h-14 object-cover rounded ring ring-[#00BBA7] ring-offset-2"
+                        />
+                      </NavLink>
                     </td>
                     <td className="font-medium">{property.title}</td>
                     <td>

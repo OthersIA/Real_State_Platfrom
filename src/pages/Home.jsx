@@ -11,6 +11,7 @@ import SocialMediaFeed from "../components/Home/SocialMediaFeed";
 import LatestNews from "../components/Home/LatestNews";
 import PartnersSection from "../components/Home/PartnersSection";
 import MapSection from "../components/Home/MapSection";
+import Banner from "../components/Home/Banner";
 
 const Home = () => {
   const { data: properties = [], isLoading: isLoadingProperties } = useQuery({
@@ -35,7 +36,8 @@ const Home = () => {
 
   return (
     <section>
-      <Hero />
+      <Banner></Banner>
+      {/* <Hero /> */}
       <Advertisement properties={properties} />
       <LatestUserReviews reviews={reviews} />
       <HowItWorksMarquee></HowItWorksMarquee>

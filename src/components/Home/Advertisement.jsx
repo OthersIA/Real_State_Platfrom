@@ -27,9 +27,8 @@ const Advertisement = ({ properties }) => {
           data-aos-duration="700"
           data-aos-delay="100"
         >
-          Discover our hand-picked featured properties — from modern apartments to
-          luxurious houses. Each listing is verified and updated to help you find
-          your dream place with confidence.
+          Discover our hand-picked featured properties, from modern apartments to
+          luxurious houses.
         </p>
 
         {properties?.length ? (

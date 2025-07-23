@@ -29,7 +29,7 @@ const LatestUserReviews = ({ reviews }) => {
           data-aos="fade-up"
           data-aos-delay="200"
         >
-          Hear what our satisfied users are saying! Real feedback from real buyers and sellers helps you make informed choices and trust us for your next property deal.
+          Hear what our satisfied users are saying!
         </p>
 
         {reviews?.length ? (
