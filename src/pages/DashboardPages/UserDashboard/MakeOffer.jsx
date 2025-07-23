@@ -5,6 +5,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../context/AuthContext";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
+import { Helmet } from "react-helmet-async";
 
 const MakeOffer = () => {
   const { id } = useParams();
@@ -89,6 +90,9 @@ const MakeOffer = () => {
 
   return (
     <section className="container mx-auto md:w-2/3  px-4 py-8 gap-6 min-h-screen">
+      <Helmet>
+                <title>Make Offer | RealEstate</title>
+            </Helmet>
       <div className="bg-base-300 shadow-md rounded-lg p-6 md:p-8 ">
         <h2 className="text-3xl lg:text-4xl text-center font-bold text-[#00BBA7] mb-6">
           Make an Offer

@@ -17,6 +17,7 @@ import {
 } from "recharts";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Helmet } from "react-helmet-async";
 
 const DashboardHome = () => {
     const { user } = useContext(AuthContext);
@@ -121,6 +122,9 @@ const DashboardHome = () => {
 
     return (
         <section className="p-6 max-w-6xl mx-auto">
+            <Helmet>
+                <title>Dashboard Home | RealEstate</title>
+            </Helmet>
             <h2 className="text-3xl font-bold mb-4 text-[#00BBA7]">
                 Welcome, {user?.displayName || "User"}!
             </h2>

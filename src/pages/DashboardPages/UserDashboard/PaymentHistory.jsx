@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Helmet } from "react-helmet-async";
 
 const PaymentHistory = () => {
   const { email } = useParams();
@@ -32,6 +33,9 @@ const PaymentHistory = () => {
       data-aos="fade-up"
       className="container mx-auto px-4 py-8 font-sans"
     >
+      <Helmet>
+        <title>Payment History | RealEstate</title>
+      </Helmet>
       <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#00BBA7]">My Payment History</h2>
 
       <p className="mb-4 font-semibold ">

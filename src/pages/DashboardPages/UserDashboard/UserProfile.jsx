@@ -81,6 +81,9 @@ const UserProfile = () => {
       data-aos="fade-up"
       className="flex items-center justify-center p-10 fontJakarta"
     >
+      <Helmet>
+        <title>Your Profile | RealEstate</title>
+      </Helmet>
       <div className="max-w-xl w-full p-6 rounded  border  border-[#00BBA7] bg-base-300 shadow-md">
         <div className="flex flex-col items-center">
           <div className="w-28 h-28 rounded-full overflow-hidden  mb-4">

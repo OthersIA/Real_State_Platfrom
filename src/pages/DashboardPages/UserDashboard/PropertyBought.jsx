@@ -7,6 +7,7 @@ import { AuthContext } from "../../../context/AuthContext";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Helmet } from "react-helmet-async";
 
 const PropertyBought = () => {
   const { user } = useContext(AuthContext);
@@ -49,6 +50,9 @@ const PropertyBought = () => {
       data-aos="fade-up"
       className="container mx-auto px-4 py-8 font-sans"
     >
+      <Helmet>
+        <title>Bought Properties | RealEstate</title>
+      </Helmet>
       <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#00BBA7]">My Property Offers</h2>
 
       {offers.length === 0 ? (
@@ -72,8 +76,8 @@ const PropertyBought = () => {
               <p>
                 Offer Request:{" "}
                 <span className={`font-semibold ${offer.status === "accepted" ? "text-green-600" :
-                    offer.status === "rejected" ? "text-red-600" :
-                      "text-yellow-600"
+                  offer.status === "rejected" ? "text-red-600" :
+                    "text-yellow-600"
                   }`}>
                   {offer.status}
                 </span>

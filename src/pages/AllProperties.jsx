@@ -8,6 +8,7 @@ import { MdVisibility } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Helmet } from "react-helmet-async";
 
 const AllProperties = () => {
   const { user } = useContext(AuthContext);
@@ -50,25 +51,28 @@ const AllProperties = () => {
   });
 
   const sortedProperties = [...filteredProperties]
-    
-if (sortOrder) {
-  sortedProperties.sort((a, b) => {
-    const priceA = parseFloat(a.minPrice);
-    const priceB = parseFloat(b.minPrice);
-    return sortOrder === "asc" ? priceA - priceB : priceB - priceA;
-  });
-}
 
-if (dateOrder) {
-  sortedProperties.sort((a, b) => {
-    const dateA = new Date(a.createdDate);
-    const dateB = new Date(b.createdDate);
-    return dateOrder === "newest" ? dateB - dateA : dateA - dateB;
-  });
-}
+  if (sortOrder) {
+    sortedProperties.sort((a, b) => {
+      const priceA = parseFloat(a.minPrice);
+      const priceB = parseFloat(b.minPrice);
+      return sortOrder === "asc" ? priceA - priceB : priceB - priceA;
+    });
+  }
+
+  if (dateOrder) {
+    sortedProperties.sort((a, b) => {
+      const dateA = new Date(a.createdDate);
+      const dateB = new Date(b.createdDate);
+      return dateOrder === "newest" ? dateB - dateA : dateA - dateB;
+    });
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <Helmet>
+        <title>All Propertie | RealEstate</title>
+      </Helmet>
       <h2
         className="text-center text-3xl md:text-4xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#00BBA7] to-[#009d8f]"
         data-aos="fade-down"
@@ -181,8 +185,8 @@ if (dateOrder) {
                 <strong>Status: </strong>
                 <span
                   className={`badge ${prop.verificationStatus === "sold"
-                      ? "badge-error"
-                      : "badge-success"
+                    ? "badge-error"
+                    : "badge-success"
                     }`}
                 >
                   {prop.verificationStatus}

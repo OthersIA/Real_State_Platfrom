@@ -8,6 +8,7 @@ import LoadingFallback from "../../../components/shared/LoadingFallback";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { AuthContext } from "../../../context/AuthContext";
+import { Helmet } from "react-helmet-async";
 
 const PaymentForm = () => {
     const { user } = useContext(AuthContext);
@@ -133,6 +134,9 @@ const PaymentForm = () => {
             data-aos="fade-up"
             className="container w-8/9 md:w-3/4 my-10  mx-auto space-y-6 p-6 bg-white shadow-md rounded"
         >
+            <Helmet>
+                <title>Payment Form | RealEstate</title>
+            </Helmet>
             <h2 className="text-3xl font-bold mb-2 text-[#00BBA7]">
                 Pay ${amount} for Your Property
             </h2>

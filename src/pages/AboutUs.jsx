@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import { FaLinkedin, FaGithub, FaGlobe } from 'react-icons/fa';
 
 
@@ -25,9 +26,9 @@ const coreTeam = [
 const AboutUs = () => {
   return (
     <section className="bg-base-100 py-12 px-4 min-h-screen">
-      {/* <Helmet>
-        <title>About Us | YourRealEstate</title>
-      </Helmet> */}
+      <Helmet>
+        <title>About Us | RealEstate</title>
+      </Helmet>
 
       <div className="container mx-auto space-y-16">
         {/* Header */}

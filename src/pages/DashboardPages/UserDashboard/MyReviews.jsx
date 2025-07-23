@@ -8,6 +8,7 @@ import LoadingFallback from "../../../components/shared/LoadingFallback";
 import { FaQuoteLeft, FaQuoteRight, FaStar } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Helmet } from "react-helmet-async";
 
 const MyReviews = () => {
     const { user } = useContext(AuthContext);
@@ -47,6 +48,9 @@ const MyReviews = () => {
 
     return (
         <section className="container mx-auto px-4 py-8" data-aos="fade-up">
+            <Helmet>
+                <title>My Reviews | RealEstate</title>
+            </Helmet>
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#00BBA7]">My Reviews</h2>
 
             {reviews.length === 0 ? (
