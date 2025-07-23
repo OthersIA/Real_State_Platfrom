@@ -1,6 +1,42 @@
-# <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" alt="React Logo" width="32" /> Batch 11 Assignment 12 - Client Side
+## 🏠 RealEstate Platform
 
-A React + Vite project for property management, featuring authentication, role-based dashboards, and modern UI.
+A modern property management web application built with React and Vite, featuring robust authentication, role-based dashboards, and a sleek, responsive UI.
+
+---
+
+## 🔑 Admin & Agent Credentials
+
+- **Admin Email:** info@yeasinislam.com  
+- **Admin Password:** info@Yeasin
+
+- **Agent Email:** contact@yeasinislam.com  
+- **Agent Password:** contact@Yeasin
+
+---
+
+## 🌐 Live Site & Repositories
+
+- **Front-end Live Site:** [https://real-estate-platform-f0dd4.web.app](https://real-estate-platform-f0dd4.web.app)
+- **Client Side GitHub:** [b11a12-client-side-yeasin-islam](https://github.com/Programming-Hero-Web-Course4/b11a12-client-side-yeasin-islam)
+- **Server Side GitHub:** [b11a12-server-side-yeasin-islam](https://github.com/Programming-Hero-Web-Course4/b11a12-server-side-yeasin-islam)
+
+---
+
+## 🚀 Key Features
+
+- 🔒 **Authentication:** Secure login and registration with context-based user management.
+- 🏢 **Role-Based Dashboards:** Separate dashboards for Admin, Agent, and User roles.
+- 🏷️ **Property Listings:** Browse, add, edit, and manage real estate properties.
+- 👮 **Admin Controls:** Manage users, assign roles, mark agents as fraud, and delete users.
+- 🏠 **Agent Panel:** Agents can add, update, and manage their own property listings.
+- 📊 **User Dashboard:** Users can view their favorite properties and manage their profile.
+- ⚡ **Modern UI:** Responsive design with smooth animations and a clean layout.
+- 🔗 **Secure API Integration:** Uses Axios and custom hooks for secure and efficient API requests.
+- 🛡️ **Error Handling:** Custom error and forbidden pages for a seamless user experience.
+- 📱 **Mobile Friendly:** Fully responsive for all devices.
+- 🕵️ **Fraud Detection:** Admins can mark agents as fraud, automatically removing their properties.
+- 📝 **Detailed Property Info:** View property details, images, and agent contact information.
+- 🔍 **Search & Filter:** Easily search and filter properties by various criteria.
 
 ---
 
@@ -49,17 +85,6 @@ src/
 
 ---
 
-## 🚀 Features
-
-- **Authentication:** Context-based user management.
-- **Role-based Routing:** Admin, Agent, and User routes.
-- **Dashboard Layouts:** Separate layouts for dashboard and main pages.
-- **Axios Integration:** Secure API requests with custom hooks.
-- **Error Handling:** Custom error pages for forbidden and general errors.
-- **Modern UI:** Uses React and Vite for fast development.
-
----
-
 ## 🛠️ Getting Started
 
 1. Install dependencies:
@@ -76,7 +101,3 @@ src/
 ## 📄 License
 
 MIT
-
----
-
-## 🙏

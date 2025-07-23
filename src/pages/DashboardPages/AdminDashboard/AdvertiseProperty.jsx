@@ -6,6 +6,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
 import { NavLink } from "react-router";
+import { Helmet } from "react-helmet-async";
 
 const AdvertiseProperty = () => {
   const queryClient = useQueryClient();
@@ -124,9 +125,9 @@ const AdvertiseProperty = () => {
 
   return (
     <section className="px-4 py-8" data-aos="fade-up">
-       <Helmet>
-                <title>Manage ReviewsAdvertise Propertie | RealEstate</title>
-            </Helmet>
+      <Helmet>
+        <title>ReviewsAdvertise Propertie | RealEstate</title>
+      </Helmet>
       <div className="container mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#00BBA7]">
           Advertise Properties
