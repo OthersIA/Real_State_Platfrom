@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Helmet } from "react-helmet-async";
 
 const AgentProfile = () => {
     const { user, updateUserProfile } = useContext(AuthContext);
@@ -84,6 +85,9 @@ const AgentProfile = () => {
             className="flex items-center justify-center p-10 fontJakarta"
             data-aos="fade-up"
         >
+            <Helmet>
+                <title>Your Profile | RealEstate</title>
+            </Helmet>
             <div className="max-w-xl w-full p-6 rounded border border-[#00BBA7] bg-base-300">
                 <div className="flex flex-col items-center" data-aos="fade-up">
                     <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-[#00BBA7] mb-4">

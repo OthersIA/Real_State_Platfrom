@@ -7,6 +7,7 @@ import { AuthContext } from "../../../context/AuthContext";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Helmet } from "react-helmet-async";
 
 const UpdateProperty = () => {
   const { id } = useParams();
@@ -115,6 +116,9 @@ const UpdateProperty = () => {
 
   return (
     <section className="max-w-xl mx-auto p-4" data-aos="fade-up">
+      <Helmet>
+        <title>Update Propertie | RealEstate</title>
+      </Helmet>
       <h2 className="text-2xl font-bold mb-4 text-[#00BBA7]">Update Property</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">

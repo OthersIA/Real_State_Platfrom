@@ -6,6 +6,7 @@ import LoadingFallback from "../../../components/shared/LoadingFallback";
 import { Link } from "react-router";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Helmet } from "react-helmet-async";
 
 const MySoldProperties = () => {
     const { user } = useContext(AuthContext);
@@ -31,6 +32,9 @@ const MySoldProperties = () => {
 
     return (
         <section className="container mx-auto p-4" data-aos="fade-up">
+            <Helmet>
+                <title>My Sold Propertie | RealEstate</title>
+            </Helmet>
             <h2 className="text-2xl font-bold mb-4 text-[#00BBA7]">My Sold Properties</h2>
             <p className="mb-4 font-semibold">
                 Total Sold Amount:{" "}

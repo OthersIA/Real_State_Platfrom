@@ -18,6 +18,7 @@ import {
     ResponsiveContainer,
 } from "recharts";
 import { Link } from "react-router";
+import { Helmet } from "react-helmet-async";
 
 const COLORS = ["#00BBA7", "#FF7A59", "#FFBB28", "#FF8042", "#00C49F", "#8884d8"];
 
@@ -64,10 +65,13 @@ const SellingStatistics = () => {
 
     return (
         <section className="container mx-auto p-4 space-y-12">
+            <Helmet>
+                <title>Selling Statistics | RealEstate</title>
+            </Helmet>
             <h2 className="text-3xl font-bold mb-4 text-[#00BBA7]">Selling Statistics</h2>
 
             {/* Bar Chart */}
-            <div className="bg-base-200 rounded-lg p-4 shadow border border-base-300">
+            {/* <div className="bg-base-200 rounded-lg p-4 shadow border border-base-300">
                 <h3 className="text-xl font-semibold mb-2">Bar Chart</h3>
                 {chartData.length > 0 ? (
                     <ResponsiveContainer width="100%" height={300}>
@@ -82,10 +86,10 @@ const SellingStatistics = () => {
                 ) : (
                     <p className="text-center text-gray-500 py-8">No sold properties found.</p>
                 )}
-            </div>
+            </div> */}
 
             {/* Line Chart */}
-            <div className="bg-base-200 rounded-lg p-4 shadow border border-base-300">
+            {/* <div className="bg-base-200 rounded-lg p-4 shadow border border-base-300">
                 <h3 className="text-xl font-semibold mb-2">Line Chart</h3>
                 {chartData.length > 0 ? (
                     <ResponsiveContainer width="100%" height={300}>
@@ -100,7 +104,7 @@ const SellingStatistics = () => {
                 ) : (
                     <p className="text-center text-gray-500 py-8">No sold properties found.</p>
                 )}
-            </div>
+            </div> */}
 
             {/* Pie Chart */}
             <div className="bg-base-200 rounded-lg p-4 shadow border border-base-300">

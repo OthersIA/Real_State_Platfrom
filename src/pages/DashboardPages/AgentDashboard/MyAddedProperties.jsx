@@ -7,6 +7,7 @@ import { AuthContext } from "../../../context/AuthContext";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Helmet } from "react-helmet-async";
 
 const MyAddedProperties = () => {
     const { user } = useContext(AuthContext);
@@ -44,6 +45,9 @@ const MyAddedProperties = () => {
 
     return (
         <div className="container mx-auto p-4" data-aos="fade-up">
+            <Helmet>
+                <title>My Added Propertie | RealEstate</title>
+            </Helmet>
             <h2 className="text-2xl font-bold mb-4 text-[#00BBA7]">My Added Properties</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {properties.map((prop) => (

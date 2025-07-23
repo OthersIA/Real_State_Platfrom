@@ -6,6 +6,7 @@ import { AuthContext } from "../../../context/AuthContext";
 import { useNavigate } from "react-router";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Helmet } from "react-helmet-async";
 
 const AddProperty = () => {
   const { user } = useContext(AuthContext);
@@ -119,6 +120,9 @@ const AddProperty = () => {
       className="container mx-auto p-4"
       data-aos="fade-up"
     >
+      <Helmet>
+        <title>Add Property | RealEstate</title>
+      </Helmet>
       <div className="p-10 max-w-2xl mx-auto lg:max-w-3xl bg-base-300 rounded shadow-md space-y-6">
         <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-[#00BBA7] text-center">
           Add Property
