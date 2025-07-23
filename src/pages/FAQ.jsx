@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from "react-helmet-async";
 // import { Helmet } from "react-helmet-async";
 
 const faqs = [
@@ -47,9 +48,9 @@ const faqs = [
 const FAQ = () => {
     return (
         <section className="container mx-auto py-12 px-4 min-h-screen">
-            {/* <Helmet>
-                <title>FAQ | YourRealEstate</title>
-            </Helmet> */}
+            <Helmet>
+                <title>FAQ | RealEstate</title>
+            </Helmet>
 
             <h1 className="text-4xl font-bold border-b text-center border-[#00BBA7] pb-4 mb-8">
                 Frequently Asked Questions

@@ -1,12 +1,12 @@
 import React from "react";
-// import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 
 const PrivacyPolicy = () => {
   return (
     <section className="container mx-auto py-12 px-4 min-h-screen">
-      {/* <Helmet>
-        <title>Privacy Policy | YourRealEstate</title>
-      </Helmet> */}
+      <Helmet>
+        <title>Privacy Policy | RealEstate</title>
+      </Helmet>
 
       <div className="text-center space-y-6 pb-8">
         <h1 className="text-4xl font-bold border-b border-[#00BBA7] pb-4">

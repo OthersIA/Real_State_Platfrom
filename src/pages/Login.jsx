@@ -9,6 +9,7 @@ import axios from "axios";
 import SocialLogin from "../components/shared/SocialLogin";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Helmet } from "react-helmet-async";
 
 const Login = () => {
   const { signIn } = useContext(AuthContext);
@@ -69,6 +70,9 @@ const Login = () => {
           "url('https://i.ibb.co/7xQjnTvr/3d-electric-car-building.jpg')",
       }}
     >
+      <Helmet>
+        <title>Log In | RealEstate</title>
+      </Helmet>
       <div className="bg-black/60 bg-opacity-60 w-full h-full flex items-center justify-center min-h-screen">
         <div className="container mx-auto grid md:grid-cols-2 gap-4 p-4 ">
           {/* Left Section */}

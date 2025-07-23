@@ -1,9 +1,13 @@
 import React from "react";
+import { Helmet } from "react-helmet-async";
 import { FaEnvelope, FaPhoneAlt, FaHeadset } from "react-icons/fa";
 
 const ContactSupport = () => {
     return (
         <section className="py-12 px-4 md:px-10 bg-base-100">
+            <Helmet>
+                <title>Contact Support | RealEstate</title>
+            </Helmet>
             <div className="container mx-auto ">
                 <div className="w-3/5 mx-auto bg-base-300 shadow-lg border rounded-lg p-8">
                     <h1 className="text-3xl md:text-4xl font-bold mb-4 text-[#00BBA7] text-center flex items-center justify-center gap-2">

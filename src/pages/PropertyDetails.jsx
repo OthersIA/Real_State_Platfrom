@@ -8,6 +8,7 @@ import LoadingFallback from "../components/shared/LoadingFallback";
 import { FaQuoteLeft, FaQuoteRight, FaStar, FaUserCircle } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Helmet } from "react-helmet-async";
 
 const PropertyDetails = () => {
   const { id } = useParams();
@@ -146,6 +147,9 @@ const PropertyDetails = () => {
 
   return (
     <section className="container mx-auto py-10 p-6 max-w-6xl">
+      <Helmet>
+        <title>Propertie Details | RealEstate</title>
+      </Helmet>
       <h2
         className="text-3xl md:text-4xl text-center font-extrabold mb-6 border-b-2 border-[#00BBA7] pb-4"
         data-aos="fade-down"
@@ -161,10 +165,10 @@ const PropertyDetails = () => {
       >
         <div className="relative">
           <img
-          src={property.image}
-          alt={property.title || "Property Image"}
-          className="w-full rounded-lg object-cover"
-          loading="lazy"
+            src={property.image}
+            alt={property.title || "Property Image"}
+            className="w-full rounded-lg object-cover"
+            loading="lazy"
           />
 
           {property.status === "sold" && (

@@ -5,6 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 import axios from "axios";
 import SocialLogin from "../components/shared/SocialLogin";
+import { Helmet } from "react-helmet-async";
 
 export default function Register() {
   const { signUp, updateUserProfile } = useContext(AuthContext);
@@ -85,9 +86,12 @@ export default function Register() {
           "url('https://i.ibb.co/ZRBsDKcZ/analog-landscape-city-with-buildings.jpg')",
       }}
     >
+      <Helmet>
+        <title>Sign Up | RealEstate</title>
+      </Helmet>
       <div className="bg-black/60 bg-opacity-60 w-full h-full flex items-center justify-center min-h-screen">
         <div className="w-full container mx-auto grid md:grid-cols-2 gap-4 p-4 ">
-          {/* Left Section */}  
+          {/* Left Section */}
           <div className="flex flex-col justify-center px-6">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
               Welcome to<br />

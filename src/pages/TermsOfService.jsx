@@ -4,9 +4,9 @@ import React from "react";
 const TermsOfService = () => {
     return (
         <section className=" container mx-auto py-12 px-4 min-h-screen">
-            {/* <Helmet>
-        <title>Terms of Service | YourRealEstate</title>
-      </Helmet> */}
+            <Helmet>
+                <title>Terms of Service | RealEstate</title>
+            </Helmet>
             <div className="text-center space-y-6 pb-8">
                 <h1 className="text-4xl font-bold border-b border-[#00BBA7] pb-4 mb-6">
                     Terms of Service

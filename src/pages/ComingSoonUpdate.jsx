@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from "react-helmet-async";
 import { FaTools, FaBell } from "react-icons/fa";
 
 export default function ComingSoonUpdate() {
@@ -6,6 +7,9 @@ export default function ComingSoonUpdate() {
     <div
       className="flex items-center justify-center bg-gradient-to-r from-[#00BBA7] to-[#00796B] px-4  text-center"
     >
+      <Helmet>
+        <title>Coming Soon Update | RealEstate</title>
+      </Helmet>
       <div className="max-w-lg bg-base-300 backdrop-blur-md my-11 p-10 rounded-lg shadow-lg">
         <FaTools className="text-5xl mx-auto mb-4 animate-spin-slow" />
 
@@ -21,7 +25,7 @@ export default function ComingSoonUpdate() {
           <input
             type="email"
             placeholder="Get notified"
-             className="p-2 rounded-t-md sm:rounded-t-none sm:rounded-l-md bg-base-100 text-base-content border border-transparent focus:outline-none focus:ring-2 focus:ring-accent"
+            className="p-2 rounded-t-md sm:rounded-t-none sm:rounded-l-md bg-base-100 text-base-content border border-transparent focus:outline-none focus:ring-2 focus:ring-accent"
           />
           <button
             type="submit"

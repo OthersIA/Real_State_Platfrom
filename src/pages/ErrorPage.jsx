@@ -3,6 +3,7 @@ import { Link, useRouteError } from 'react-router'
 import Button from '../components/shared/Button'
 import Lottie from 'lottie-react'
 import LottieAnimation from "../assets/lotties/404LottieAnimation";
+import { Helmet } from 'react-helmet-async';
 
 const ErrorPage = () => {
   const error = useRouteError()
@@ -10,9 +11,9 @@ const ErrorPage = () => {
   return (
      <>
       <div className='fontJakarta py-6 text-center bg-base-200 min-h-screen'>
-        {/* <Helmet>
+        <Helmet>
           <title>Error</title>
-        </Helmet> */}
+        </Helmet>
         <h1 className='text-7xl font-thin flex justify-center' data-aos="zoom-in">
           <Lottie style={{ width: '500px' }} animationData={LottieAnimation} loop={true} />
         </h1>

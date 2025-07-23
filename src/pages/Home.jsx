@@ -12,6 +12,7 @@ import LatestNews from "../components/Home/LatestNews";
 import PartnersSection from "../components/Home/PartnersSection";
 import MapSection from "../components/Home/MapSection";
 import Banner from "../components/Home/Banner";
+import { Helmet } from "react-helmet-async";
 
 const Home = () => {
   const { data: properties = [], isLoading: isLoadingProperties } = useQuery({
@@ -36,6 +37,9 @@ const Home = () => {
 
   return (
     <section>
+      <Helmet>
+        <title>Home | RealEstate</title>
+      </Helmet>
       <Banner></Banner>
       {/* <Hero /> */}
       <Advertisement properties={properties} />

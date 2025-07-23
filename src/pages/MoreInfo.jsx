@@ -1,9 +1,13 @@
 import React from "react";
+import { Helmet } from "react-helmet-async";
 import { FaBullseye, FaEye, FaHeart } from "react-icons/fa";
 
 const MoreInfo = () => {
     return (
         <section className="py-12 px-4 md:px-10 bg-base-100">
+            <Helmet>
+                <title>More Info | RealEstate</title>
+            </Helmet>
             <div className="container mx-auto">
                 <div className="">
                     <h1 className="text-3xl md:text-4xl font-bold text-center text-[#00BBA7] mb-6">
