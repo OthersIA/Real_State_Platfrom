@@ -73,21 +73,17 @@ const Banner = () => {
                 }}
             >
                 {/* Slide 1 */}
-                <div className="carousel-item relative w-full"> {/* Removed h-auto/h-full from here */}
+                <div className="carousel-item relative w-full">
                     <img
                         src={bannerImage1}
                         alt="Banner 1"
-                        // Added aspect-video for a common banner aspect ratio (16:9) on desktop
-                        // and adjusted height classes for responsiveness.
-                        // object-cover ensures it fills and crops as needed, aspect-ratio helps define shape.
                         className="w-full object-cover rounded-lg aspect-video sm:aspect-[4/3] md:aspect-video h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[500px]"
-                    // Removed inline style for max/minHeight, using Tailwind classes instead
                     />
                     {/* Legend and Button Container - Aligned to start (left) */}
                     <div className="absolute inset-0 flex flex-col justify-end items-end pb-2">
-                        <NavLink to="/products" className="block">
+                        <NavLink to="/all-properties" className="block">
                             {/* THIS IS THE BUTTON WITH YOUR NEW STYLES */}
-                            <button className="bg-[#00BBA7] bg-opacity-60 text-white px-3 py-2 md:px-4 md:py-2 rounded-l-lg text-right text-xs sm:text-sm md:text-base font-semibold transition-all duration-300 hover:bg-opacity-80 cursor-pointer">
+                            <button className="bg-[#00BFB2] bg-opacity-60 text-white px-3 py-2 md:px-4 md:py-2 rounded-l-lg text-right text-xs sm:text-sm md:text-base font-semibold transition-all duration-300 hover:bg-opacity-80 cursor-pointer">
                                 Shop Now!
                             </button>
                         </NavLink>
@@ -102,7 +98,7 @@ const Banner = () => {
                         className="w-full object-cover rounded-lg aspect-video sm:aspect-[4/3] md:aspect-video h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[500px]"
                     />
                     <div className="absolute inset-0 flex flex-col justify-end items-start pb-2">
-                        <NavLink to="/products" className="block">
+                        <NavLink to="/all-properties" className="block">
                             {/* THIS IS THE BUTTON WITH YOUR NEW STYLES */}
                             <button className="bg-[#00BBA7] bg-opacity-60 text-white px-3 py-2 md:px-4 md:py-2 rounded-r-lg text-right text-xs sm:text-sm md:text-base font-semibold transition-all duration-300 hover:bg-opacity-80 cursor-pointer">
                                 View Deals
@@ -119,7 +115,7 @@ const Banner = () => {
                         className="w-full object-cover rounded-lg aspect-video sm:aspect-[4/3] md:aspect-video h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[500px]"
                     />
                     <div className="absolute inset-0 flex flex-col justify-end items-end pb-2">
-                        <NavLink to="/products" className="block">
+                        <NavLink to="/all-properties" className="block">
                             {/* THIS IS THE BUTTON WITH YOUR NEW STYLES */}
                             <button className="bg-[#00BBA7] bg-opacity-60 text-white px-3 py-2 md:px-4 md:py-2 rounded-l-lg text-right text-xs sm:text-sm md:text-base font-semibold transition-all duration-300 hover:bg-opacity-80 cursor-pointer">
                                 Explore
