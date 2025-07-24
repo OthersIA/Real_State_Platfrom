@@ -118,7 +118,7 @@ const DashboardLayout = () => {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/dashboard/my-reviews" className={({ isActive }) => (isActive ? "text-[#00BBA7]" : "")} onClick={closeDrawer}>
+                  <NavLink to={`/dashboard/my-reviews`} className={({ isActive }) => (isActive ? "text-[#00BBA7]" : "")} onClick={closeDrawer}>
                     <FaStar className="inline-block mr-2" />
                     My Reviews
                   </NavLink>

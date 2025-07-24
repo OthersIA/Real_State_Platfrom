@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
 import { AuthContext } from "../../../context/AuthContext";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
 import { FaQuoteLeft, FaQuoteRight, FaStar } from "react-icons/fa";
@@ -12,6 +12,7 @@ import { Helmet } from "react-helmet-async";
 
 const MyReviews = () => {
     const { user } = useContext(AuthContext);
+    const { email } = useParams();
     const queryClient = useQueryClient();
 
     useEffect(() => {
@@ -24,8 +25,10 @@ const MyReviews = () => {
         enabled: !!user?.email,
         queryFn: async () => {
             const res = await axios.get(
-                `${import.meta.env.VITE_API_URL}/reviews/email=${user.email}`
+                `${import.meta.env.VITE_API_URL}/reviews?email=${user.email}`
             );
+
+            console.log(res.data);
             return res.data;
         },
     });

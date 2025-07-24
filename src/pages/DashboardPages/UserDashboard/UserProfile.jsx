@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Helmet } from "react-helmet-async";
 
 const UserProfile = () => {
   const { user, updateUserProfile } = useContext(AuthContext);

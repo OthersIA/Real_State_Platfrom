@@ -7,6 +7,7 @@ import LoadingFallback from "../../../components/shared/LoadingFallback";
 import Swal from "sweetalert2";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Helmet } from "react-helmet-async";
 
 const AdminProfile = () => {
     const { user, updateUserProfile } = useContext(AuthContext);
