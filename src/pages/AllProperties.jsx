@@ -16,7 +16,9 @@ const AllProperties = () => {
   const [sortOrder, setSortOrder] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
-  const [dateOrder, setDateOrder] = useState(""); // ✅ NEW
+  const [dateOrder, setDateOrder] = useState(""); 
+  const [currentPage, setCurrentPage] = useState(1); // ✅ Pagination state
+  const itemsPerPage = 9;
 
   useEffect(() => {
     AOS.init({ duration: 800, easing: "ease-in-out", once: true });
@@ -50,7 +52,7 @@ const AllProperties = () => {
     return matchesLocation && matchesPrice;
   });
 
-  const sortedProperties = [...filteredProperties]
+  const sortedProperties = [...filteredProperties];
 
   if (sortOrder) {
     sortedProperties.sort((a, b) => {
@@ -68,10 +70,25 @@ const AllProperties = () => {
     });
   }
 
+  // ✅ Pagination logic
+  const totalPages = Math.ceil(sortedProperties.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedProperties = sortedProperties.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      window.scrollTo({ top: 0, behavior: "smooth" }); // Auto scroll up
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <Helmet>
-        <title>All Propertie | RealEstate</title>
+        <title>All Properties | RealEstate</title>
       </Helmet>
       <h2
         className="text-center text-3xl md:text-4xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#00BBA7] to-[#009d8f]"
@@ -79,7 +96,6 @@ const AllProperties = () => {
       >
         All Verified Properties
       </h2>
-
 
       {/* Search, Sort & Price Filters */}
       <div
@@ -133,14 +149,15 @@ const AllProperties = () => {
         />
       </div>
 
-      {sortedProperties.length === 0 && (
+      {paginatedProperties.length === 0 && (
         <p className="text-gray-500 text-lg text-center">
           No matching properties found.
         </p>
       )}
 
+      {/* Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-10">
-        {sortedProperties.map((prop) => (
+        {paginatedProperties.map((prop) => (
           <div
             key={prop._id}
             className="relative rounded-xl shadow-lg overflow-hidden bg-base-300 hover:shadow-2xl transition flex flex-col"
@@ -184,10 +201,11 @@ const AllProperties = () => {
               <p className="mt-3">
                 <strong>Status: </strong>
                 <span
-                  className={`badge ${prop.verificationStatus === "sold"
-                    ? "badge-error"
-                    : "badge-success"
-                    }`}
+                  className={`badge ${
+                    prop.verificationStatus === "sold"
+                      ? "badge-error"
+                      : "badge-success"
+                  }`}
                 >
                   {prop.verificationStatus}
                 </span>
@@ -209,6 +227,39 @@ const AllProperties = () => {
           </div>
         ))}
       </div>
+
+      {/* ✅ Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 pb-10">
+          <button
+            className="btn btn-sm"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            « Prev
+          </button>
+
+          {[...Array(totalPages)].map((_, i) => (
+            <button
+              key={i}
+              className={`btn btn-sm ${
+                currentPage === i + 1 ? "btn-active btn-primary" : ""
+              }`}
+              onClick={() => handlePageChange(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
+
+          <button
+            className="btn btn-sm"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next »
+          </button>
+        </div>
+      )}
     </div>
   );
 };
