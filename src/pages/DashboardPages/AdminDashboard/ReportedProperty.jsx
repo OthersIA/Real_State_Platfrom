@@ -84,7 +84,7 @@ const PropertyReports = () => {
     if (isError) return <p className="text-error">Failed to load reports.</p>;
 
     return (
-        <section className="container mx-auto p-6 max-w-6xl">
+        <section className="container mx-auto px-4 py-8">
             <Helmet>
                 <title>Reported Properties | RealEstate</title>
             </Helmet>

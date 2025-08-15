@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react"; // Import useState and useMemo
+import { useEffect, useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -11,11 +11,13 @@ import { Helmet } from "react-helmet-async";
 const AdvertiseProperty = () => {
   const queryClient = useQueryClient();
 
-  // State for sorting
-  const [sortOrder, setSortOrder] = useState(""); // 'newest' | 'oldest' | ''
-
-  // State for email search/filter
+  // State for sorting and filtering
+  const [sortOrder, setSortOrder] = useState("");
   const [selectedAgentEmail, setSelectedAgentEmail] = useState("");
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
   useEffect(() => {
     AOS.init({ duration: 800, easing: "ease-in-out", once: true });
@@ -79,9 +81,7 @@ const AdvertiseProperty = () => {
     });
   };
 
-  // --- Filtering and Sorting Logic ---
-
-  // Get unique agent emails for the dropdown
+  // Filtering & sorting
   const uniqueAgentEmails = useMemo(() => {
     const emails = new Set();
     properties.forEach((property) => {
@@ -89,52 +89,48 @@ const AdvertiseProperty = () => {
         emails.add(property.agentEmail);
       }
     });
-    return ["", ...Array.from(emails)]; // Add an empty option for "All Agents"
+    return ["", ...Array.from(emails)];
   }, [properties]);
 
-  // Filter and sort properties based on state
   const filteredAndSortedProperties = useMemo(() => {
     let filtered = properties;
 
-    // 1. Filter by Agent Email
     if (selectedAgentEmail) {
-      filtered = filtered.filter(
-        (property) => property.agentEmail === selectedAgentEmail
-      );
+      filtered = filtered.filter((property) => property.agentEmail === selectedAgentEmail);
     }
 
-    // 2. Sort by Created Date
     if (sortOrder) {
       filtered = [...filtered].sort((a, b) => {
         const dateA = new Date(a.createdDate);
         const dateB = new Date(b.createdDate);
-        if (sortOrder === "newest") {
-          return dateB.getTime() - dateA.getTime(); // Newest first
-        } else {
-          return dateA.getTime() - dateB.getTime(); // Oldest first
-        }
+        return sortOrder === "newest"
+          ? dateB.getTime() - dateA.getTime()
+          : dateA.getTime() - dateB.getTime();
       });
     }
 
     return filtered;
   }, [properties, selectedAgentEmail, sortOrder]);
 
-  // --- End Filtering and Sorting Logic ---
+  // Pagination logic
+  const totalPages = Math.ceil(filteredAndSortedProperties.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentItems = filteredAndSortedProperties.slice(startIndex, startIndex + itemsPerPage);
 
   if (isLoading) return <LoadingFallback />;
 
   return (
     <section className="px-4 py-8" data-aos="fade-up">
       <Helmet>
-        <title>ReviewsAdvertise Propertie | RealEstate</title>
+        <title>Advertise Properties | RealEstate</title>
       </Helmet>
       <div className="container mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold mb-6 text-[#00BBA7]">
           Advertise Properties
         </h2>
 
+        {/* Filters */}
         <div className="flex flex-col md:flex-row gap-4 mb-6">
-          {/* Sort by Created Date */}
           <div className="form-control">
             <label htmlFor="sortDate" className="label">
               <span className="label-text">Sort by Date:</span>
@@ -151,7 +147,6 @@ const AdvertiseProperty = () => {
             </select>
           </div>
 
-          {/* Filter by Agent Email */}
           <div className="form-control">
             <label htmlFor="filterEmail" className="label">
               <span className="label-text">Filter by Agent Email:</span>
@@ -172,6 +167,7 @@ const AdvertiseProperty = () => {
           </div>
         </div>
 
+        {/* Table */}
         <div className="overflow-x-auto">
           <table className="table w-full">
             <thead>
@@ -180,21 +176,21 @@ const AdvertiseProperty = () => {
                 <th>Title</th>
                 <th>Price Range</th>
                 <th>Agent</th>
-                <th>Created Date</th> {/* Added Created Date column */}
+                <th>Created Date</th>
                 <th>Stats</th>
                 <th>Advertise</th>
                 <th>Remove</th>
               </tr>
             </thead>
             <tbody>
-              {filteredAndSortedProperties.length === 0 ? (
+              {currentItems.length === 0 ? (
                 <tr>
                   <td colSpan="8" className="text-center py-4 text-gray-500">
                     No properties found matching your criteria.
                   </td>
                 </tr>
               ) : (
-                filteredAndSortedProperties.map((property) => (
+                currentItems.map((property) => (
                   <tr
                     key={property._id}
                     data-aos="fade-up"
@@ -218,13 +214,10 @@ const AdvertiseProperty = () => {
                       {property.createdDate
                         ? new Date(property.createdDate).toLocaleDateString()
                         : "N/A"}
-                    </td>{" "}
-                    {/* Display formatted date */}
+                    </td>
                     <td>
                       {property?.status === "sold" ? (
-                        <span className="text-red-500 font-semibold">
-                          {property.status}
-                        </span>
+                        <span className="text-red-500 font-semibold">{property.status}</span>
                       ) : (
                         <span className="text-blue-600">Verified</span>
                       )}
@@ -253,6 +246,35 @@ const AdvertiseProperty = () => {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-6 gap-2">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              className="btn btn-sm"
+              disabled={currentPage === 1}
+            >
+              Prev
+            </button>
+            {[...Array(totalPages)].map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentPage(idx + 1)}
+                className={`btn btn-sm ${currentPage === idx + 1 ? "btn-active bg-[#00BBA7] text-white" : ""}`}
+              >
+                {idx + 1}
+              </button>
+            ))}
+            <button
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              className="btn btn-sm"
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

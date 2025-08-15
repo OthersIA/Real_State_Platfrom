@@ -7,18 +7,20 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import LoadingFallback from "../../../components/shared/LoadingFallback";
 import { Helmet } from "react-helmet-async";
+import { FaCheck, FaCross, FaEye } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { ImCross } from "react-icons/im";
 
 const ManageProperties = () => {
   const queryClient = useQueryClient();
 
-  // State for sorting
-  const [sortOrder, setSortOrder] = useState(""); // 'newest' | 'oldest' | ''
-
-  // State for agent email filter
+  const [sortOrder, setSortOrder] = useState("");
   const [selectedAgentEmail, setSelectedAgentEmail] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
 
-  // State for verification status filter
-  const [selectedStatus, setSelectedStatus] = useState(""); // 'verified' | 'pending' | 'rejected' | ''
+  // pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     AOS.init({ duration: 700, easing: "ease-in-out" });
@@ -40,9 +42,6 @@ const ManageProperties = () => {
       Swal.fire("Verified!", "Property has been verified.", "success");
       queryClient.invalidateQueries(["manage-properties"]);
     },
-    onError: () => {
-      Swal.fire("Error", "Failed to verify property.", "error");
-    },
   });
 
   const rejectProperty = useMutation({
@@ -52,9 +51,6 @@ const ManageProperties = () => {
     onSuccess: () => {
       Swal.fire("Rejected!", "Property has been rejected.", "success");
       queryClient.invalidateQueries(["manage-properties"]);
-    },
-    onError: () => {
-      Swal.fire("Error", "Failed to reject property.", "error");
     },
   });
 
@@ -66,37 +62,26 @@ const ManageProperties = () => {
       Swal.fire("Deleted!", "Property has been deleted.", "success");
       queryClient.invalidateQueries(["manage-properties"]);
     },
-    onError: () => {
-      Swal.fire("Error", "Failed to delete property.", "error");
-    },
   });
 
-
-  // Get unique agent emails for the dropdown
   const uniqueAgentEmails = useMemo(() => {
     const emails = new Set();
     properties.forEach((property) => {
-      if (property.agentEmail) {
-        emails.add(property.agentEmail);
-      }
+      if (property.agentEmail) emails.add(property.agentEmail);
     });
-    return ["", ...Array.from(emails)]; // Add an empty option for "All Agents"
+    return ["", ...Array.from(emails)];
   }, [properties]);
 
-  // Filter and sort properties based on state
   const filteredAndSortedProperties = useMemo(() => {
     let filtered = properties;
 
-    // 1. Filter by Agent Email
     if (selectedAgentEmail) {
       filtered = filtered.filter(
         (property) => property.agentEmail === selectedAgentEmail
       );
     }
 
-    // 2. Filter by Verification Status
     if (selectedStatus) {
-      // Handle the case where verificationStatus might be undefined/null or "pending"
       if (selectedStatus === "pending") {
         filtered = filtered.filter(
           (property) =>
@@ -110,23 +95,26 @@ const ManageProperties = () => {
       }
     }
 
-    // 3. Sort by Created Date
     if (sortOrder) {
       filtered = [...filtered].sort((a, b) => {
         const dateA = a.createdDate ? new Date(a.createdDate) : new Date(0);
         const dateB = b.createdDate ? new Date(b.createdDate) : new Date(0);
 
-        if (sortOrder === "newest") {
-          return dateB.getTime() - dateA.getTime(); // Newest first
-        } else {
-          return dateA.getTime() - dateB.getTime(); // Oldest first
-        }
+        return sortOrder === "newest"
+          ? dateB.getTime() - dateA.getTime()
+          : dateA.getTime() - dateB.getTime();
       });
     }
 
     return filtered;
   }, [properties, selectedAgentEmail, selectedStatus, sortOrder]);
 
+  // --- PAGINATION LOGIC ---
+  const totalPages = Math.ceil(filteredAndSortedProperties.length / itemsPerPage);
+  const paginatedProperties = filteredAndSortedProperties.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   if (isLoading) return <LoadingFallback />;
 
@@ -140,18 +128,17 @@ const ManageProperties = () => {
           Manage Properties
         </h2>
 
-        {/* Sorting and Filtering Controls */}
+        {/* Filters */}
         <div className="flex flex-col md:flex-row gap-4 mb-6">
-          {/* Sort by Created Date */}
           <div className="form-control">
-            <label htmlFor="sortDate" className="label">
-              <span className="label-text">Sort by Date:</span>
-            </label>
+            <label className="label">Sort by Date:</label>
             <select
-              id="sortDate"
               className="select select-bordered w-full max-w-xs"
               value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value)}
+              onChange={(e) => {
+                setSortOrder(e.target.value);
+                setCurrentPage(1); // reset page
+              }}
             >
               <option value="">No Sorting</option>
               <option value="newest">Newest First</option>
@@ -159,16 +146,15 @@ const ManageProperties = () => {
             </select>
           </div>
 
-          {/* Filter by Agent Email */}
           <div className="form-control">
-            <label htmlFor="filterEmail" className="label">
-              <span className="label-text">Filter by Agent Email:</span>
-            </label>
+            <label className="label">Filter by Agent Email:</label>
             <select
-              id="filterEmail"
               className="select select-bordered w-full max-w-xs"
               value={selectedAgentEmail}
-              onChange={(e) => setSelectedAgentEmail(e.target.value)}
+              onChange={(e) => {
+                setSelectedAgentEmail(e.target.value);
+                setCurrentPage(1);
+              }}
             >
               <option value="">All Agents</option>
               {uniqueAgentEmails.map((email) => (
@@ -179,16 +165,15 @@ const ManageProperties = () => {
             </select>
           </div>
 
-          {/* Filter by Verification Status */}
           <div className="form-control">
-            <label htmlFor="filterStatus" className="label">
-              <span className="label-text">Filter by Status:</span>
-            </label>
+            <label className="label">Filter by Status:</label>
             <select
-              id="filterStatus"
               className="select select-bordered w-full max-w-xs"
               value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
+              onChange={(e) => {
+                setSelectedStatus(e.target.value);
+                setCurrentPage(1);
+              }}
             >
               <option value="">All Statuses</option>
               <option value="pending">Pending</option>
@@ -197,8 +182,8 @@ const ManageProperties = () => {
             </select>
           </div>
         </div>
-        {/* End Sorting and Filtering Controls */}
 
+        {/* Table */}
         <table className="table w-full">
           <thead>
             <tr className="bg-base-200">
@@ -213,43 +198,30 @@ const ManageProperties = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredAndSortedProperties.length === 0 ? (
+            {paginatedProperties.length === 0 ? (
               <tr>
-                <td colSpan="9" className="text-center py-4 text-gray-500">
-                  No properties found matching your criteria.
+                <td colSpan="8" className="text-center py-4 text-gray-500">
+                  No properties found.
                 </td>
               </tr>
             ) : (
-              filteredAndSortedProperties.map((prop, idx) => (
-                <tr
-                  key={prop._id}
-                  className="hover:bg-[#00BBA7]/10 transition"
-                  data-aos="fade-up"
-                >
-                  <td>{idx + 1}</td>
+              paginatedProperties.map((prop, idx) => (
+                <tr key={prop._id} className="hover:bg-[#00BBA7]/10 transition" data-aos="fade-up">
+                  <td>{(currentPage - 1) * itemsPerPage + idx + 1}</td>
                   <td>{prop.title}</td>
                   <td>{prop.location}</td>
                   <td>{prop.agentName}</td>
                   <td>{prop.agentEmail}</td>
-                  <td>
-                    ${prop.minPrice} - ${prop.maxPrice}
-                  </td>
+                  <td>${prop.minPrice} - ${prop.maxPrice}</td>
                   <td>
                     {prop.verificationStatus === "verified" && (
-                      <span className="badge bg-[#00BBA7] text-white">
-                        Verified
-                      </span>
+                      <span className="badge bg-[#00BBA7] text-white">Verified</span>
                     )}
                     {prop.verificationStatus === "rejected" && (
-                      <span className="badge bg-red-500 text-white">
-                        Rejected
-                      </span>
+                      <span className="badge bg-red-500 text-white">Rejected</span>
                     )}
-                    {!prop.verificationStatus ||
-                      prop.verificationStatus === "pending" ? (
-                      <span className="badge bg-yellow-500 text-white">
-                        Pending
-                      </span>
+                    {!prop.verificationStatus || prop.verificationStatus === "pending" ? (
+                      <span className="badge bg-yellow-500 text-white">Pending</span>
                     ) : null}
                   </td>
                   <td className="flex flex-wrap gap-2">
@@ -257,62 +229,76 @@ const ManageProperties = () => {
                       to={`/property/${prop._id}`}
                       className="btn btn-xs border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white transition"
                     >
-                      Property Details
+                      <FaEye className="text-xl"> </FaEye>
                     </Link>
-
-                    {(!prop.verificationStatus ||
-                      prop.verificationStatus === "pending") && (
-                        <>
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              verifyProperty.mutate(prop._id);
-                            }}
-                            className="btn btn-xs border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white transition"
-                          >
-                            Verify
-                          </button>
-
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              rejectProperty.mutate(prop._id);
-                            }}
-                            className="btn btn-xs border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition"
-                          >
-                            Reject
-                          </button>
-                        </>
-                      )}
-
-                    {(prop.verificationStatus === "verified" ||
-                      prop.verificationStatus === "rejected") && (
+                    {(!prop.verificationStatus || prop.verificationStatus === "pending") && (
+                      <>
                         <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            Swal.fire({
-                              title: "Delete?",
-                              text: "This property will be removed permanently.",
-                              icon: "warning",
-                              showCancelButton: true,
-                              confirmButtonText: "Yes, delete it!",
-                            }).then((result) => {
-                              if (result.isConfirmed) {
-                                deleteProperty.mutate(prop._id);
-                              }
-                            });
-                          }}
+                          onClick={() => verifyProperty.mutate(prop._id)}
+                          className="btn btn-xs border border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white transition"
+                        >
+                          <FaCheck className="text-xl" />
+                        </button>
+                        <button
+                          onClick={() => rejectProperty.mutate(prop._id)}
                           className="btn btn-xs border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition"
                         >
-                          Delete
+                         <ImCross className="text-xl" />
                         </button>
-                      )}
+                      </>
+                    )}
+                    {(prop.verificationStatus === "verified" || prop.verificationStatus === "rejected") && (
+                      <button
+                        onClick={() =>
+                          Swal.fire({
+                            title: "Delete?",
+                            text: "This property will be removed permanently.",
+                            icon: "warning",
+                            showCancelButton: true,
+                          }).then((result) => {
+                            if (result.isConfirmed) deleteProperty.mutate(prop._id);
+                          })
+                        }
+                        className="btn btn-xs border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition"
+                      >
+                        <MdDelete className="text-xl"></MdDelete>
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))
             )}
           </tbody>
         </table>
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-6 space-x-2">
+            <button
+              className="btn btn-sm"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((p) => p - 1)}
+            >
+              Prev
+            </button>
+            {[...Array(totalPages)].map((_, i) => (
+              <button
+                key={i}
+                className={`btn btn-sm ${currentPage === i + 1 ? "btn-active bg-[#00BBA7] text-white" : ""}`}
+                onClick={() => setCurrentPage(i + 1)}
+              >
+                {i + 1}
+              </button>
+            ))}
+            <button
+              className="btn btn-sm"
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((p) => p + 1)}
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
