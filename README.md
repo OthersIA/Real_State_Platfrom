@@ -2,7 +2,7 @@
 
 A modern property management web application built with React and Vite, featuring robust authentication, role-based dashboards, and a sleek, responsive UI.
 
----
+<!-- ---
 
 ## 🔑 Admin & Agent Credentials
 
@@ -10,15 +10,15 @@ A modern property management web application built with React and Vite, featurin
 - **Admin Password:** info@Yeasin
 
 - **Agent Email:** contact@yeasinislam.com  
-- **Agent Password:** contact@Yeasin
+- **Agent Password:** contact@Yeasin -->
 
 ---
 
 ## 🌐 Live Site & Repositories
 
-- **Front-end Live Site:** [https://real-estate-platform-f0dd4.web.app](https://real-estate-platform-f0dd4.web.app)
-- **Client Side GitHub:** [b11a12-client-side-yeasin-islam](https://github.com/Programming-Hero-Web-Course4/b11a12-client-side-yeasin-islam)
-- **Server Side GitHub:** [b11a12-server-side-yeasin-islam](https://github.com/Programming-Hero-Web-Course4/b11a12-server-side-yeasin-islam)
+- **Live Site:** [https://real-estate-platform-f0dd4.web.app](https://real-estate-platform-f0dd4.web.app)
+<!-- - **Client Side GitHub:** [b11a12-client-side-yeasin-islam](https://github.com/Programming-Hero-Web-Course4/b11a12-client-side-yeasin-islam) -->
+- **Server Side GitHub:** [Real_State_Platfrom_Sever](https://github.com/yeasin-islam/Real_State_Platfrom_Sever)
 
 ---
 
