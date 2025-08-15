@@ -17,7 +17,7 @@ A modern property management web application built with React and Vite, featurin
 ## 🌐 Live Site & Repositories
 
 - **Live Site:** [https://real-estate-platform-f0dd4.web.app](https://real-estate-platform-f0dd4.web.app)
-<!-- - **Client Side GitHub:** [b11a12-client-side-yeasin-islam](https://github.com/Programming-Hero-Web-Course4/b11a12-client-side-yeasin-islam) -->
+<!-- - **Client Side GitHub:** [Real_State_Platfrom_Client](https://github.com/yeasin-islam/Real_State_Platfrom) -->
 - **Server Side GitHub:** [Real_State_Platfrom_Sever](https://github.com/yeasin-islam/Real_State_Platfrom_Sever)
 
 ---
