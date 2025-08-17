@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -12,6 +12,8 @@ import { Helmet } from "react-helmet-async";
 const MyAddedProperties = () => {
     const { user } = useContext(AuthContext);
     const queryClient = useQueryClient();
+    const [currentPage, setCurrentPage] = useState(1);
+    const propertiesPerPage = 6;
 
     useEffect(() => {
         AOS.init({ duration: 800, easing: "ease-in-out", once: true });
@@ -43,14 +45,27 @@ const MyAddedProperties = () => {
 
     if (isLoading) return <LoadingFallback />;
 
+    // Calculate pagination
+    const indexOfLastProperty = currentPage * propertiesPerPage;
+    const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
+    const currentProperties = properties.slice(
+        indexOfFirstProperty,
+        indexOfLastProperty
+    );
+    const totalPages = Math.ceil(properties.length / propertiesPerPage);
+
     return (
         <div className="container mx-auto p-4" data-aos="fade-up">
             <Helmet>
-                <title>My Added Propertie | RealEstate</title>
+                <title>My Added Properties | RealEstate</title>
             </Helmet>
-            <h2 className="text-2xl font-bold mb-4 text-[#00BBA7]">My Added Properties</h2>
+            <h2 className="text-2xl font-bold mb-4 text-[#00BBA7]">
+                My Added Properties
+            </h2>
+
+            {/* Properties Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {properties.map((prop) => (
+                {currentProperties.map((prop) => (
                     <div
                         key={prop._id}
                         className="card bg-base-100 shadow p-4 space-y-2 border border-[#00BBA7]"
@@ -87,10 +102,10 @@ const MyAddedProperties = () => {
                             <strong>Verification:</strong>{" "}
                             <span
                                 className={`badge ${prop.verificationStatus === "verified"
-                                    ? "bg-[#00BBA7] text-white"
-                                    : prop.verificationStatus === "rejected"
-                                        ? "badge-error"
-                                        : "badge-warning"
+                                        ? "bg-[#00BBA7] text-white"
+                                        : prop.verificationStatus === "rejected"
+                                            ? "badge-error"
+                                            : "badge-warning"
                                     }`}
                             >
                                 {prop.verificationStatus || "pending"}
@@ -110,9 +125,10 @@ const MyAddedProperties = () => {
                             {prop.verificationStatus !== "rejected" && (
                                 <Link
                                     to={`/dashboard/update-properties/${prop._id}`}
-                                    className={`btn btn-xs border ${prop.status === "sold" || prop.verificationStatus === "rejected"
-                                        ? "border-gray-400 text-gray-400 cursor-not-allowed opacity-50 pointer-events-none"
-                                        : "border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white"
+                                    className={`btn btn-xs border ${prop.status === "sold" ||
+                                            prop.verificationStatus === "rejected"
+                                            ? "border-gray-400 text-gray-400 cursor-not-allowed opacity-50 pointer-events-none"
+                                            : "border-[#00BBA7] text-[#00BBA7] hover:bg-[#00BBA7] hover:text-white"
                                         }`}
                                 >
                                     Update
@@ -138,6 +154,40 @@ const MyAddedProperties = () => {
                         </div>
                     </div>
                 ))}
+            </div>
+
+            {/* Pagination Controls */}
+            <div className="flex justify-center mt-6 gap-2">
+                <button
+                    className="btn btn-sm"
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                >
+                    Prev
+                </button>
+
+                {[...Array(totalPages).keys()].map((page) => (
+                    <button
+                        key={page + 1}
+                        className={`btn btn-sm ${currentPage === page + 1
+                                ? "bg-[#00BBA7] text-white"
+                                : "btn-outline"
+                            }`}
+                        onClick={() => setCurrentPage(page + 1)}
+                    >
+                        {page + 1}
+                    </button>
+                ))}
+
+                <button
+                    className="btn btn-sm"
+                    onClick={() =>
+                        setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    }
+                    disabled={currentPage === totalPages}
+                >
+                    Next
+                </button>
             </div>
         </div>
     );
