@@ -13,7 +13,7 @@ const ComingSoonUpdate = ({
   return (
     <div className="flex items-center justify-center  min-h-[calc(100vh-64px)] px-4 bg-gradient-to-r from-base-100 to-base-500 dark:from-gray-800 dark:to-gray-900">
       <Helmet>
-        <title>All Properties | ComingSoon</title>
+        <title>Coming Soon | RealEstate</title>
       </Helmet>
 
       <div className="text-center bg-base-300 dark:bg-gray-800/80 p-10 rounded-2xl shadow-xl backdrop-blur-md">
